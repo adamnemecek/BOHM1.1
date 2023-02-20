@@ -365,7 +365,7 @@ static int hash_pjw(
 		if (g)
 			h = h ^ (g >> HASH3) ^ g;
 	}
-	return (h % DICTSIZE);
+	return h % DICTSIZE;
 }
 
 /* The following function allocates a local environment entry. */

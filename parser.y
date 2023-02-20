@@ -148,18 +148,22 @@ static bool defined();
  /***************************************************************/
 
 %union	{
+		/* pointer to a symbol */
+		/* table bucket */
+		/* numerical constant */
 		STBUCKET	*st_bucket;
-					/* pointer to a symbol */
-					/* table bucket */
+		
 		int		num_const;
-					/* numerical constant */
+
+		/* graph representation */
+		/* of the term */
 		TERM		*term;
-					/* graph representation */
-					/* of the term */
+	
+		/* root_form  */
 		FORM		*root;
-					/* root_form  */
-                char            *astring;
-                PATTERN         *pattern;
+
+		char            *astring;
+		PATTERN         *pattern;
 	}
 
 

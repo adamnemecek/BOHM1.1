@@ -995,7 +995,6 @@ static VARENTRY *addbrackets(
 	}
 	else
 	{
-
 		allocate_form(&bracket, TRIANGLE, index);
 		bracket->nlevel[1] = 1;
 		connect(bracket, 1, variab, 0);

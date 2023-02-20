@@ -345,7 +345,7 @@ static bool do_menu2()
 		cont = true;
 		break;
 	}
-	return (cont);
+	return cont;
 }
 
 static void do_menu3()

@@ -97,15 +97,17 @@ typedef struct form
 /* free variable descriptor type */
 typedef struct varentry
 {
-	struct st_bucket *name;
 	/* pointer to the st_bucket */
 	/* for the variable */
-	struct form *var;
+	struct st_bucket *name;
+
 	/* pointer to the form */
 	/* for the variable */
-	struct varentry *next;
+	struct form *var;
+
 	/* pointer to the next free */
 	/* variable in a term */
+	struct varentry *next;
 } VARENTRY;
 
 /* term descriptor type */
@@ -113,17 +115,16 @@ typedef struct term
 {
 	/* pointer to the root form */
 	/* of the term */
-
 	struct form *rootf;
+
 	/* number of the root port */
 	/* of the term (0 for variables */
 	/* and abstractions, 1 for */
 	/* applications) */
-
 	char rootp;
+
 	/* pointer to the list of free */
 	/* variables in the term */
-
 	struct varentry *vars;
 } TERM;
 
