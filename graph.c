@@ -97,11 +97,7 @@ static void allocate_var(),
 
 /* The following function creates the graph representation of */
 /* a variable */
-TERM
-	*
-	buildvarterm(level, id)
-int level;
-STBUCKET *id;
+TERM *buildvarterm(int level, STBUCKET *id)
 {
 	TERM *t;		  /* pointer to the term to be created */
 	FORM *newf;		  /* pointer to the new form to be created */
@@ -131,8 +127,7 @@ int level;
 /* a false constant */
 TERM
 	*
-	buildfalseterm(level)
-int level;
+	buildfalseterm(int level)
 {
 	TERM *t; /* pointer to the term to be created */
 
@@ -144,9 +139,7 @@ int level;
 /* a numerical constant */
 TERM
 	*
-	buildintterm(level, value)
-int level;
-long int value;
+	buildintterm(int level, long int value)
 {
 	TERM *t; /* pointer to the term to be created */
 
@@ -190,12 +183,10 @@ static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 	return (t);
 }
 
-TERM
-	*
-	buildplambdaterm(level, pattern, body)
-int level;
-PATTERN *pattern;
-TERM *body;
+TERM *buildplambdaterm(
+	int level,
+	PATTERN *pattern,
+	TERM *body)
 {
 	TERM *t; /* pointer to the new term to be created */
 	VARLIST *vp;
@@ -262,12 +253,11 @@ TERM *body;
 
 /* The following function creates the graph representation of a */
 /* recursive definition. */
-TERM
-	*
-	build_mu_term(level, id, body)
-int level;
-STBUCKET *id;
-TERM *body;
+TERM *build_mu_term(
+	int level,
+	STBUCKET *id,
+	TERM *body)
+
 {
 	TERM *t,
 		/* pointer to the new term to be created */
@@ -314,12 +304,10 @@ TERM *body;
 
 /* The following function creates the graph representation of */
 /* an application */
-TERM
-	*
-	buildappterm(level, fun, arg)
-int level;
-TERM *fun,
-	*arg;
+TERM *buildappterm(
+	int level,
+	TERM *fun,
+	TERM *arg)
 {
 	TERM *t,
 		/* pointer to the term to be created */
@@ -347,13 +335,11 @@ TERM *fun,
 
 /* The following function creates the graph representation of */
 /* an if_then_else term */
-TERM
-	*
-	buildifelseterm(level, arg1, arg2, arg3)
-int level;
-TERM *arg1,
-	*arg2,
-	*arg3;
+TERM *buildifelseterm(
+	int level,
+	TERM *arg1,
+	TERM *arg2,
+	TERM *arg3)
 {
 	TERM *t; /* pointer to the term to be created */
 	VARENTRY *newvars, *tempvars;
@@ -382,13 +368,11 @@ TERM *arg1,
 
 /* The following function creates the graph representation of */
 /* a let_in expression*/
-TERM
-	*
-	buildletinterm(level, id, arg1, arg2)
-int level;
-STBUCKET *id;
-TERM *arg1,
-	*arg2;
+TERM *buildletinterm(
+	int level,
+	STBUCKET *id,
+	TERM *arg1,
+	TERM *arg2)
 {
 	TERM *temp;
 
@@ -398,12 +382,10 @@ TERM *arg1,
 
 /* The following function creates the graph representation of */
 /* a boolean and-expression */
-TERM
-	*
-	buildandterm(level, arg1, arg2)
-int level;
-TERM *arg1,
-	*arg2;
+TERM *buildandterm(
+	int level,
+	TERM *arg1,
+	TERM *arg2)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -427,12 +409,10 @@ TERM *arg1,
 
 /* The following function creates the graph representation of */
 /* a boolean or-expression */
-TERM
-	*
-	buildorterm(level, arg1, arg2)
-int level;
-TERM *arg1,
-	*arg2;
+TERM *buildorterm(
+	int level,
+	TERM *arg1,
+	TERM *arg2)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -458,9 +438,9 @@ TERM *arg1,
 /* a boolean not-expression */
 TERM
 	*
-	buildnotterm(level, arg)
-int level;
-TERM *arg;
+	buildnotterm(
+		int level,
+		TERM *arg)
 {
 	TERM *t;
 	/* pointer to the term to be created */

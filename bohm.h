@@ -30,26 +30,35 @@ extern FORM *closeterm();
 extern FORM *copy();
 extern FORM *inspect();
 extern TERM *buildandterm();
-extern TERM *buildappterm();
+extern TERM *buildappterm(
+    int level,
+    TERM *fun,
+    TERM *arg);
 extern TERM *buildcarterm();
 extern TERM *buildcdrterm();
-extern TERM *buildfalseterm();
+extern TERM *buildfalseterm(int level);
 extern TERM *buildifelseterm();
-extern TERM *buildintterm();
+extern TERM *buildintterm(int level, long int value);
 extern TERM *buildletinterm();
 extern TERM *buildlist();
 extern TERM *buildlist1();
 extern TERM *buildmatterm();
 extern TERM *buildminusterm();
-extern TERM *build_mu_term();
+extern TERM *build_mu_term(
+    int level,
+    STBUCKET *id,
+    TERM *bod);
 extern TERM *buildnillist();
 extern TERM *buildnotterm();
 extern TERM *buildorterm();
-extern TERM *buildplambdaterm();
+extern TERM *buildplambdaterm(
+    int level,
+    PATTERN *pattern,
+    TERM *body);
 extern TERM *buildrelopterm();
 extern TERM *buildtestnil();
 extern TERM *buildtrueterm();
-extern TERM *buildvarterm();
+extern TERM *buildvarterm(int level, STBUCKET *id);
 extern TERM *buildvoidterm();
 extern VARLIST *makevarlist();
 extern VARLIST *mergevarlist();
