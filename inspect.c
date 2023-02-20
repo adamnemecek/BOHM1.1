@@ -128,7 +128,7 @@ extern FORM *inspect(int p, FORM *f)
 	if (!ok)
 	{
 		printf("there is nothing there\n");
-		return (f);
+		return f;
 	}
 	else
 	{
@@ -155,7 +155,7 @@ extern FORM *inspect(int p, FORM *f)
 				break;
 			}
 			printf("at port = 0\n\n");
-			return (f);
+			return f;
 		}
 		else
 		{

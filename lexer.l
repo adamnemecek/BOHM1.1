@@ -134,46 +134,46 @@ string                  [^\"]*\"
                         if (loading_mode == 1) ECHO;
 			search_bucket(&(yylval.st_bucket),
 				       yytext);
-			return(yylval.st_bucket->token);
+			return yylval.st_bucket->token;
 		   }
 
 {num}		   {
 			/* integer */
                         if (loading_mode == 1) ECHO; 
 			yylval.num_const = to_nat_s(yytext);
-			return(NUMCONST);
+			return NUMCONST;
 		   }
 
 {one_char_token}   {
 			/* one-character token */
                         if (loading_mode == 1) ECHO; 
-			return(yytext[0]);
+			return yytext[0];
 		   }
 
 
 ";;"		   {
 			/* end of expression  */
                         if (loading_mode == 1) ECHO; 
-			return(EXPRDELIM);
+			return EXPRDELIM;
 		}
 
 "=="		   {
                         if (loading_mode == 1) ECHO; 
-			return(EQUAL);
+			return EQUAL;
 		}
 
 "<="		   {
                         if (loading_mode == 1) ECHO; 
-			return(LEQUAL);
+			return LEQUAL;
 		}
 
 ">="		   {
                         if (loading_mode == 1) ECHO; 
-			return(MEQUAL);
+			return MEQUAL;
 		}
 "<>"		   {
                         if (loading_mode == 1) ECHO; 
-			return(NOTEQUAL);
+			return NOTEQUAL;
 		}
 
 

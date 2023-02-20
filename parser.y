@@ -702,5 +702,5 @@ static bool defined(st)
 			      /* pointer to the bucket for the */
 			      /* identifier */
 {
-        return((st->curr_binding) != NULL);
+        return (st->curr_binding != NULL);
 }

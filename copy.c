@@ -132,7 +132,7 @@ static FORM *copy_aux(
 			return newf1;
 		}
 		else
-			return (is_in_relation(temp));
+			return is_in_relation(temp);
 		break;
 
 	case TESTNIL1:
@@ -254,7 +254,7 @@ static int entry(FORM *src)
 
 	risul = (unsigned long)src;
 	risul = risul / 8 * 13;
-	return (risul % DIM_REL);
+	return risul % DIM_REL;
 }
 
 /* The following function initialises hash table.	        */
@@ -270,10 +270,9 @@ start_copy()
 static void
 end_copy()
 {
-	int i;
 	COPY_FORM *dep;
 
-	for (i = 0; i < DIM_REL; i++)
+	for (int i = 0; i < DIM_REL; i++)
 		while ((dep = copy_relation[i]) != NULL)
 		{
 			copy_relation[i] = dep->next;

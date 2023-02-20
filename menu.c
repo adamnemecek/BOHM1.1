@@ -263,7 +263,7 @@ static int take_char()
 			printf("Answer again please . . .\n\n>");
 		}
 	} while (warning);
-	return (taken);
+	return taken;
 }
 
 static bool do_menu1()
@@ -301,7 +301,7 @@ static bool do_menu1()
 	}
 	if (option == 2)
 		cont = true;
-	return (cont);
+	return cont;
 }
 
 static bool do_menu2()

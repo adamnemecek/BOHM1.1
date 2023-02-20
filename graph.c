@@ -371,7 +371,7 @@ TERM *buildletinterm(
 	TERM *temp;
 
 	temp = buildlambdaterm(level, id, arg2);
-	return (buildappterm(level, temp, arg1));
+	return buildappterm(level, temp, arg1);
 }
 
 /* The following function creates the graph representation of */
@@ -953,7 +953,7 @@ static void allocate_term(
 static TERM *makebox(int level, TERM *arg)
 {
 	arg->vars = addbrackets(level, arg->vars);
-	return (arg);
+	return arg;
 }
 
 /* the following function add a sequence of square brackets of */
@@ -991,7 +991,7 @@ static VARENTRY *addbrackets(
 			break;
 		};
 		listvar->next = addbrackets(index, listvar->next);
-		return (listvar);
+		return listvar;
 	}
 	else
 	{
@@ -1003,7 +1003,7 @@ static VARENTRY *addbrackets(
 					 listvar->name,
 					 bracket,
 					 addbrackets(index, listvar->next));
-		return (res);
+		return res;
 	}
 }
 
@@ -1060,7 +1060,7 @@ static VARENTRY *lookfor(
 	else if (listvar->name == id)
 		return listvar;
 	else
-		return (lookfor(id, listvar->next));
+		return lookfor(id, listvar->next);
 }
 
 /* the following function remove an identifier form a list */
@@ -1078,7 +1078,7 @@ static VARENTRY *remv(
 	{
 		temp = listvar->next;
 		free(listvar);
-		return (temp);
+		return temp;
 	}
 	else
 	{
