@@ -48,7 +48,7 @@ bool seegarb;
 /* 3. Definitions of functions to be exported.                              */
 /****************************************************************************/
 
-void menu(choice) int choice;
+void menu(int choice)
 {
 	if (choice == 1)
 		option = 1;
@@ -67,7 +67,7 @@ void menu(choice) int choice;
 	printf("***********************************************************\n\n");
 }
 
-void info(choices) char *choices;
+void info(char *choices)
 {
 	bool nomoreargs;
 	int select;
@@ -348,8 +348,7 @@ static bool do_menu2()
 	return (cont);
 }
 
-static void
-do_menu3()
+static void do_menu3()
 {
 	while ((limit < 1000) || (limit > 50000))
 	{

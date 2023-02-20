@@ -45,11 +45,10 @@ static int entry();
 
 /* The following function initialises the hash table, calls 	*/
 /* function copy_aux and eliminates the table.			*/
-FORM
-	*
-	copy(root, p, offset)
-FORM *root;
-int p, offset;
+FORM *copy(
+	FORM *root,
+	int p,
+	int offset)
 {
 	FORM *risul;
 	start_copy();
@@ -63,11 +62,10 @@ int p, offset;
 
 /* The following function duplicates the input graph and 	*/
 /* returns it as output.					*/
-static FORM
-	*
-	copy_aux(root, p, offset)
-FORM *root;
-int p, offset;
+static FORM *copy_aux(
+	FORM *root,
+	int p,
+	int offset)
 {
 	FORM *temp,
 		*newf1,
@@ -218,10 +216,9 @@ int p, offset;
 }
 
 /* The following function inserts a two-form relation in the table. */
-static void
-	put_relation(src, dest)
-		FORM *src,
-	*dest;
+static void put_relation(
+	FORM *src,
+	FORM *dest)
 {
 	COPY_FORM *dep;
 	int dep1;
@@ -236,10 +233,7 @@ static void
 
 /* The following function checks whether or not a form has 	*/
 /* already been copied.						*/
-static FORM
-	*
-	is_in_relation(src)
-FORM *src;
+static FORM *is_in_relation(FORM *src)
 {
 	COPY_FORM *dep;
 	dep = copy_relation[entry(src)];
@@ -254,9 +248,7 @@ FORM *src;
 }
 
 /* The following function implements hash function.		*/
-static int
-entry(src)
-FORM *src;
+static int entry(FORM *src)
 {
 	unsigned long risul;
 

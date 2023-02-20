@@ -1,5 +1,4 @@
-#ifndef _FORM_H
-#define _FORM_H
+#pragma once
 
 #define ROOT 0
 #define T -1
@@ -48,5 +47,3 @@
 #define CDR1 48
 #define CAR1 49
 #define CONS1 50
-
-#endif

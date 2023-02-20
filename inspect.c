@@ -27,8 +27,7 @@
 /* Definitions of functions to be exported.			*/
 /****************************************************************/
 
-void inspect_driver(f)
-	FORM *f;
+void inspect_driver(FORM *f)
 {
 	FORM *travel;
 	int c;

@@ -34,7 +34,7 @@
 #define NOTENOUGHMEMORY 0
 
 /* The following function signals errors causing abort. */
-static void signal_crash(crash_type) int crash_type; /* crash type */
+static void signal_crash(int crash_type) /* crash type */
 {
 	/* crash messages */
 	static char *crash_msgs[] = {
@@ -51,9 +51,7 @@ static void signal_crash(crash_type) int crash_type; /* crash type */
 
 /* The following function implements a control interface for the */
 /* library function malloc(). */
-char *
-malloc_da(size)
-unsigned size;
+char *malloc_da(unsigned size)
 /* size of the object to be */
 /* allocated */
 {
@@ -69,8 +67,8 @@ unsigned size;
 /* The following function implements a control interface for the */
 /* library function strdup(). */
 char *
-strdup_da(s)
-char *s;
+strdup_da(char *s)
+
 /* string to be allocated */
 {
 	char *p;
