@@ -1031,12 +1031,10 @@ VARENTRY *listvar;
 
 /* The following function shares the free variables of	*/
 /* two terms, by adding suitable FANS.  		*/
-static VARENTRY
-	*
-	share(index, l1, l2)
-int index;
-VARENTRY *l1,
-	*l2;
+static VARENTRY *share(
+	int index,
+	VARENTRY *l1,
+	VARENTRY *l2)
 /* pointers to the lists of variables to be shared */
 {
 	if (l1 == NULL)
@@ -1073,12 +1071,10 @@ VARENTRY *l1,
 }
 
 /* The following function searches for a variable inside a list. */
-static VARENTRY
-	*
-	lookfor(id, listvar)
-STBUCKET *id;
-/* pointer to the identifier to be found  */
-VARENTRY *listvar;
+static VARENTRY *lookfor(
+	STBUCKET *id,
+	/* pointer to the identifier to be found  */
+	VARENTRY *listvar)
 /* pointer to the variable list to be scanned */
 {
 	if (listvar == NULL)
