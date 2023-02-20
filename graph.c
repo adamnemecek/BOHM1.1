@@ -112,10 +112,7 @@ TERM *buildvarterm(int level, STBUCKET *id)
 
 /* The following function creates the graph representation of */
 /* a true constant */
-TERM
-	*
-	buildtrueterm(level)
-int level;
+TERM *buildtrueterm(int level)
 {
 	TERM *t; /* pointer to the term to be created */
 
@@ -125,9 +122,7 @@ int level;
 
 /* The following function creates the graph representation of */
 /* a false constant */
-TERM
-	*
-	buildfalseterm(int level)
+TERM *buildfalseterm(int level)
 {
 	TERM *t; /* pointer to the term to be created */
 
@@ -784,20 +779,19 @@ FORM *closeterm(
 	int level,
 	TERM *t)
 {
-	FORM *newroot;
-	if (t != NULL)
+	if (t == NULL)
 	{
-		allocate_form(&newroot, ROOT, 0);
-
-		connect1(newroot, 0, t->rootf, t->rootp);
-
-		if (level == 1)
-			t->vars = addbrackets(0, t->vars);
-		closeglobalvars(t->vars);
-		return newroot;
+		return NULL;
 	}
+	FORM *newroot;
+	allocate_form(&newroot, ROOT, 0);
 
-	return NULL;
+	connect1(newroot, 0, t->rootf, t->rootp);
+
+	if (level == 1)
+		t->vars = addbrackets(0, t->vars);
+	closeglobalvars(t->vars);
+	return newroot;
 }
 
 /* the following function allocate a new graphical form */
@@ -845,8 +839,8 @@ void allocate_form(
 /* the following function adds a graphical form to deallocate */
 /* in a list of free forms (i.e a free-list of forms)         */
 void myfree(
+	/* pointer to the form to deallocate      */
 	FORM *form)
-/* pointer to the form to deallocate      */
 {
 	form->prev->next = form->next;
 	form->next->prev = form->prev;
@@ -919,15 +913,15 @@ void bool_connect(
 
 /* the following function allocate a new variable entry */
 static void allocate_var(
-	VARENTRY **newvar,
 	/* reference to the pointer of the */
 	/* free variable entry to be created */
-	STBUCKET *id,
+	VARENTRY **newvar,
 	/* identifier of the variable */
-	FORM *form,
+	STBUCKET *id,
 	/* graphical form for the variable */
+	FORM *form,
+	/* pointer to the next free variable */
 	VARENTRY *nextvar)
-/* pointer to the next free variable */
 {
 	*newvar = (VARENTRY *)malloc_da(sizeof(VARENTRY));
 	(*newvar)->name = id;
