@@ -86,7 +86,7 @@ static FORM *copy_aux(
 		}
 		else
 			int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
-		return (newf1);
+		return newf1;
 		break;
 
 	case NOTEQ1:
@@ -119,7 +119,7 @@ static FORM *copy_aux(
 		}
 		else
 			int_connect(newf1, q, temp->nform[q], temp->nport[q]);
-		return (newf1);
+		return newf1;
 		break;
 
 	case LAMBDA:
@@ -129,7 +129,7 @@ static FORM *copy_aux(
 			put_relation(temp, newf1);
 			newf2 = copy_aux(temp->nform[1], temp->nport[1], offset);
 			connect1(newf1, 1, newf2, temp->nport[1]);
-			return (newf1);
+			return newf1;
 		}
 		else
 			return (is_in_relation(temp));
@@ -153,10 +153,10 @@ static FORM *copy_aux(
 			}
 			else
 				int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
-			return (newf1);
+			return newf1;
 		}
 		else
-			return (newf1);
+			return newf1;
 		break;
 
 	case APP:
@@ -189,7 +189,7 @@ static FORM *copy_aux(
 		}
 		else
 			int_connect(newf1, 2, temp->nform[2], temp->nport[2]);
-		return (newf1);
+		return newf1;
 		break;
 
 	case CONS:
@@ -208,7 +208,7 @@ static FORM *copy_aux(
 		}
 		else
 			int_connect(newf1, 2, temp->nform[2], temp->nport[2]);
-		return (newf1);
+		return newf1;
 		break;
 	default:
 		return NULL;

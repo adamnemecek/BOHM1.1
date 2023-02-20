@@ -107,7 +107,7 @@ TERM *buildvarterm(int level, STBUCKET *id)
 	newf->nlevel[1] = -1;
 	allocate_var(&newvar, id, newf, NULL);
 	allocate_term(&t, newf, 1, newvar);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -117,7 +117,7 @@ TERM *buildtrueterm(int level)
 	TERM *t; /* pointer to the term to be created */
 
 	allocate_term(&t, NULL, T, NULL);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -127,7 +127,7 @@ TERM *buildfalseterm(int level)
 	TERM *t; /* pointer to the term to be created */
 
 	allocate_term(&t, NULL, F, NULL);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -137,7 +137,7 @@ TERM *buildintterm(int level, long int value)
 	TERM *t; /* pointer to the term to be created */
 
 	allocate_term(&t, (FORM *)value, INT, NULL);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of a */
@@ -173,7 +173,7 @@ static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 		connect1(newf1, 1, body->rootf, body->rootp);
 	}
 	free(body);
-	return (t);
+	return t;
 }
 
 TERM *buildplambdaterm(
@@ -242,7 +242,7 @@ TERM *buildplambdaterm(
 		connect1(newf1, 1, body->rootf, body->rootp);
 	}
 	free(body);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of a */
@@ -293,7 +293,7 @@ TERM *build_mu_term(
 		t = makebox(level, temp);
 	}
 	free(body);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -324,7 +324,7 @@ TERM *buildappterm(
 	allocate_term(&t, newf, 1, newvars);
 	free(arg);
 	free(fun);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -357,7 +357,7 @@ TERM *buildifelseterm(
 	free(arg1);
 	free(arg2);
 	free(arg3);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -398,7 +398,7 @@ TERM *buildandterm(
 	allocate_term(&t, newf, 1, newvars);
 	free(arg1);
 	free(arg2);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -425,7 +425,7 @@ TERM *buildorterm(
 	allocate_term(&t, newf, 1, newvars);
 	free(arg1);
 	free(arg2);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -446,7 +446,7 @@ TERM *buildnotterm(
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -520,7 +520,7 @@ TERM *buildmatterm(
 	}
 	free(arg1);
 	free(arg2);
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -547,7 +547,7 @@ TERM *buildminusterm(
 		allocate_term(&t, newf, 1, arg1->vars);
 		free(arg1);
 	}
-	return (t);
+	return t;
 }
 
 /* The following function creates the graph representation of */
@@ -632,7 +632,7 @@ TERM *buildrelopterm(
 	}
 	free(arg1);
 	free(arg2);
-	return (t);
+	return t;
 }
 
 TERM *buildnillist(int level)
@@ -641,7 +641,7 @@ TERM *buildnillist(int level)
 	/* pointer to the term to be created */
 
 	allocate_term(&t, NULL, NIL, NULL);
-	return (t);
+	return t;
 }
 
 TERM *buildlist(
@@ -677,7 +677,7 @@ TERM *buildlist(
 
 	free(arg1);
 	free(arg2);
-	return (t);
+	return t;
 }
 
 TERM *buildlist1(
@@ -713,7 +713,7 @@ TERM *buildlist1(
 
 	free(arg1);
 	free(arg2);
-	return (t);
+	return t;
 }
 
 TERM *buildcarterm(
@@ -732,7 +732,7 @@ TERM *buildcarterm(
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
-	return (t);
+	return t;
 }
 
 TERM *buildcdrterm(
@@ -751,7 +751,7 @@ TERM *buildcdrterm(
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
-	return (t);
+	return t;
 }
 
 TERM *buildtestnil(
@@ -770,7 +770,7 @@ TERM *buildtestnil(
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
-	return (t);
+	return t;
 }
 
 /* the following function adds a root node to a term */
@@ -796,13 +796,15 @@ FORM *closeterm(
 /* the following function allocate a new graphical form */
 /* and initialize the name and index fields */
 void allocate_form(
-	FORM **form,
 	/* reference to the pointer of the form */
 	/* to be created */
-	int name,
+
+	FORM **form,
 	/* name of the form */
+	int name,
+	/* index of the form */
 	int index)
-/* index of the form */
+
 {
 	FORM *dep;
 	int i;

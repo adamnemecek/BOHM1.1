@@ -60,17 +60,16 @@ typedef struct binding_entry
 /* graphical form descriptor type */
 typedef struct form
 {
-	char name;
 	/* name of the form */
 	/* (FAN, ROOT, CROISSANT */
 	/* BRACKET)  */
-	int num_safe;
+	char name;
 	/* Integer value for numeric */
 	/* forms or indicator of safeness */
 	/* for other forms  */
-	int index;
+	int num_safe;
 	/* index of the form */
-	char nport[3];
+	int index;
 	/* numbers of the ports */
 	/* where the three ports */
 	/* of the form are connected to */
@@ -78,7 +77,7 @@ typedef struct form
 	/* BRACKET only the first two */
 	/* fields are meaningful; for */
 	/* ROOT only the first one is) */
-	struct form *nform[3];
+	char nport[3];
 	/* pointer to the forms */
 	/* where the three ports */
 	/* of the form are connected to */
@@ -86,6 +85,8 @@ typedef struct form
 	/* BRACKET only the first two */
 	/* fields are meaningful; for */
 	/* ROOT only the first one is) */
+	struct form *nform[3];
+
 	int nlevel[3];
 
 	struct form *next;
@@ -110,17 +111,20 @@ typedef struct varentry
 /* term descriptor type */
 typedef struct term
 {
-	struct form *rootf;
 	/* pointer to the root form */
 	/* of the term */
-	char rootp;
+
+	struct form *rootf;
 	/* number of the root port */
 	/* of the term (0 for variables */
 	/* and abstractions, 1 for */
 	/* applications) */
-	struct varentry *vars;
+
+	char rootp;
 	/* pointer to the list of free */
 	/* variables in the term */
+
+	struct varentry *vars;
 } TERM;
 
 typedef struct binding_id
