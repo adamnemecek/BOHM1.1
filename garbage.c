@@ -72,8 +72,7 @@ void init_garbage()
 
 /* The following function insert a new erase operator at the 	*/
 /* head of a list to be scanned when the G.C. is activated.  	*/
-void ins_del(d)
-	FORM *d;
+void ins_del(FORM *d)
 {
 	d->index = EXISTENT;
 	d->nform[1] = del_head->nform[1];
@@ -127,8 +126,8 @@ void user()
 
 /* The following function performs the propagation of a single	*/
 /* erase node by applicating garbage rules. 			*/
-static void garbage(erase)
-	FORM *erase;
+static void garbage(
+	FORM *erase)
 {
 	bool end = false;
 	FORM *form, *nextform, *newform;
@@ -467,7 +466,7 @@ void reset_garbage()
 	sys_garb_time = 0;
 }
 
-void show_garb_stat(seetime) bool seetime;
+void show_garb_stat(bool seetime)
 {
 	printf("Total number of garbage calls      %lu\n", cl_count);
 	printf("Total number of garbage operations %lu\n", er_count);

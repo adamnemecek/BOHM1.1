@@ -132,9 +132,7 @@ TERM *buildfalseterm(int level)
 
 /* The following function creates the graph representation of */
 /* a numerical constant */
-TERM
-	*
-	buildintterm(int level, long int value)
+TERM *buildintterm(int level, long int value)
 {
 	TERM *t; /* pointer to the term to be created */
 
@@ -185,7 +183,8 @@ TERM *buildplambdaterm(
 {
 	TERM *t; /* pointer to the new term to be created */
 	VARLIST *vp;
-	FORM *newf1, newf2; /* pointers to the new forms to be created */
+	FORM *newf1;
+	FORM *newf2;		/* pointers to the new forms to be created */
 	VARENTRY *boundvar; /* pointer to the entry for the bound variable */
 	FORM *varform;		/* pointer to the bound variable form */
 	bool boundp;

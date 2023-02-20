@@ -37,8 +37,14 @@ extern TERM *buildappterm(
 extern TERM *buildcarterm();
 extern TERM *buildcdrterm();
 extern TERM *buildfalseterm(int level);
-extern TERM *buildifelseterm();
-extern TERM *buildintterm(int level, long int value);
+
+TERM *buildifelseterm(
+    int level,
+    TERM *arg1,
+    TERM *arg2,
+    TERM *arg3);
+TERM *buildintterm(int level, long int value);
+
 extern TERM *buildletinterm();
 extern TERM *buildlist();
 extern TERM *buildlist1();
@@ -87,7 +93,7 @@ extern void reduce_term();
 extern void reset_garbage();
 extern void save();
 extern void search_bucket();
-extern void show_garb_stat();
+void show_garb_stat(bool seetime);
 extern void signal_error();
 extern void user();
 
