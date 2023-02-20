@@ -1091,12 +1091,10 @@ VARENTRY *listvar;
 
 /* the following function remove an identifier form a list */
 /* of variables */
-static VARENTRY
-	*
-	remv(id, listvar)
-STBUCKET *id;
-/* pointer to the identifier to be removed  */
-VARENTRY *listvar;
+static VARENTRY *remv(
+	STBUCKET *id,
+	/* pointer to the identifier to be removed  */
+	VARENTRY *listvar)
 /* pointer to the variable list to be scanned */
 {
 	VARENTRY *temp;
@@ -1117,11 +1115,9 @@ VARENTRY *listvar;
 
 /* the following functions does the set substraction of two variable lists */
 /* it runs in quadratic time, but who cares? */
-static VARENTRY
-	*
-	remvp(vl, listvar)
-VARLIST *vl;
-VARENTRY *listvar; /* pointer to the variable list to be scanned */
+static VARENTRY *remvp(
+	VARLIST *vl,
+	VARENTRY *listvar) /* pointer to the variable list to be scanned */
 {
 	VARLIST *v;
 	for (v = vl; v; v = v->next)
@@ -1131,8 +1127,8 @@ VARENTRY *listvar; /* pointer to the variable list to be scanned */
 
 /* The following function copies all the graph of the global */
 /* definition.	*/
-static void closeglobalvars(listvar)
-	VARENTRY *listvar;
+static void closeglobalvars(
+	VARENTRY *listvar)
 /* pointer to the variable list to be scanned */
 {
 	FORM *formvar,
@@ -1163,10 +1159,10 @@ static void closeglobalvars(listvar)
 /* The following function tries to merge two forms into a single one. */
 /* If failing doing so, connects them normally        		      */
 
-static void intelligent_connect(f1, port, f2)
-	FORM *f1;
-int port;
-FORM *f2;
+static void intelligent_connect(
+	FORM *f1,
+	int port,
+	FORM *f2)
 {
 	int dep;
 	FORM *new;
