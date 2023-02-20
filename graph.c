@@ -436,11 +436,9 @@ TERM *buildorterm(
 
 /* The following function creates the graph representation of */
 /* a boolean not-expression */
-TERM
-	*
-	buildnotterm(
-		int level,
-		TERM *arg)
+TERM *buildnotterm(
+	int level,
+	TERM *arg)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -459,12 +457,11 @@ TERM
 
 /* The following function creates the graph representation of */
 /* a mat-expression */
-TERM
-	*
-	buildmatterm(level, arg1, arg2, op)
-int level, op;
-TERM *arg1,
-	*arg2;
+TERM *buildmatterm(
+	int level,
+	TERM *arg1,
+	TERM *arg2,
+	int op)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -534,11 +531,9 @@ TERM *arg1,
 
 /* The following function creates the graph representation of */
 /* a unary minus-expression */
-TERM
-	*
-	buildminusterm(level, arg1)
-int level;
-TERM *arg1;
+TERM *buildminusterm(
+	int level,
+	TERM *arg1)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -563,12 +558,11 @@ TERM *arg1;
 
 /* The following function creates the graph representation of */
 /* a relop-expression */
-TERM
-	*
-	buildrelopterm(level, arg1, arg2, relop)
-int level, relop;
-TERM *arg1,
-	*arg2;
+TERM *buildrelopterm(
+	int level,
+	TERM *arg1,
+	TERM *arg2,
+	int relop)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -647,10 +641,7 @@ TERM *arg1,
 	return (t);
 }
 
-TERM
-	*
-	buildnillist(level)
-int level;
+TERM *buildnillist(int level)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -659,12 +650,10 @@ int level;
 	return (t);
 }
 
-TERM
-	*
-	buildlist(level, arg1, arg2)
-int level;
-TERM *arg1,
-	*arg2;
+TERM *buildlist(
+	int level,
+	TERM *arg1,
+	TERM *arg2)
 {
 	TERM *t;	 /* pointer to the term to be created */
 	FORM *newf1; /* pointer to the new form to be created */
