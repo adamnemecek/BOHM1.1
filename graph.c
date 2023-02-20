@@ -686,12 +686,10 @@ TERM *buildlist(
 	return (t);
 }
 
-TERM
-	*
-	buildlist1(level, arg1, arg2)
-int level;
-TERM *arg1,
-	*arg2;
+TERM *buildlist1(
+	int level,
+	TERM *arg1,
+	TERM *arg2)
 {
 	TERM *t;	 /* pointer to the term to be created */
 	FORM *newf1; /* pointer to the new form to be created */
@@ -724,11 +722,9 @@ TERM *arg1,
 	return (t);
 }
 
-TERM
-	*
-	buildcarterm(level, arg)
-int level;
-TERM *arg;
+TERM *buildcarterm(
+	int level,
+	TERM *arg)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -745,11 +741,9 @@ TERM *arg;
 	return (t);
 }
 
-TERM
-	*
-	buildcdrterm(level, arg)
-int level;
-TERM *arg;
+TERM *buildcdrterm(
+	int level,
+	TERM *arg)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -766,11 +760,9 @@ TERM *arg;
 	return (t);
 }
 
-TERM
-	*
-	buildtestnil(level, arg)
-int level;
-TERM *arg;
+TERM *buildtestnil(
+	int level,
+	TERM *arg)
 {
 	TERM *t;
 	/* pointer to the term to be created */
@@ -788,11 +780,9 @@ TERM *arg;
 }
 
 /* the following function adds a root node to a term */
-FORM
-	*
-	closeterm(level, t)
-int level;
-TERM *t;
+FORM *closeterm(
+	int level,
+	TERM *t)
 {
 	FORM *newroot;
 	if (t != NULL)
@@ -812,13 +802,13 @@ TERM *t;
 
 /* the following function allocate a new graphical form */
 /* and initialize the name and index fields */
-void allocate_form(form, name, index)
-	FORM **form;
-/* reference to the pointer of the form */
-/* to be created */
-int name,
+void allocate_form(
+	FORM **form,
+	/* reference to the pointer of the form */
+	/* to be created */
+	int name,
 	/* name of the form */
-	index;
+	int index)
 /* index of the form */
 {
 	FORM *dep;
@@ -854,8 +844,8 @@ int name,
 
 /* the following function adds a graphical form to deallocate */
 /* in a list of free forms (i.e a free-list of forms)         */
-void myfree(form)
-	FORM *form;
+void myfree(
+	FORM *form)
 /* pointer to the form to deallocate      */
 {
 	form->prev->next = form->next;
@@ -870,11 +860,11 @@ void myfree(form)
 
 /* the following function connects together the port portf1 of */
 /* form1 to the port portf2 of form2 */
-void connect(form1, portf1, form2, portf2)
-	FORM *form1;
-int portf1;
-FORM *form2;
-int portf2;
+void connect(
+	FORM *form1,
+	int portf1,
+	FORM *form2,
+	int portf2)
 {
 	form1->nport[portf1] = portf2;
 	form1->nform[portf1] = form2;
@@ -885,11 +875,11 @@ int portf2;
 /* the following function connects the port portf1 of form1 to	*/
 /* the port portf2 of form2 and vice versa if the form2 is not */
 /* a NIL, INT, True or False form.				*/
-void connect1(form1, portf1, form2, portf2)
-	FORM *form1;
-int portf1;
-FORM *form2;
-int portf2;
+void connect1(
+	FORM *form1,
+	int portf1,
+	FORM *form2,
+	int portf2)
 {
 	form1->nport[portf1] = portf2;
 	form1->nform[portf1] = form2;
@@ -902,11 +892,11 @@ int portf2;
 
 /* the following function connects only the port portf1 of 	*/
 /* form1 to the port portf2 of form2, because form2 is a INT	*/
-void int_connect(form1, portf1, form2, portf2)
+void int_connect(
 	FORM *form1,
-	*form2;
-int portf1,
-	portf2;
+	int portf1,
+	FORM *form2,
+	int portf2)
 {
 	form1->nport[portf1] = portf2;
 	form1->nform[portf1] = form2;
@@ -915,10 +905,10 @@ int portf1,
 /* the following function connects only the port portf1 of 	*/
 /* form1 to the port portf2 of form2, because form2 is a INT,	*/
 /* NIL, True or False.						*/
-void bool_connect(form1, portf1, portf2)
-	FORM *form1;
-int portf1;
-int portf2;
+void bool_connect(
+	FORM *form1,
+	int portf1,
+	int portf2)
 {
 	form1->nport[portf1] = portf2;
 }
@@ -928,15 +918,15 @@ int portf2;
 /****************************************************************/
 
 /* the following function allocate a new variable entry */
-static void allocate_var(newvar, id, form, nextvar)
-	VARENTRY **newvar;
-/* reference to the pointer of the */
-/* free variable entry to be created */
-STBUCKET *id;
-/* identifier of the variable */
-FORM *form;
-/* graphical form for the variable */
-VARENTRY *nextvar;
+static void allocate_var(
+	VARENTRY **newvar,
+	/* reference to the pointer of the */
+	/* free variable entry to be created */
+	STBUCKET *id,
+	/* identifier of the variable */
+	FORM *form,
+	/* graphical form for the variable */
+	VARENTRY *nextvar)
 /* pointer to the next free variable */
 {
 	*newvar = (VARENTRY *)malloc_da(sizeof(VARENTRY));
@@ -946,15 +936,15 @@ VARENTRY *nextvar;
 }
 
 /* the following function allocate a new term entry */
-static void allocate_term(term, rootform, rootport, freevars)
-	TERM **term;
-/* reference to the pointer of the */
-/* term entry to be created */
-FORM *rootform;
-/* pointer to the root form of the term */
-int rootport;
-/* root port of the term */
-VARENTRY *freevars;
+static void allocate_term(
+	TERM **term,
+	/* reference to the pointer of the */
+	/* term entry to be created */
+	FORM *rootform,
+	/* pointer to the root form of the term */
+	int rootport,
+	/* root port of the term */
+	VARENTRY *freevars)
 /* pointer to the free variables entries */
 /* of the term */
 {
@@ -965,11 +955,7 @@ VARENTRY *freevars;
 }
 
 /* the following function build a box around a term  */
-static TERM
-	*
-	makebox(level, arg)
-int level;
-TERM *arg;
+static TERM *makebox(int level, TERM *arg)
 {
 	arg->vars = addbrackets(level, arg->vars);
 	return (arg);
