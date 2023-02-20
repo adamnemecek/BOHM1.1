@@ -977,55 +977,52 @@ TERM *arg;
 
 /* the following function add a sequence of square brackets of */
 /* given index at the free variables in listvar */
-static VARENTRY
-	*
-	addbrackets(index, listvar)
-int index;
-VARENTRY *listvar;
+static VARENTRY *addbrackets(
+	int index,
+	VARENTRY *listvar)
 {
 	if (listvar == NULL)
-		return (NULL);
+	{
+		return NULL;
+	}
+	VARENTRY *res;
+	/* resulting variable entry list  */
+	FORM *variab;
+	FORM *bracket;
+	/* new form to be created */
+
+	variab = listvar->var;
+	if (variab->name != CONS1)
+	{
+		switch (variab->name)
+		{
+		case TRIANGLE:
+			variab->index = index;
+			variab->nlevel[1] = variab->nlevel[1] + 1;
+			break;
+		case CDR1:
+		case CAR1:
+		case TESTNIL1:
+		case FAN:
+			variab->index--;
+			variab->nlevel[1] = variab->nlevel[1] + 1;
+			variab->nlevel[2] = variab->nlevel[2] + 1;
+			break;
+		};
+		listvar->next = addbrackets(index, listvar->next);
+		return (listvar);
+	}
 	else
 	{
-		VARENTRY *res;
-		/* resulting variable entry list  */
-		FORM *variab;
-		FORM *bracket;
-		/* new form to be created */
 
-		variab = listvar->var;
-		if (variab->name != CONS1)
-		{
-			switch (variab->name)
-			{
-			case TRIANGLE:
-				variab->index = index;
-				variab->nlevel[1] = variab->nlevel[1] + 1;
-				break;
-			case CDR1:
-			case CAR1:
-			case TESTNIL1:
-			case FAN:
-				variab->index--;
-				variab->nlevel[1] = variab->nlevel[1] + 1;
-				variab->nlevel[2] = variab->nlevel[2] + 1;
-				break;
-			};
-			listvar->next = addbrackets(index, listvar->next);
-			return (listvar);
-		}
-		else
-		{
-
-			allocate_form(&bracket, TRIANGLE, index);
-			bracket->nlevel[1] = 1;
-			connect(bracket, 1, variab, 0);
-			allocate_var(&res,
-						 listvar->name,
-						 bracket,
-						 addbrackets(index, listvar->next));
-			return (res);
-		}
+		allocate_form(&bracket, TRIANGLE, index);
+		bracket->nlevel[1] = 1;
+		connect(bracket, 1, variab, 0);
+		allocate_var(&res,
+					 listvar->name,
+					 bracket,
+					 addbrackets(index, listvar->next));
+		return (res);
 	}
 }
 
@@ -1033,40 +1030,40 @@ VARENTRY *listvar;
 /* two terms, by adding suitable FANS.  		*/
 static VARENTRY *share(
 	int index,
+	/* pointers to the lists of variables to be shared */
 	VARENTRY *l1,
 	VARENTRY *l2)
-/* pointers to the lists of variables to be shared */
+
 {
 	if (l1 == NULL)
+	{
 		return l2;
+	}
+	VARENTRY *res;
+	FORM *fan;
+	VARENTRY *var;
+
+	var = lookfor(l1->name, l2);
+	if (var == NULL)
+	{
+		res = l1;
+		res->next = share(index, l1->next, l2);
+		return res;
+	}
 	else
 	{
-		VARENTRY *res;
-		FORM *fan;
-		VARENTRY *var;
+		allocate_form(&fan, FAN, index);
+		fan->nlevel[1] = 0;
+		fan->nlevel[2] = 0;
 
-		var = lookfor(l1->name, l2);
-		if (var == NULL)
-		{
-			res = l1;
-			res->next = share(index, l1->next, l2);
-			return res;
-		}
-		else
-		{
-			allocate_form(&fan, FAN, index);
-			fan->nlevel[1] = 0;
-			fan->nlevel[2] = 0;
+		intelligent_connect(fan, 1, l1->var);
+		intelligent_connect(fan, 2, var->var);
 
-			intelligent_connect(fan, 1, l1->var);
-			intelligent_connect(fan, 2, var->var);
-
-			res = l1;
-			res->name = l1->name;
-			res->var = fan;
-			res->next = share(index, l1->next, remv(l1->name, l2));
-			return res;
-		}
+		res = l1;
+		res->name = l1->name;
+		res->var = fan;
+		res->next = share(index, l1->next, remv(l1->name, l2));
+		return res;
 	}
 }
 
