@@ -1,5 +1,4 @@
-#ifndef _STRUCT_H
-#define _STRUCT_H
+#pragma once
 
 /* symbol table bucket type */
 typedef struct st_bucket
@@ -155,5 +154,3 @@ typedef struct elem
 	int num;
 	struct elem *next;
 } ELEM;
-
-#endif

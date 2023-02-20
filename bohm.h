@@ -1,5 +1,4 @@
-#ifndef _BOHM_H
-#define _BOHM_H
+#pragma once
 
 #include "form.h"
 #include "struct.h"
@@ -96,5 +95,3 @@ extern void search_bucket();
 void show_garb_stat(bool seetime);
 extern void signal_error();
 extern void user();
-
-#endif
