@@ -1368,11 +1368,11 @@ FORM *f2;
 
 /* The following function checks whether it's possible to apply      */
 /* function intelligent_connect. Otherwise applies a normal connect. */
-static void inspect_connect(f1, p1, f2, p2)
-	FORM *f1;
-int p1;
-FORM *f2;
-int p2;
+static void inspect_connect(
+	FORM *f1,
+	int p1,
+	FORM *f2,
+	int p2)
 {
 	if (p2 == 0)
 		intelligent_connect(f1, p1, f2);
@@ -1380,9 +1380,9 @@ int p2;
 		connect1(f1, p1, f2, p2);
 }
 
-static bool membervarlist(e, l)
-	BINDINGID *e;
-VARLIST *l;
+static bool membervarlist(
+	BINDINGID *e,
+	VARLIST *l)
 {
 	while (l)
 		if (e->id == l->id->id)
@@ -1392,8 +1392,8 @@ VARLIST *l;
 	return false;
 }
 
-VARLIST *mergevarlist(l1, l2)
-VARLIST *l1, *l2;
+VARLIST *mergevarlist(
+	VARLIST *l1, VARLIST *l2)
 {
 	VARLIST *p;
 	if (l1)
@@ -1416,9 +1416,9 @@ VARLIST *l1, *l2;
 		return l2;
 }
 
-VARLIST *makevarlist(e, t)
-STBUCKET *e;
-TERM *t;
+VARLIST *makevarlist(
+	STBUCKET *e,
+	TERM *t)
 {
 	BINDINGID *bid;
 	VARLIST *vl;
@@ -1431,8 +1431,8 @@ TERM *t;
 	return vl;
 }
 
-TERM *buildvoidterm(level)
-int level;
+TERM *buildvoidterm(int level)
+
 {
 	FORM *newf;
 	TERM *t;
@@ -1442,8 +1442,8 @@ int level;
 	return t;
 }
 
-void free_pattern(p)
-	PATTERN *p;
+void free_pattern(
+	PATTERN *p)
 {
 	VARLIST *vl, *vln;
 	for (vl = p->var_list; vl; vl = vln)
