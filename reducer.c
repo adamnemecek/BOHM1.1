@@ -105,8 +105,8 @@ int counter;
 void reduce_term(
 	FORM *root)
 {
-	FORM *f1,
-		*f2;
+	FORM *f1;
+	FORM *f2;
 	int ans;
 	struct tms time;
 	clock_t usr_time;
@@ -141,60 +141,65 @@ void reduce_term(
 			{
 				reduce_redex(f1, f2);
 				if (f2->index > max_index)
+				{
 					max_index = f2->index;
+				}
 			}
 			else
 			{
 				reduce_redex(f2, f1);
 				if (f1->index > max_index)
+				{
 					max_index = f1->index;
+				}
 			}
 		}
 		else
+		{
 			reduce_form(f1);
+		}
 		counter = counter + 1;
 		f1 = lo_redex(pop());
 	}
-	if (!type_error)
-	{
-		times(&time);
-		usr_time = time.tms_utime - usr_time;
-		sys_time = time.tms_stime - sys_time;
-		rdbk(root);
-		if (seetime)
-		{
-			printf("*****************************************************\n");
-			printf("Reduction done in %.2f:user    ", ((double)usr_time / 60));
-			printf("%.2f:system seconds\n", ((double)sys_time / 60));
-			printf("*****************************************************\n");
-		}
-		if (seenumber)
-		{
-			printf("*****************************************************\n");
-			printf("Total number of interactions: %u\n", counter);
-			printf("Total number of APP-LAMBDA redexes: %u\n", redexes);
-			printf("Proper Interactions:%d\n", eq);
-			printf("FAN-Interactions:%d\n", fan_int);
-			printf("Optimization-Rules:%d\n", optim);
-			printf("Unsafe-Rules:%d\n", unsafe);
-			printf("Max index:%d\n", max_index);
-			printf("*****************************************************\n");
-		}
-		if ((option != 3) && (seegarb))
-			show_garb_stat(seetime);
-		if (seenode)
-		{
-			printf("Max. number of nodes seen up to this time %u\n", max_nodes);
-			printf("Final number of nodes %u\n", num_nodes);
-			printf("*****************************************************\n");
-		}
-	}
-	else
+	if (type_error)
 	{
 		printf("--->   bad definition, sorry . . .\n");
 		ans = getchar();
 		if (ans == 'i')
 			inspect_driver(root);
+		return;
+	}
+
+	times(&time);
+	usr_time = time.tms_utime - usr_time;
+	sys_time = time.tms_stime - sys_time;
+	rdbk(root);
+	if (seetime)
+	{
+		printf("*****************************************************\n");
+		printf("Reduction done in %.2f:user    ", ((double)usr_time / 60));
+		printf("%.2f:system seconds\n", ((double)sys_time / 60));
+		printf("*****************************************************\n");
+	}
+	if (seenumber)
+	{
+		printf("*****************************************************\n");
+		printf("Total number of interactions: %u\n", counter);
+		printf("Total number of APP-LAMBDA redexes: %u\n", redexes);
+		printf("Proper Interactions:%d\n", eq);
+		printf("FAN-Interactions:%d\n", fan_int);
+		printf("Optimization-Rules:%d\n", optim);
+		printf("Unsafe-Rules:%d\n", unsafe);
+		printf("Max index:%d\n", max_index);
+		printf("*****************************************************\n");
+	}
+	if ((option != 3) && (seegarb))
+		show_garb_stat(seetime);
+	if (seenode)
+	{
+		printf("Max. number of nodes seen up to this time %u\n", max_nodes);
+		printf("Final number of nodes %u\n", num_nodes);
+		printf("*****************************************************\n");
 	}
 }
 

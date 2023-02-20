@@ -3,37 +3,42 @@
 /* symbol table bucket type */
 typedef struct st_bucket
 {
-	char *id;
 	/* identifier */
-	int token;
+	char *id;
+
 	/* token associated with */
 	/* the identifier (it can */
 	/* be either ID or a keyword */
 	/* token) */
-	struct binding_entry *curr_binding;
+	int token;
+
 	/* pointer to the current */
 	/* binding entry for the */
 	/* identifier */
-	struct st_bucket *next_st_bucket;
+	struct binding_entry *curr_binding;
+
 	/* pointer to the bucket */
 	/* for the next identifier */
 	/* hashing in the same */
 	/* linked list of buckets */
+	struct st_bucket *next_st_bucket;
 } STBUCKET;
 
 /* local environment entry descriptor type */
 typedef struct local_env_entry
 {
-	int nesting_depth;
 	/* nesting depth associated */
 	/* with the local environment */
-	struct binding_entry *last_local_binding;
+	int nesting_depth;
+
 	/* pointer to the entry for */
 	/* the last binding enforced in */
 	/* this environment */
-	struct local_env_entry *prev_local_env;
+	struct binding_entry *last_local_binding;
+
 	/* pointer to the entry for the */
 	/* previous local environment */
+	struct local_env_entry *prev_local_env;
 } LOCALENVENTRY;
 
 /* binding entry descriptor type */

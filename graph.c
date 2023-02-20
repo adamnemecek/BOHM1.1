@@ -932,16 +932,16 @@ static void allocate_var(
 
 /* the following function allocate a new term entry */
 static void allocate_term(
-	TERM **term,
 	/* reference to the pointer of the */
 	/* term entry to be created */
-	FORM *rootform,
+	TERM **term,
 	/* pointer to the root form of the term */
-	int rootport,
+	FORM *rootform,
 	/* root port of the term */
+	int rootport,
+	/* pointer to the free variables entries */
+	/* of the term */
 	VARENTRY *freevars)
-/* pointer to the free variables entries */
-/* of the term */
 {
 	*term = (TERM *)malloc_da(sizeof(TERM));
 	(*term)->rootf = rootform;
