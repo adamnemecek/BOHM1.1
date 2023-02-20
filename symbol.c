@@ -183,15 +183,14 @@ static void to_lower_s(char *s)
 void init_symbol_table()
 {
 	STBUCKET *st;
-	int i;
 
 	/* initialize the dictionary */
-	for (i = 0; i < DICTSIZE; i++)
+	for (int i = 0; i < DICTSIZE; i++)
 		dictionary[i] = NULL;
 
 	/* insert P keywords into the appropriate bucket lists */
 
-	for (i = 0; i < KEYWORDNUM; i++)
+	for (int i = 0; i < KEYWORDNUM; i++)
 	{
 		search_bucket(&st,
 					  keywords[i]);
@@ -212,12 +211,13 @@ void init_symbol_table()
 /* given identifier. The bucket associated with the given identifier */
 /* becomes the first one in its list. */
 
-void search_bucket(st, id)
-	STBUCKET **st;
-/* pointer to the bucket containing */
-/* the identifier */
-char *id;
-/* identifier */
+void search_bucket(
+	/* pointer to the bucket containing */
+	/* the identifier */
+
+	STBUCKET **st,
+	/* identifier */
+	char *id)
 {
 	int dict_index;
 	/* value returned by the */
@@ -293,15 +293,16 @@ void pop_local_env()
 }
 
 /* The following function creates entries for a variable binding */
-void create_variable_binding(st, rootform)
-	STBUCKET *st;
-/* pointer to the bucket for the */
-/* identifier which is to be bound */
-/* to a procedure */
-FORM *rootform;
-/* pointer to the rootform of the */
-/* term associated with the identifier */
-/* (for global declarations only) */
+void create_variable_binding(
+	/* pointer to the bucket for the */
+	/* identifier which is to be bound */
+	/* to a procedure */
+	STBUCKET *st,
+	/* pointer to the rootform of the */
+	/* term associated with the identifier */
+	/* (for global declarations only) */
+
+	FORM *rootform)
 {
 	BINDINGENTRY *b;
 
@@ -319,12 +320,14 @@ FORM *rootform;
 /****************************************************************/
 
 /* The following function allocates a bucket for an identifier. */
-static void allocate_bucket(st, id)
-	STBUCKET **st;
-/* pointer to the bucket to be */
-/* allocated */
-char *id;
-/* identifier */
+static void allocate_bucket(
+	/* pointer to the bucket to be */
+	/* allocated */
+	STBUCKET **st,
+
+	/* identifier */
+	char *id)
+
 {
 	*st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
 	(*st)->id = strdup_da(id);
@@ -335,24 +338,23 @@ char *id;
 
 /* The following function moves a bucket to the head of the */
 /* list in which it lies. */
-static void move_bucket(st, dict_index)
-	STBUCKET *st;
-/* pointer to the bucket to */
-/* be moved */
-int dict_index;
-/* index corresponding to */
-/* the list in which the */
-/* bucket lies */
+static void move_bucket(
+	/* pointer to the bucket to */
+	/* be moved */
+	STBUCKET *st,
+	/* index corresponding to */
+	/* the list in which the */
+	/* bucket lies */
+	int dict_index)
 {
 	st->next_st_bucket = dictionary[dict_index];
 	dictionary[dict_index] = st;
 }
 
 /* The following function implements Weinberger's hash function. */
-static int
-hash_pjw(id)
-char *id;
-/* identifier to be hashed */
+static int hash_pjw(
+	/* identifier to be hashed */
+	char *id)
 {
 	unsigned h,
 		g;
