@@ -1,9 +1,9 @@
 /******************************************************************/
 /* This module implements the destroyer operator, that is to be	  */
-/* applied  at the end of a term. 				  */	
+/* applied  at the end of a term. 				  */
 /* If the last term is a global defination the graph is stored,   */
 /* otherwise each node is freed. In order to do this, each node   */
-/* is kept in a bi-linked list that is provided with two access   */   
+/* is kept in a bi-linked list that is provided with two access   */
 /* points: 							  */
 /* - "headfull": pointer to the global definition's last element  */
 /* - "headfree": pointer to the first idle node			  */
@@ -44,8 +44,8 @@ FORM *headfree;
 /* 3. Declaration of names strictly local to the module.	*/
 /****************************************************************/
 
-FORM 		*headfull;
-unsigned        start_nodes;
+FORM *headfull;
+unsigned start_nodes;
 
 /****************************************************************/
 /* 4. Declaration of functions strictly local to the module.	*/
@@ -60,13 +60,13 @@ unsigned        start_nodes;
 /* linking them together.                               */
 void init_destroy()
 {
-  headfull = (FORM *) malloc_da(sizeof(FORM));
-  headfree = (FORM *) malloc_da(sizeof(FORM));
-  headfull->next=headfree;
-  headfull->prev=NULL;
-  headfree->next=NULL;
-  headfree->prev=headfull;
-  start_nodes=0;
+  headfull = (FORM *)malloc_da(sizeof(FORM));
+  headfree = (FORM *)malloc_da(sizeof(FORM));
+  headfull->next = headfree;
+  headfull->prev = NULL;
+  headfree->next = NULL;
+  headfree->prev = headfull;
+  start_nodes = 0;
 }
 
 /* The following function eliminates the preceding 	*/
@@ -75,12 +75,13 @@ void init_destroy()
 /* for any furure usage					*/
 void destroy()
 {
-  if(headfree!=headfull->next){
-    num_nodes=start_nodes;
-    headfree=headfull->next;
+  if (headfree != headfull->next)
+  {
+    num_nodes = start_nodes;
+    headfree = headfull->next;
   }
-  start_nodes=num_nodes;
-  del_head->nform[1]=NULL;
+  start_nodes = num_nodes;
+  del_head->nform[1] = NULL;
 }
 
 /* The following function makes a graph associated to a	*/
@@ -88,6 +89,5 @@ void destroy()
 /* the node preceding headfree.				*/
 void no_destroy()
 {
-  headfull=headfree->prev;
+  headfull = headfree->prev;
 }
-

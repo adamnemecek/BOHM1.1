@@ -7,7 +7,6 @@
 /*		  to allocate, it signals this fact.		*/
 /****************************************************************/
 
-
 /****************************************************************/
 /* 1. Inclusion of header files.				*/
 /****************************************************************/
@@ -22,29 +21,25 @@
 /* 2. Inclusion of declarations that are being imported.        */
 /****************************************************************/
 
-
 /****************************************************************/
 /* 3. Definitions of variables to be exported.			*/
 /****************************************************************/
-
 
 /****************************************************************/
 /* 4. Definitions strictly local to the module.                 */
 /****************************************************************/
 
 /* constants concerning crash handling */
-#define COMPILERCRASH			2
-#define NOTENOUGHMEMORY			0
+#define COMPILERCRASH 2
+#define NOTENOUGHMEMORY 0
 
 /* The following function signals errors causing abort. */
-static void signal_crash(crash_type)
-	int crash_type; /* crash type */
+static void signal_crash(crash_type) int crash_type; /* crash type */
 {
 	/* crash messages */
 	static char *crash_msgs[] = {
 		"not enough memory",
-		"unable to open this file"
-	};
+		"unable to open this file"};
 
 	fprintf(stderr, "%s\n", crash_msgs[crash_type]);
 	exit(COMPILERCRASH);
@@ -54,15 +49,15 @@ static void signal_crash(crash_type)
 /* 5. Definitions of functions to be exported.			*/
 /****************************************************************/
 
- /* The following function implements a control interface for the */
- /* library function malloc(). */
+/* The following function implements a control interface for the */
+/* library function malloc(). */
 char *
 malloc_da(size)
-	unsigned	size;
-					/* size of the object to be */
-					/* allocated */
+unsigned size;
+/* size of the object to be */
+/* allocated */
 {
-	char *		p;
+	char *p;
 
 	p = (char *)malloc(size);
 	if (!p)
@@ -71,14 +66,14 @@ malloc_da(size)
 	return p;
 }
 
- /* The following function implements a control interface for the */
- /* library function strdup(). */
+/* The following function implements a control interface for the */
+/* library function strdup(). */
 char *
 strdup_da(s)
-	char *		s;
-					/* string to be allocated */
+char *s;
+/* string to be allocated */
 {
-	char *		p;
+	char *p;
 
 	p = strdup(s);
 	if (!p)
