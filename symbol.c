@@ -214,7 +214,6 @@ void init_symbol_table()
 void search_bucket(
 	/* pointer to the bucket containing */
 	/* the identifier */
-
 	STBUCKET **st,
 	/* identifier */
 	char *id)
@@ -222,8 +221,8 @@ void search_bucket(
 	int dict_index;
 	/* value returned by the */
 	/* hash function */
-	STBUCKET *prev,
-		*curr;
+	STBUCKET *prev;
+	STBUCKET *curr;
 
 	/* turn the identifier into lower case */
 	to_lower_s(id);
