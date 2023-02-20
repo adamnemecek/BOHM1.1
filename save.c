@@ -63,36 +63,38 @@ void save(
 {
 	ELEM *p, *dep;
 
-	if (root != NULL)
-	{
-		save_file = fopen(name, "w");
-		if (save_file == NULL)
-			exit(0);
-		head = tail = NULL;
-		max = 1;
-		stampa(root, 0, present(root));
-		if (root->nport[0] >= 0)
-			save_aux(root->nform[0], root->nport[0]);
-		p = head;
-		fprintf(save_file, "\n\n\nI N D E X :\n\n");
-		while (p != NULL)
-		{
-			eindex(p);
-			dep = p;
-			p = p->next;
-			free(dep);
-		}
-		fclose(save_file);
-		if (id == NULL)
-			printf("\nSaved last input term in the file %s.\n", name);
-		else
-			printf("\nSaved %s term in the file %s.\n", id, name);
-	}
-	else
+	if (root == NULL)
 	{
 		printf("******************************************\n");
 		printf("* No terms inserted yet . . .            *\n");
 		printf("******************************************\n");
+		return;
+	}
+	save_file = fopen(name, "w");
+	if (save_file == NULL)
+		exit(0);
+	head = tail = NULL;
+	max = 1;
+	stampa(root, 0, present(root));
+	if (root->nport[0] >= 0)
+		save_aux(root->nform[0], root->nport[0]);
+	p = head;
+	fprintf(save_file, "\n\n\nI N D E X :\n\n");
+	while (p != NULL)
+	{
+		eindex(p);
+		dep = p;
+		p = p->next;
+		free(dep);
+	}
+	fclose(save_file);
+	if (id == NULL)
+	{
+		printf("\nSaved last input term in the file %s.\n", name);
+	}
+	else
+	{
+		printf("\nSaved %s term in the file %s.\n", id, name);
 	}
 }
 
