@@ -120,7 +120,7 @@ typedef struct term
 {
 	/* pointer to the root form */
 	/* of the term */
-	struct form *rootf;
+	struct form *root_form;
 
 	/* number of the root port */
 	/* of the term (0 for variables */
