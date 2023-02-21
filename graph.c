@@ -806,16 +806,14 @@ void allocate_form(
 	int index)
 
 {
-	FORM *dep;
-	int i;
-
 	if (headfree->next == NULL)
 	{
+		FORM *dep;
 		headfree->next = dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
 		dep->next = dep + 1;
 		dep->prev = headfree;
 		dep = dep->next;
-		for (i = 2; i < FORM_NUM; i++)
+		for (int i = 2; i < FORM_NUM; i++)
 		{
 			dep->next = dep + 1;
 			dep->prev = dep - 1;
