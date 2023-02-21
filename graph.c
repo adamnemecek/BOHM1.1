@@ -8,7 +8,7 @@
 /* During the translation, each term is described by a record   */
 /* with following fields:                                       */
 /*  - root_form : the root form of the term;                        */
-/*  - rootp : the root (positive) port of the root form;        */
+/*  - root_ports : the root (positive) port of the root form;        */
 /*  - vars:   a pointer to the list of free variables for the   */
 /*            term.                                             */
 /* Free variable of a same term are collected into a linked     */
@@ -163,14 +163,14 @@ static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 		}
 		else
 			connect(varform, 0, newf1, 2);
-		connect(newf1, 1, body->root_form, body->rootp);
+		connect(newf1, 1, body->root_form, body->root_ports);
 		allocate_term(&t, newf1, 0, remv(id, body->vars));
 	}
 	else
 	{
 		allocate_form(&newf1, LAMBDAUNB, level);
 		allocate_term(&t, newf1, 0, body->vars);
-		connect1(newf1, 1, body->root_form, body->rootp);
+		connect1(newf1, 1, body->root_form, body->root_ports);
 	}
 	free(body);
 	return t;
@@ -232,14 +232,14 @@ TERM *buildplambdaterm(
 			myfree(vp->id->form);
 		} /* for */
 		allocate_term(&t, newf1, 0, remvp(pattern->var_list, body->vars));
-		connect(newf1, 1, body->root_form, body->rootp);
+		connect(newf1, 1, body->root_form, body->root_ports);
 	}
 	else
 	{
 		/* apparent memory leak, but there's the destroyer */
 		allocate_form(&newf1, LAMBDAUNB, level);
 		allocate_term(&t, newf1, 0, body->vars);
-		connect1(newf1, 1, body->root_form, body->rootp);
+		connect1(newf1, 1, body->root_form, body->root_ports);
 	}
 	free(body);
 	return t;
@@ -282,13 +282,13 @@ TERM *build_mu_term(
 			intelligent_connect(newf1, 2, varform);
 		allocate_term(&temp, newf1, 1, remv(id, body->vars));
 		t = makebox(level, temp);
-		connect(newf1, 0, body->root_form, body->rootp);
+		connect(newf1, 0, body->root_form, body->root_ports);
 	}
 	else
 	{
 		allocate_form(&newf1, TRIANGLE, level);
 		newf1->nlevel[1] = -1;
-		connect1(newf1, 0, body->root_form, body->rootp);
+		connect1(newf1, 0, body->root_form, body->root_ports);
 		allocate_term(&temp, newf1, 1, body->vars);
 		t = makebox(level, temp);
 	}
@@ -317,8 +317,8 @@ TERM *buildappterm(
 
 	allocate_form(&newf, APP, level);
 
-	connect1(newf, 0, fun->root_form, fun->rootp);
-	connect1(newf, 2, temp->root_form, temp->rootp);
+	connect1(newf, 0, fun->root_form, fun->root_ports);
+	connect1(newf, 2, temp->root_form, temp->root_ports);
 	newvars = share(level, fun->vars, temp->vars);
 
 	allocate_term(&t, newf, 1, newvars);
@@ -345,10 +345,10 @@ TERM *buildifelseterm(
 	allocate_form(&newf, IFELSE, level);
 	allocate_form(&newf1, CONS, level);
 
-	connect1(newf, 0, arg1->root_form, arg1->rootp);
+	connect1(newf, 0, arg1->root_form, arg1->root_ports);
 	connect(newf, 2, newf1, 0);
-	connect1(newf1, 1, arg2->root_form, arg2->rootp);
-	connect1(newf1, 2, arg3->root_form, arg3->rootp);
+	connect1(newf1, 1, arg2->root_form, arg2->root_ports);
+	connect1(newf1, 2, arg3->root_form, arg3->root_ports);
 
 	tempvars = share(level, arg2->vars, arg3->vars);
 	newvars = share(level, tempvars, arg1->vars);
@@ -390,8 +390,8 @@ TERM *buildandterm(
 
 	allocate_form(&newf, AND, level);
 
-	connect1(newf, 0, arg1->root_form, arg1->rootp);
-	connect1(newf, 2, arg2->root_form, arg2->rootp);
+	connect1(newf, 0, arg1->root_form, arg1->root_ports);
+	connect1(newf, 2, arg2->root_form, arg2->root_ports);
 
 	newvars = share(level, arg1->vars, arg2->vars);
 
@@ -417,8 +417,8 @@ TERM *buildorterm(
 
 	allocate_form(&newf, OR, level);
 
-	connect1(newf, 0, arg1->root_form, arg1->rootp);
-	connect1(newf, 2, arg2->root_form, arg2->rootp);
+	connect1(newf, 0, arg1->root_form, arg1->root_ports);
+	connect1(newf, 2, arg2->root_form, arg2->root_ports);
 
 	newvars = share(level, arg1->vars, arg2->vars);
 
@@ -442,7 +442,7 @@ TERM *buildnotterm(
 
 	allocate_form(&newf, NOT, level);
 
-	connect1(newf, 0, arg->root_form, arg->rootp);
+	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
@@ -465,7 +465,7 @@ TERM *buildmatterm(
 	/* pointer to the new form to be created */
 
 	allocate_form(&newf, op, level);
-	if (arg1->rootp == INT)
+	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
 		switch (newf->name)
@@ -486,12 +486,12 @@ TERM *buildmatterm(
 			newf->name = MOD1;
 			break;
 		}
-		connect1(newf, 0, arg2->root_form, arg2->rootp);
+		connect1(newf, 0, arg2->root_form, arg2->root_ports);
 		allocate_term(&t, newf, 1, arg2->vars);
 	}
 	else
 	{
-		if (arg2->rootp == INT && op != DIV && op != MOD)
+		if (arg2->root_ports == INT && op != DIV && op != MOD)
 		{
 			newf->nform[2] = arg2->root_form;
 			switch (newf->name)
@@ -507,13 +507,13 @@ TERM *buildmatterm(
 				newf->name = PROD1;
 				break;
 			}
-			connect1(newf, 0, arg1->root_form, arg1->rootp);
+			connect1(newf, 0, arg1->root_form, arg1->root_ports);
 			allocate_term(&t, newf, 1, arg1->vars);
 		}
 		else
 		{
-			connect1(newf, 0, arg1->root_form, arg1->rootp);
-			connect1(newf, 2, arg2->root_form, arg2->rootp);
+			connect1(newf, 0, arg1->root_form, arg1->root_ports);
+			connect1(newf, 2, arg2->root_form, arg2->root_ports);
 			newvars = share(level, arg1->vars, arg2->vars);
 			allocate_term(&t, newf, 1, newvars);
 		}
@@ -534,7 +534,7 @@ TERM *buildminusterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	if (arg1->rootp == INT)
+	if (arg1->root_ports == INT)
 	{
 		arg1->root_form = (FORM *)(-(long int)arg1->root_form);
 		t = arg1;
@@ -543,7 +543,7 @@ TERM *buildminusterm(
 	{
 		allocate_form(&newf, SUB1, level);
 		newf->num_safe = 0;
-		connect1(newf, 0, arg1->root_form, arg1->rootp);
+		connect1(newf, 0, arg1->root_form, arg1->root_ports);
 		allocate_term(&t, newf, 1, arg1->vars);
 		free(arg1);
 	}
@@ -566,7 +566,7 @@ TERM *buildrelopterm(
 	/* pointer to the new form to be created */
 
 	allocate_form(&newf, relop, level);
-	if (arg1->rootp == INT)
+	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
 		switch (newf->name)
@@ -590,12 +590,12 @@ TERM *buildrelopterm(
 			newf->name = NOTEQ1;
 			break;
 		}
-		connect1(newf, 0, arg2->root_form, arg2->rootp);
+		connect1(newf, 0, arg2->root_form, arg2->root_ports);
 		allocate_term(&t, newf, 1, arg2->vars);
 	}
 	else
 	{
-		if (arg2->rootp == INT)
+		if (arg2->root_ports == INT)
 		{
 			newf->nform[2] = arg2->root_form;
 			switch (newf->name)
@@ -619,13 +619,13 @@ TERM *buildrelopterm(
 				newf->name = NOTEQ1;
 				break;
 			}
-			connect1(newf, 0, arg1->root_form, arg1->rootp);
+			connect1(newf, 0, arg1->root_form, arg1->root_ports);
 			allocate_term(&t, newf, 1, arg1->vars);
 		}
 		else
 		{
-			connect1(newf, 0, arg1->root_form, arg1->rootp);
-			connect1(newf, 2, arg2->root_form, arg2->rootp);
+			connect1(newf, 0, arg1->root_form, arg1->root_ports);
+			connect1(newf, 2, arg2->root_form, arg2->root_ports);
 			newvars = share(level, arg1->vars, arg2->vars);
 			allocate_term(&t, newf, 1, newvars);
 		}
@@ -658,8 +658,8 @@ TERM *buildlist(
 
 		allocate_form(&newf1, CONS, level);
 
-		connect1(newf1, 1, arg1->root_form, arg1->rootp);
-		connect1(newf1, 2, arg2->root_form, arg2->rootp);
+		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
+		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
 
 		newvars = share(level, arg1->vars, arg2->vars);
 
@@ -669,7 +669,7 @@ TERM *buildlist(
 	{
 		allocate_form(&newf1, CONS, level);
 
-		connect1(newf1, 1, arg1->root_form, arg1->rootp);
+		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
 
 		allocate_term(&t, newf1, 0, arg1->vars);
@@ -694,8 +694,8 @@ TERM *buildlist1(
 
 		allocate_form(&newf1, CONS1, level);
 
-		connect1(newf1, 1, arg1->root_form, arg1->rootp);
-		connect1(newf1, 2, arg2->root_form, arg2->rootp);
+		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
+		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
 
 		newvars = share(level, arg1->vars, arg2->vars);
 
@@ -705,7 +705,7 @@ TERM *buildlist1(
 	{
 		allocate_form(&newf1, CONS1, level);
 
-		connect1(newf1, 1, arg1->root_form, arg1->rootp);
+		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
 
 		allocate_term(&t, newf1, 0, arg1->vars);
@@ -728,7 +728,7 @@ TERM *buildcarterm(
 
 	allocate_form(&newf, CAR, level);
 
-	connect1(newf, 0, arg->root_form, arg->rootp);
+	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
@@ -747,7 +747,7 @@ TERM *buildcdrterm(
 
 	allocate_form(&newf, CDR, level);
 
-	connect1(newf, 0, arg->root_form, arg->rootp);
+	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
@@ -766,7 +766,7 @@ TERM *buildtestnil(
 
 	allocate_form(&newf, TESTNIL, level);
 
-	connect1(newf, 0, arg->root_form, arg->rootp);
+	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	allocate_term(&t, newf, 1, arg->vars);
 	free(arg);
@@ -785,7 +785,7 @@ FORM *closeterm(
 	FORM *newroot;
 	allocate_form(&newroot, ROOT, 0);
 
-	connect1(newroot, 0, t->root_form, t->rootp);
+	connect1(newroot, 0, t->root_form, t->root_ports);
 
 	if (level == 1)
 		t->vars = addbrackets(0, t->vars);
@@ -943,7 +943,7 @@ static void allocate_term(
 {
 	*term = (TERM *)malloc_da(sizeof(TERM));
 	(*term)->root_form = rootform;
-	(*term)->rootp = rootport;
+	(*term)->root_ports = rootport;
 	(*term)->vars = freevars;
 }
 

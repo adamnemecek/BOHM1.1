@@ -126,7 +126,7 @@ typedef struct term
 	/* of the term (0 for variables */
 	/* and abstractions, 1 for */
 	/* applications) */
-	char rootp;
+	char root_ports;
 
 	/* pointer to the list of free */
 	/* variables in the term */
