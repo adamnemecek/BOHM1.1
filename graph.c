@@ -452,9 +452,6 @@ TERM *buildmatterm(
 	/* pointer to the term to be created */
 	TERM *t;
 
-	/* free variables of the application */
-	VARENTRY *newvars;
-
 	/* pointer to the new form to be created */
 	FORM *newf = allocate_form(op, level);
 	if (arg1->root_ports == INT)
@@ -506,7 +503,9 @@ TERM *buildmatterm(
 		{
 			connect1(newf, 0, arg1->root_form, arg1->root_ports);
 			connect1(newf, 2, arg2->root_form, arg2->root_ports);
-			newvars = share(level, arg1->vars, arg2->vars);
+			/* free variables of the application */
+
+			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 			t = allocate_term(newf, 1, newvars);
 		}
 	}
@@ -521,10 +520,8 @@ TERM *buildminusterm(
 	int level,
 	TERM *arg1)
 {
-	TERM *t;
 	/* pointer to the term to be created */
-	FORM *newf;
-	/* pointer to the new form to be created */
+	TERM *t;
 
 	if (arg1->root_ports == INT)
 	{
@@ -533,7 +530,8 @@ TERM *buildminusterm(
 	}
 	else
 	{
-		newf = allocate_form(SUB1, level);
+		/* pointer to the new form to be created */
+		FORM *newf = allocate_form(SUB1, level);
 		newf->num_safe = 0;
 		connect1(newf, 0, arg1->root_form, arg1->root_ports);
 		t = allocate_term(newf, 1, arg1->vars);
@@ -552,9 +550,6 @@ TERM *buildrelopterm(
 {
 	/* pointer to the term to be created */
 	TERM *t;
-
-	/* free variables of the application */
-	VARENTRY *newvars;
 
 	/* pointer to the new form to be created */
 	FORM *newf = allocate_form(relop, level);
@@ -618,7 +613,8 @@ TERM *buildrelopterm(
 		{
 			connect1(newf, 0, arg1->root_form, arg1->root_ports);
 			connect1(newf, 2, arg2->root_form, arg2->root_ports);
-			newvars = share(level, arg1->vars, arg2->vars);
+			/* free variables of the application */
+			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 			t = allocate_term(newf, 1, newvars);
 		}
 	}
@@ -639,17 +635,15 @@ TERM *buildlist(
 {
 	TERM *t;	 /* pointer to the term to be created */
 	FORM *newf1; /* pointer to the new form to be created */
-	VARENTRY *newvars;
 
 	if (arg2 != NULL)
 	{
-
 		newf1 = allocate_form(CONS, level);
 
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
 
-		newvars = share(level, arg1->vars, arg2->vars);
+		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
 		t = allocate_term(newf1, 0, newvars);
 	}
@@ -675,7 +669,6 @@ TERM *buildlist1(
 {
 	TERM *t;	 /* pointer to the term to be created */
 	FORM *newf1; /* pointer to the new form to be created */
-	VARENTRY *newvars;
 
 	if (arg2 != NULL)
 	{
@@ -685,7 +678,7 @@ TERM *buildlist1(
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
 
-		newvars = share(level, arg1->vars, arg2->vars);
+		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
 		t = allocate_term(newf1, 0, newvars);
 	}
@@ -723,7 +716,6 @@ TERM *buildcdrterm(
 {
 	/* pointer to the new form to be created */
 	FORM *newf = allocate_form(CDR, level);
-
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	TERM *t = allocate_term(newf, 1, arg->vars);
@@ -735,10 +727,8 @@ TERM *buildtestnil(
 	int level,
 	TERM *arg)
 {
-
 	/* pointer to the new form to be created */
 	FORM *newf = allocate_form(TESTNIL, level);
-
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	TERM *t = allocate_term(newf, 1, arg->vars);
@@ -932,11 +922,9 @@ static VARENTRY *addbrackets(
 		return NULL;
 	}
 	/* resulting variable entry list  */
-	FORM *variab;
-	FORM *bracket;
 	/* new form to be created */
 
-	variab = listvar->var;
+	FORM *variab = listvar->var;
 	if (variab->name != CONS1)
 	{
 		switch (variab->name)
@@ -959,7 +947,7 @@ static VARENTRY *addbrackets(
 	}
 	else
 	{
-		bracket = allocate_form(TRIANGLE, index);
+		FORM *bracket = allocate_form(TRIANGLE, index);
 		bracket->nlevel[1] = 1;
 		connect(bracket, 1, variab, 0);
 		return allocate_var(listvar->name,

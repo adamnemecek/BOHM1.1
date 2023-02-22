@@ -69,9 +69,8 @@ void menu(int choice)
 
 void info(char *choices)
 {
-	bool nomoreargs;
 	int select;
-	nomoreargs = choices[0] == '\0';
+	bool nomoreargs = choices[0] == '\0';
 	if (nomoreargs)
 		select = 'x';
 	else

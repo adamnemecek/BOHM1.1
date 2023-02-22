@@ -130,12 +130,12 @@ static void garbage(
 	FORM *erase)
 {
 	bool end = false;
-	FORM *form, *nextform, *newform;
-	int port, nextport;
+	FORM *form, *newform;
+	int port;
 	int p1, p2;
 
-	nextform = erase->nform[0];
-	nextport = erase->nport[0];
+	FORM *nextform = erase->nform[0];
+	int nextport = erase->nport[0];
 	myfree(erase);
 	while (!end)
 	{
