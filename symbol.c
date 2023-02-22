@@ -127,10 +127,16 @@ static STBUCKET *dictionary[DICTSIZE];
 static int curr_nesting_depth;
 /* current nesting depth */
 
-static int hash_pjw();
-static void allocate_local_env_entry();
-static void move_bucket();
-static void allocate_bucket();
+static int hash_pjw(char *id);
+static void allocate_local_env_entry(void);
+
+static void move_bucket(
+	STBUCKET *st,
+	int dict_index);
+
+static void allocate_bucket(
+	STBUCKET **st,
+	char *id);
 
 /* keywords */
 static char *keywords[] =
@@ -369,7 +375,7 @@ static int hash_pjw(
 }
 
 /* The following function allocates a local environment entry. */
-static void allocate_local_env_entry()
+static void allocate_local_env_entry(void)
 {
 	LOCALENVENTRY *le;
 	/* pointer to the entry to */
