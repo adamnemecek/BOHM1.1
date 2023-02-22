@@ -140,7 +140,7 @@ FORM                    *lastinputterm,
 int                    app_nesting_depth;
 PATTERN                *pattmp;
 
-static bool defined();
+static bool defined(STBUCKET	*st);
 %}
 
  /***************************************************************/
@@ -701,8 +701,9 @@ term    	:	error  EXPRDELIM
 
 /* The following function checks if an identifier has been */
 /* previously declared */
-static bool defined(st)
-	STBUCKET	*st;
+static bool defined(
+	STBUCKET	*st
+)
 			      /* pointer to the bucket for the */
 			      /* identifier */
 {

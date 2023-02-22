@@ -139,12 +139,12 @@ FORM *allocate_form(
     int name,
     int index);
 
+extern void clean(void);
+
 extern void bool_connect(
     FORM *form1,
     int portf1,
     int portf2);
-
-extern void clean(void);
 
 extern void connect(
     FORM *form1,
@@ -153,6 +153,12 @@ extern void connect(
     int portf2);
 
 extern void connect1(
+    FORM *form1,
+    int portf1,
+    FORM *form2,
+    int portf2);
+
+extern void int_connect(
     FORM *form1,
     int portf1,
     FORM *form2,
@@ -168,11 +174,7 @@ extern void init_garbage(void);
 extern void init_symbol_table(void);
 extern void ins_del(FORM *d);
 extern void inspect_driver(FORM *f);
-extern void int_connect(
-    FORM *form1,
-    int portf1,
-    FORM *form2,
-    int portf2);
+
 extern void menu();
 extern void myfree(FORM *form);
 extern void no_destroy(void);
