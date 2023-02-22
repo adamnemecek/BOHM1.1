@@ -456,14 +456,14 @@ TERM *buildmatterm(
 	TERM *arg2,
 	int op)
 {
-	TERM *t;
 	/* pointer to the term to be created */
-	VARENTRY *newvars;
-	/* free variables of the application */
-	FORM *newf;
-	/* pointer to the new form to be created */
+	TERM *t;
 
-	newf = allocate_form(op, level);
+	/* free variables of the application */
+	VARENTRY *newvars;
+
+	/* pointer to the new form to be created */
+	FORM *newf = allocate_form(op, level);
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
@@ -557,14 +557,14 @@ TERM *buildrelopterm(
 	TERM *arg2,
 	int relop)
 {
-	TERM *t;
 	/* pointer to the term to be created */
-	VARENTRY *newvars;
-	/* free variables of the application */
-	FORM *newf;
-	/* pointer to the new form to be created */
+	TERM *t;
 
-	newf = allocate_form(relop, level);
+	/* free variables of the application */
+	VARENTRY *newvars;
+
+	/* pointer to the new form to be created */
+	FORM *newf = allocate_form(relop, level);
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
@@ -715,11 +715,8 @@ TERM *buildcarterm(
 	int level,
 	TERM *arg)
 {
-	FORM *newf;
 	/* pointer to the new form to be created */
-
-	newf = allocate_form(CAR, level);
-
+	FORM *newf = allocate_form(CAR, level);
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	TERM *t = allocate_term(newf, 1, arg->vars);
@@ -731,10 +728,8 @@ TERM *buildcdrterm(
 	int level,
 	TERM *arg)
 {
-	FORM *newf;
 	/* pointer to the new form to be created */
-
-	newf = allocate_form(CDR, level);
+	FORM *newf = allocate_form(CDR, level);
 
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
@@ -748,10 +743,8 @@ TERM *buildtestnil(
 	TERM *arg)
 {
 
-	FORM *newf;
 	/* pointer to the new form to be created */
-
-	newf = allocate_form(TESTNIL, level);
+	FORM *newf = allocate_form(TESTNIL, level);
 
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
