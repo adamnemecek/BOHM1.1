@@ -222,11 +222,8 @@ static void put_relation(
 	FORM *src,
 	FORM *dest)
 {
-	COPY_FORM *dep;
-	int dep1;
-
-	dep = (COPY_FORM *)malloc_da(sizeof(COPY_FORM));
-	dep1 = entry(src);
+	COPY_FORM *dep = (COPY_FORM *)malloc_da(sizeof(COPY_FORM));
+	int dep1 = entry(src);
 	dep->src = src;
 	dep->dest = dest;
 	dep->next = copy_relation[dep1];
@@ -237,8 +234,7 @@ static void put_relation(
 /* already been copied.						*/
 static FORM *is_in_relation(FORM *src)
 {
-	COPY_FORM *dep;
-	dep = copy_relation[entry(src)];
+	COPY_FORM *dep = copy_relation[entry(src)];
 	if (dep == NULL)
 		return NULL;
 	while (dep->src != src && dep->next != NULL)
@@ -252,9 +248,7 @@ static FORM *is_in_relation(FORM *src)
 /* The following function implements hash function.		*/
 static int entry(FORM *src)
 {
-	unsigned long risul;
-
-	risul = (unsigned long)src;
+	unsigned long risul = (unsigned long)src;
 	risul = risul / 8 * 13;
 	return risul % DIM_REL;
 }
@@ -263,8 +257,8 @@ static int entry(FORM *src)
 static void
 start_copy(void)
 {
-	int i;
-	for (i = 0; i < DIM_REL; i++)
+
+	for (int i = 0; i < DIM_REL; i++)
 		copy_relation[i] = NULL;
 }
 
