@@ -272,16 +272,13 @@ void push_local_env()
 /* the scope stack. */
 void pop_local_env()
 {
-	LOCALENVENTRY *le;
-	BINDINGENTRY *b;
-
-	le = curr_local_env;
+	LOCALENVENTRY *le = curr_local_env;
 
 	/* remove all the entries for bindings created in the */
 	/* local environment */
 	while (le->last_local_binding != NULL)
 	{
-		b = le->last_local_binding;
+		BINDINGENTRY *b = le->last_local_binding;
 		b->st_bucket->curr_binding = b->prev_id_binding;
 		le->last_local_binding = b->prev_local_binding;
 		free(b);
@@ -304,9 +301,7 @@ void create_variable_binding(
 
 	FORM *rootform)
 {
-	BINDINGENTRY *b;
-
-	b = (BINDINGENTRY *)malloc_da(sizeof(BINDINGENTRY));
+	BINDINGENTRY *b = (BINDINGENTRY *)malloc_da(sizeof(BINDINGENTRY));
 	b->st_bucket = st;
 	b->root = rootform;
 	b->prev_id_binding = st->curr_binding;
@@ -346,17 +341,14 @@ static void move_bucket(
 }
 
 /* The following function implements Weinberger's hash function. */
-static int hash_pjw(
-	/* identifier to be hashed */
-	char *id)
+static int hash_pjw(char *id)
 {
-	unsigned h,
-		g;
+	unsigned h;
 
 	for (h = 0; *id != '\0'; id++)
 	{
 		h = (h << HASH1) + (*id);
-		g = h & HASH2;
+		unsigned g = h & HASH2;
 		if (g)
 			h = h ^ (g >> HASH3) ^ g;
 	}
@@ -366,10 +358,9 @@ static int hash_pjw(
 /* The following function allocates a local environment entry. */
 static void allocate_local_env_entry(void)
 {
-	LOCALENVENTRY *le;
 	/* pointer to the entry to */
 	/* be allocated */
-	le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
+	LOCALENVENTRY *le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
 	le->nesting_depth = curr_nesting_depth;
 	le->last_local_binding = NULL;
 	le->prev_local_env = curr_local_env;
