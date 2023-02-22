@@ -67,7 +67,7 @@ extern TERM *buildvarterm(int level, STBUCKET *id);
 extern TERM *buildvoidterm();
 extern VARLIST *makevarlist();
 extern VARLIST *mergevarlist();
-extern void allocate_form();
+FORM *allocate_form();
 extern void bool_connect();
 extern void clean();
 extern void connect();

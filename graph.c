@@ -107,7 +107,7 @@ TERM *buildvarterm(int level, STBUCKET *id)
 	FORM *newf;		  /* pointer to the new form to be created */
 	VARENTRY *newvar; /* pointer to the new free variable entry */
 
-	allocate_form(&newf, TRIANGLE, level);
+	newf = allocate_form(TRIANGLE, level);
 	newf->nlevel[1] = -1;
 	allocate_var(&newvar, id, newf, NULL);
 	return allocate_term(newf, 1, newvar);
@@ -149,7 +149,7 @@ static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 	boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
-		allocate_form(&newf1, LAMBDA, level);
+		newf1 = allocate_form(LAMBDA, level);
 		varform = boundvar->var;
 		if ((varform->name == TRIANGLE) && (varform->nlevel[1] == 0))
 		{
@@ -165,7 +165,7 @@ static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 	}
 	else
 	{
-		allocate_form(&newf1, LAMBDAUNB, level);
+		newf1 = allocate_form(LAMBDAUNB, level);
 		t = allocate_term(newf1, 0, body->vars);
 		connect1(newf1, 1, body->root_form, body->root_ports);
 	}
@@ -195,13 +195,13 @@ TERM *buildplambdaterm(
 
 	if (boundp)
 	{
-		allocate_form(&newf1, LAMBDA, level);
+		newf1 = allocate_form(LAMBDA, level);
 		connect(pattern->term->root_form, 0, newf1, 2);
 		for (vp = pattern->var_list; vp != NULL; vp = vp->next)
 		{
 			if ((boundvar = lookfor(vp->id->id, body->vars)) == 0)
 			{
-				allocate_form(&newf2, ERASE, level);
+				newf2 = allocate_form(ERASE, level);
 				connect(newf2, 0, vp->id->form->nform[0], vp->id->form->nport[0]);
 			}
 			else
@@ -234,7 +234,7 @@ TERM *buildplambdaterm(
 	else
 	{
 		/* apparent memory leak, but there's the destroyer */
-		allocate_form(&newf1, LAMBDAUNB, level);
+		newf1 = allocate_form(LAMBDAUNB, level);
 		t = allocate_term(newf1, 0, body->vars);
 		connect1(newf1, 1, body->root_form, body->root_ports);
 	}
@@ -262,7 +262,7 @@ TERM *build_mu_term(
 	boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
-		allocate_form(&newf1, FAN, level);
+		newf1 = allocate_form(FAN, level);
 		newf1->nlevel[1] = -1;
 		newf1->nlevel[2] = 1;
 		varform = boundvar->var;
@@ -283,7 +283,7 @@ TERM *build_mu_term(
 	}
 	else
 	{
-		allocate_form(&newf1, TRIANGLE, level);
+		newf1 = allocate_form(TRIANGLE, level);
 		newf1->nlevel[1] = -1;
 		connect1(newf1, 0, body->root_form, body->root_ports);
 		temp = allocate_term(newf1, 1, body->vars);
@@ -307,7 +307,7 @@ TERM *buildappterm(
 
 	TERM *temp = makebox(level, arg);
 
-	allocate_form(&newf, APP, level);
+	newf = allocate_form(APP, level);
 
 	connect1(newf, 0, fun->root_form, fun->root_ports);
 	connect1(newf, 2, temp->root_form, temp->root_ports);
@@ -334,8 +334,8 @@ TERM *buildifelseterm(
 		*newf1;
 	/* pointers to the new forms */
 
-	allocate_form(&newf, IFELSE, level);
-	allocate_form(&newf1, CONS, level);
+	newf = allocate_form(IFELSE, level);
+	newf1 = allocate_form(CONS, level);
 
 	connect1(newf, 0, arg1->root_form, arg1->root_ports);
 	connect(newf, 2, newf1, 0);
@@ -380,7 +380,7 @@ TERM *buildandterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, AND, level);
+	newf = allocate_form(AND, level);
 
 	connect1(newf, 0, arg1->root_form, arg1->root_ports);
 	connect1(newf, 2, arg2->root_form, arg2->root_ports);
@@ -407,7 +407,7 @@ TERM *buildorterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, OR, level);
+	newf = allocate_form(OR, level);
 
 	connect1(newf, 0, arg1->root_form, arg1->root_ports);
 	connect1(newf, 2, arg2->root_form, arg2->root_ports);
@@ -432,7 +432,7 @@ TERM *buildnotterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, NOT, level);
+	newf = allocate_form(NOT, level);
 
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
@@ -456,7 +456,7 @@ TERM *buildmatterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, op, level);
+	newf = allocate_form(op, level);
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
@@ -533,7 +533,7 @@ TERM *buildminusterm(
 	}
 	else
 	{
-		allocate_form(&newf, SUB1, level);
+		newf = allocate_form(SUB1, level);
 		newf->num_safe = 0;
 		connect1(newf, 0, arg1->root_form, arg1->root_ports);
 		t = allocate_term(newf, 1, arg1->vars);
@@ -557,7 +557,7 @@ TERM *buildrelopterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, relop, level);
+	newf = allocate_form(relop, level);
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
@@ -644,7 +644,7 @@ TERM *buildlist(
 	if (arg2 != NULL)
 	{
 
-		allocate_form(&newf1, CONS, level);
+		newf1 = allocate_form(CONS, level);
 
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
@@ -655,7 +655,7 @@ TERM *buildlist(
 	}
 	else
 	{
-		allocate_form(&newf1, CONS, level);
+		newf1 = allocate_form(CONS, level);
 
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
@@ -680,7 +680,7 @@ TERM *buildlist1(
 	if (arg2 != NULL)
 	{
 
-		allocate_form(&newf1, CONS1, level);
+		newf1 = allocate_form(CONS1, level);
 
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
@@ -691,7 +691,7 @@ TERM *buildlist1(
 	}
 	else
 	{
-		allocate_form(&newf1, CONS1, level);
+		newf1 = allocate_form(CONS1, level);
 
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
@@ -711,7 +711,7 @@ TERM *buildcarterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, CAR, level);
+	newf = allocate_form(CAR, level);
 
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
@@ -727,7 +727,7 @@ TERM *buildcdrterm(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, CDR, level);
+	newf = allocate_form(CDR, level);
 
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
@@ -744,7 +744,7 @@ TERM *buildtestnil(
 	FORM *newf;
 	/* pointer to the new form to be created */
 
-	allocate_form(&newf, TESTNIL, level);
+	newf = allocate_form(TESTNIL, level);
 
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
@@ -762,8 +762,7 @@ FORM *closeterm(
 	{
 		return NULL;
 	}
-	FORM *newroot;
-	allocate_form(&newroot, ROOT, 0);
+	FORM *newroot = allocate_form(ROOT, 0);
 
 	connect1(newroot, 0, t->root_form, t->root_ports);
 
@@ -775,11 +774,7 @@ FORM *closeterm(
 
 /* the following function allocate a new graphical form */
 /* and initialize the name and index fields */
-void allocate_form(
-	/* reference to the pointer of the form */
-	/* to be created */
-
-	FORM **form,
+FORM *allocate_form(
 	/* name of the form */
 	int name,
 	/* index of the form */
@@ -802,17 +797,18 @@ void allocate_form(
 		dep->next = NULL;
 		dep->prev = dep - 1;
 	}
-	(*form) = headfree;
+	FORM *form = headfree;
 	headfree = headfree->next;
 	num_nodes++;
 	if (num_nodes > max_nodes)
 		max_nodes = num_nodes;
-	(*form)->name = name;
-	(*form)->index = index;
-	(*form)->nform[0] = NULL;
-	(*form)->nform[1] = NULL;
-	(*form)->nform[2] = NULL;
-	(*form)->num_safe = true; /* initially, all operators are safe */
+	form->name = name;
+	form->index = index;
+	form->nform[0] = NULL;
+	form->nform[1] = NULL;
+	form->nform[2] = NULL;
+	form->num_safe = true; /* initially, all operators are safe */
+	return form;
 }
 
 /* the following function adds a graphical form to deallocate */
@@ -971,7 +967,7 @@ static VARENTRY *addbrackets(
 	}
 	else
 	{
-		allocate_form(&bracket, TRIANGLE, index);
+		bracket = allocate_form(TRIANGLE, index);
 		bracket->nlevel[1] = 1;
 		connect(bracket, 1, variab, 0);
 		allocate_var(&res,
@@ -996,7 +992,6 @@ static VARENTRY *share(
 		return l2;
 	}
 	VARENTRY *res;
-	FORM *fan;
 
 	VARENTRY *var = lookfor(l1->name, l2);
 	if (var == NULL)
@@ -1006,7 +1001,7 @@ static VARENTRY *share(
 		return res;
 	}
 
-	allocate_form(&fan, FAN, index);
+	FORM *fan = allocate_form(FAN, index);
 	fan->nlevel[1] = 0;
 	fan->nlevel[2] = 0;
 
@@ -1195,7 +1190,7 @@ static void intelligent_connect(
 				f1->name = CONS1;
 				if (f1->nlevel[1] != 0)
 				{
-					allocate_form(&new, TRIANGLE, f1->index - 1);
+					new = allocate_form(TRIANGLE, f1->index - 1);
 					new->nlevel[1] = f1->nlevel[1];
 					connect1(new, 1, f1->nform[1], f1->nport[1]);
 					connect(f1, 1, new, 0);
@@ -1255,7 +1250,7 @@ static void intelligent_connect(
 				f1->name = CONS1;
 				if (f1->nlevel[1] != 0)
 				{
-					allocate_form(&new, TRIANGLE, f1->index - 1);
+					new = allocate_form(TRIANGLE, f1->index - 1);
 					new->nlevel[1] = f1->nlevel[1];
 					connect1(new, 1, f1->nform[1], f1->nport[1]);
 					connect(f1, 2, new, 0);
@@ -1381,7 +1376,7 @@ TERM *buildvoidterm(int level)
 
 {
 	FORM *newf;
-	allocate_form(&newf, TRIANGLE, level);
+	newf = allocate_form(TRIANGLE, level);
 	newf->nlevel[1] = 0;
 	return allocate_term(newf, 0, NULL);
 }
