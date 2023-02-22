@@ -22,7 +22,13 @@
 static int left_to_print;
 /* maximum number of characters yet to print */
 
-static void rdbk_1(), rdbk_list();
+static void rdbk_1(
+    FORM *form,
+    int port);
+
+static void rdbk_list(
+    FORM *form,
+    int port);
 
 /* the following function prints on the standard output the */
 /* standard syntactical representation of the graphical term */

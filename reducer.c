@@ -53,9 +53,11 @@ static int redexes;
 static int max_index;
 static int eq = 0;
 static int type_error;
-static void reduce_redex();
-static void reduce_form();
-static FORM *lo_redex();
+static void reduce_redex(
+	FORM *f1,
+	FORM *f2);
+static void reduce_form(FORM *f1);
+static FORM *lo_redex(FORM *f);
 static int auxnext;
 
 #ifndef STACK_SIZE
