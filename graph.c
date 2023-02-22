@@ -934,16 +934,16 @@ static void allocate_term(
 	/* term entry to be created */
 	TERM **term,
 	/* pointer to the root form of the term */
-	FORM *rootform,
+	FORM *root_form,
 	/* root port of the term */
-	int rootport,
+	int root_ports,
 	/* pointer to the free variables entries */
 	/* of the term */
 	VARENTRY *freevars)
 {
 	*term = (TERM *)malloc_da(sizeof(TERM));
-	(*term)->root_form = rootform;
-	(*term)->root_ports = rootport;
+	(*term)->root_form = root_form;
+	(*term)->root_ports = root_ports;
 	(*term)->vars = freevars;
 }
 
@@ -1019,30 +1019,27 @@ static VARENTRY *share(
 	}
 	VARENTRY *res;
 	FORM *fan;
-	VARENTRY *var;
 
-	var = lookfor(l1->name, l2);
+	VARENTRY *var = lookfor(l1->name, l2);
 	if (var == NULL)
 	{
 		res = l1;
 		res->next = share(index, l1->next, l2);
 		return res;
 	}
-	else
-	{
-		allocate_form(&fan, FAN, index);
-		fan->nlevel[1] = 0;
-		fan->nlevel[2] = 0;
 
-		intelligent_connect(fan, 1, l1->var);
-		intelligent_connect(fan, 2, var->var);
+	allocate_form(&fan, FAN, index);
+	fan->nlevel[1] = 0;
+	fan->nlevel[2] = 0;
 
-		res = l1;
-		res->name = l1->name;
-		res->var = fan;
-		res->next = share(index, l1->next, remv(l1->name, l2));
-		return res;
-	}
+	intelligent_connect(fan, 1, l1->var);
+	intelligent_connect(fan, 2, var->var);
+
+	res = l1;
+	res->name = l1->name;
+	res->var = fan;
+	res->next = share(index, l1->next, remv(l1->name, l2));
+	return res;
 }
 
 /* The following function searches for a variable inside a list. */
@@ -1070,8 +1067,10 @@ static VARENTRY *remv(
 {
 	VARENTRY *temp;
 	if (listvar == NULL)
+	{
 		return NULL;
-	else if (id == listvar->name)
+	}
+	if (id == listvar->name)
 	{
 		temp = listvar->next;
 		free(listvar);
@@ -1090,9 +1089,11 @@ static VARENTRY *remvp(
 	VARLIST *vl,
 	VARENTRY *listvar) /* pointer to the variable list to be scanned */
 {
-	VARLIST *v;
-	for (v = vl; v; v = v->next)
+	;
+	for (VARLIST *v = vl; v; v = v->next)
+	{
 		listvar = remv(v->id->id, listvar);
+	}
 	return listvar;
 }
 
@@ -1102,24 +1103,21 @@ static void closeglobalvars(
 	VARENTRY *listvar)
 /* pointer to the variable list to be scanned */
 {
-	FORM *formvar,
-		*formterm,
-		*newf;
 	if (listvar != NULL)
 	{
-		formvar = listvar->var;
-		formterm = ((listvar->name)->curr_binding)->root;
+		const FORM *formvar = listvar->var;
+		const FORM *formterm = ((listvar->name)->curr_binding)->root;
 		if (formvar->name == TRIANGLE)
 		{
-			newf = copy(formterm->nform[0],
-						formterm->nport[0],
-						formvar->nlevel[1]);
+			FORM *newf = copy(formterm->nform[0],
+							  formterm->nport[0],
+							  formvar->nlevel[1]);
 			connect1(formvar->nform[1], formvar->nport[1],
 					 newf, formterm->nport[0]);
 		}
 		else
 		{
-			newf = copy(formterm->nform[0], formterm->nport[0], 0);
+			FORM *newf = copy(formterm->nform[0], formterm->nport[0], 0);
 			connect1(formvar, 0,
 					 newf, formterm->nport[0]);
 		}
@@ -1352,10 +1350,13 @@ static bool membervarlist(
 	VARLIST *l)
 {
 	while (l)
+	{
 		if (e->id == l->id->id)
+		{
 			return true;
-		else
-			l = l->next;
+		}
+		l = l->next;
+	}
 	return false;
 }
 

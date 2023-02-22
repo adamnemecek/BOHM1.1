@@ -41,9 +41,9 @@ static void compile(char *file)
 	yypop_buffer_state();
 }
 
-int main(argc, argv)
-int argc;
-char *argv[];
+int main(
+	int argc,
+	char *argv[])
 {
 	option = 1;
 	seetime = 0;
