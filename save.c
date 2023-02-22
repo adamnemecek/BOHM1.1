@@ -43,13 +43,19 @@
 FILE *save_file;
 ELEM *head, *tail;
 int max;
-static int present();
-static void save_aux();
-static void stampa();
-static void put_int();
-static void put_form();
-static int num_port();
-static void eindex();
+static int present(FORM *form);
+static void save_aux(
+	FORM *root,
+	int p);
+static void stampa(
+	FORM *form,
+	int p,
+	int card);
+static void put_int(
+	FORM *f, int p);
+static void put_form(FORM *f);
+static int num_port(int name);
+static void eindex(ELEM *elem);
 
 /****************************************************************/
 /* 4. Definitions of functions to be exported.			*/

@@ -187,4 +187,4 @@ extern void search_bucket(
     char *id);
 void show_garb_stat(bool seetime);
 extern void signal_error(const char *msg);
-extern void user();
+extern void user(void);

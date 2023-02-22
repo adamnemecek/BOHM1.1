@@ -50,7 +50,7 @@ static long unsigned cl_count; /* counter for clean() calls */
 static clock_t usr_garb_time;
 static clock_t sys_garb_time;
 
-static void garbage();
+static void garbage(FORM *erase);
 
 /*************************************************************************/
 /* 4. Definitions of variables to be exported.                           */
@@ -64,7 +64,7 @@ FORM *del_head = NULL; /* head of erases list */
 
 /* The following function initializes the erase-list inserting */
 /* the first node. */
-void init_garbage()
+void init_garbage(void)
 {
 	del_head = (FORM *)malloc_da(sizeof(FORM));
 	del_head->nform[1] = NULL;
@@ -110,7 +110,7 @@ void clean(void)
 /* The following function it only calls the previous function  */
 /* and prints some data when the user digits the directive     */
 /* "#garbage".              					*/
-void user()
+void user(void)
 {
 	printf("*****************************************************\n");
 	printf("Initial number of nodes %u\n", num_nodes);
