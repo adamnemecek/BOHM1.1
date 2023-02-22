@@ -132,12 +132,12 @@ TERM *allocate_term(
 /* a variable */
 TERM *buildvarterm(int level, STBUCKET *id)
 {
-	FORM *newf;		  /* pointer to the new form to be created */
-	VARENTRY *newvar; /* pointer to the new free variable entry */
-
-	newf = allocate_form(TRIANGLE, level);
+	/* pointer to the new form to be created */
+	FORM *newf = allocate_form(TRIANGLE, level);
 	newf->nlevel[1] = -1;
-	newvar = allocate_var(id, newf, NULL);
+
+	/* pointer to the new free variable entry */
+	VARENTRY *newvar = allocate_var(id, newf, NULL);
 	return allocate_term(newf, 1, newvar);
 }
 
@@ -152,7 +152,6 @@ TERM *buildtrueterm(int level)
 /* a false constant */
 TERM *buildfalseterm(int level)
 {
-	/* pointer to the term to be created */
 	return allocate_term(NULL, F, NULL);
 }
 
@@ -160,8 +159,6 @@ TERM *buildfalseterm(int level)
 /* a numerical constant */
 TERM *buildintterm(int level, long int value)
 {
-	/* pointer to the term to be created */
-
 	return allocate_term((FORM *)value, INT, NULL);
 }
 
@@ -169,17 +166,13 @@ TERM *buildintterm(int level, long int value)
 /* lambda-abstraction */
 static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 {
-	TERM *t;	   /* pointer to the new term to be created */
-	FORM *newf1;   /* pointer to the new form to be created */
-	FORM *varform; /* pointer to the bound variable form */
-
-	/* pointer to the entry for the bound variable */
+	TERM *t; /* pointer to the new term to be created */
 
 	VARENTRY *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
-		newf1 = allocate_form(LAMBDA, level);
-		varform = boundvar->var;
+		FORM *newf1 = allocate_form(LAMBDA, level);
+		FORM *varform = boundvar->var;
 		if ((varform->name == TRIANGLE) && (varform->nlevel[1] == 0))
 		{
 			connect(varform->nform[1],
@@ -194,7 +187,7 @@ static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 	}
 	else
 	{
-		newf1 = allocate_form(LAMBDAUNB, level);
+		FORM *newf1 = allocate_form(LAMBDAUNB, level);
 		t = allocate_term(newf1, 0, body->vars);
 		connect1(newf1, 1, body->root_form, body->root_ports);
 	}

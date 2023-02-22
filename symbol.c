@@ -218,10 +218,6 @@ STBUCKET *search_bucket(
 	/* identifier */
 	char *id)
 {
-	int dict_index;
-	/* value returned by the */
-	/* hash function */
-	STBUCKET *prev;
 	STBUCKET *curr;
 	STBUCKET *st;
 
@@ -229,10 +225,10 @@ STBUCKET *search_bucket(
 	to_lower_s(id);
 
 	/* apply the hash function */
-	dict_index = hash_pjw(id);
+	int dict_index = hash_pjw(id);
 
 	/* scan the bucket list indicated by the hash function */
-	prev = curr = dictionary[dict_index];
+	STBUCKET *prev = curr = dictionary[dict_index];
 	while ((curr != NULL) && (strcmp(id, curr->id) != 0))
 	{
 		prev = curr;
