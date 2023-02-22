@@ -23,18 +23,27 @@ extern unsigned limit;
 extern unsigned max_nodes;
 extern unsigned num_nodes;
 
-extern char *malloc_da();
-extern char *strdup_da();
-extern FORM *closeterm();
-extern FORM *copy();
-extern FORM *inspect();
-extern TERM *buildandterm();
+extern char *malloc_da(unsigned size);
+extern char *strdup_da(char *);
+extern FORM *closeterm(
+    int level,
+    TERM *t);
+extern FORM *copy(
+    FORM *root,
+    int p,
+    int offset);
+extern FORM *inspect(int p, FORM *f);
+extern TERM *buildandterm(int level,
+                          TERM *arg1,
+                          TERM *arg2);
 extern TERM *buildappterm(
     int level,
     TERM *fun,
     TERM *arg);
-extern TERM *buildcarterm();
-extern TERM *buildcdrterm();
+extern TERM *buildcarterm(int level,
+                          TERM *arg);
+extern TERM *buildcdrterm(int level,
+                          TERM *arg);
 extern TERM *buildfalseterm(int level);
 
 TERM *buildifelseterm(

@@ -36,12 +36,15 @@
 #define DIM_REL 256
 
 static COPY_FORM *copy_relation[DIM_REL];
-static void put_relation(),
-	start_copy(),
-	end_copy();
-static FORM *is_in_relation(),
-	*copy_aux();
-static int entry();
+static void put_relation(FORM *src,
+						 FORM *dest);
+static void start_copy(void);
+static void end_copy(void);
+static FORM *is_in_relation(FORM *src),
+	*copy_aux(FORM *root,
+			  int p,
+			  int offset);
+static int entry(FORM *src);
 
 /* The following function initialises the hash table, calls 	*/
 /* function copy_aux and eliminates the table.			*/
@@ -67,13 +70,12 @@ static FORM *copy_aux(
 	int p,
 	int offset)
 {
-	FORM *temp,
-		*newf1,
+	FORM *newf1,
 		*newf2,
 		*newf3;
 	int q;
 
-	temp = root;
+	FORM *temp = root;
 	switch (temp->name)
 	{
 	case TRIANGLE:
@@ -259,7 +261,7 @@ static int entry(FORM *src)
 
 /* The following function initialises hash table.	        */
 static void
-start_copy()
+start_copy(void)
 {
 	int i;
 	for (i = 0; i < DIM_REL; i++)
@@ -268,7 +270,7 @@ start_copy()
 
 /* The following function eliminates hash table.		*/
 static void
-end_copy()
+end_copy(void)
 {
 	COPY_FORM *dep;
 
