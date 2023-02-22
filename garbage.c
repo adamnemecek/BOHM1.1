@@ -458,7 +458,7 @@ static void garbage(
 	}
 }
 
-void reset_garbage()
+void reset_garbage(void)
 {
 	er_count = 0;
 	cl_count = 0;

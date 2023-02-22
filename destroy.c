@@ -87,7 +87,7 @@ void destroy(void)
 /* The following function makes a graph associated to a	*/
 /* global definition permanent, by moving headfull to 	*/
 /* the node preceding headfree.				*/
-void no_destroy()
+void no_destroy(void)
 {
   headfull = headfree->prev;
 }

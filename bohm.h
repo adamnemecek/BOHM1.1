@@ -63,35 +63,44 @@ extern TERM *buildplambdaterm(
     int level,
     PATTERN *pattern,
     TERM *body);
-extern TERM *buildrelopterm(int level,
-                            TERM *arg1,
-                            TERM *arg2,
-                            int relop);
-extern TERM *buildtestnil(int level,
-                          TERM *arg);
+extern TERM *buildrelopterm(
+    int level,
+    TERM *arg1,
+    TERM *arg2,
+    int relop);
+extern TERM *buildtestnil(
+    int level,
+    TERM *arg);
 extern TERM *buildtrueterm(int level);
-extern TERM *buildvarterm(int level, STBUCKET *id);
+extern TERM *buildvarterm(
+    int level, STBUCKET *id);
 extern TERM *buildvoidterm(int level);
-extern VARLIST *makevarlist(STBUCKET *e,
-                            TERM *t);
-extern VARLIST *mergevarlist(VARLIST *l1, VARLIST *l2);
+extern VARLIST *makevarlist(
+    STBUCKET *e,
+    TERM *t);
+extern VARLIST *mergevarlist(
+    VARLIST *l1, VARLIST *l2);
 FORM *allocate_form(
     int name,
     /* index of the form */
     int index);
-extern void bool_connect(FORM *form1,
-                         int portf1,
-                         int portf2);
+extern void bool_connect(
+    FORM *form1,
+    int portf1,
+    int portf2);
 extern void clean(void);
-extern void connect(FORM *form1,
-                    int portf1,
-                    FORM *form2,
-                    int portf2);
-extern void connect1(FORM *form1,
-                     int portf1,
-                     FORM *form2,
-                     int portf2);
-extern void create_variable_binding(STBUCKET *st, FORM *rootform);
+extern void connect(
+    FORM *form1,
+    int portf1,
+    FORM *form2,
+    int portf2);
+extern void connect1(
+    FORM *form1,
+    int portf1,
+    FORM *form2,
+    int portf2);
+extern void create_variable_binding(
+    STBUCKET *st, FORM *rootform);
 extern void destroy(void);
 extern void free_pattern(PATTERN *p);
 extern void info();
@@ -107,12 +116,12 @@ extern void int_connect(
     int portf2);
 extern void menu();
 extern void myfree(FORM *form);
-extern void no_destroy();
+extern void no_destroy(void);
 extern void pop_local_env();
 extern void push_local_env();
 extern void rdbk();
-extern void reduce_term();
-extern void reset_garbage();
+extern void reduce_term(FORM *root);
+extern void reset_garbage(void);
 extern void save();
 extern void search_bucket();
 void show_garb_stat(bool seetime);
