@@ -44,11 +44,27 @@ TERM *buildifelseterm(
     TERM *arg3);
 TERM *buildintterm(int level, long int value);
 
-extern TERM *buildletinterm();
-extern TERM *buildlist();
-extern TERM *buildlist1();
-extern TERM *buildmatterm();
-extern TERM *buildminusterm();
+extern TERM *buildletinterm(
+    int level,
+    STBUCKET *id,
+    TERM *arg1,
+    TERM *arg2);
+extern TERM *buildlist(
+    int level,
+    TERM *arg1,
+    TERM *arg2);
+extern TERM *buildlist1(
+    int level,
+    TERM *arg1,
+    TERM *arg2);
+extern TERM *buildmatterm(
+    int level,
+    TERM *arg1,
+    TERM *arg2,
+    int op);
+extern TERM *buildminusterm(
+    int level,
+    TERM *arg1);
 extern TERM *build_mu_term(
     int level,
     STBUCKET *id,
@@ -82,7 +98,6 @@ extern VARLIST *mergevarlist(
     VARLIST *l1, VARLIST *l2);
 FORM *allocate_form(
     int name,
-    /* index of the form */
     int index);
 extern void bool_connect(
     FORM *form1,
