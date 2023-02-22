@@ -1059,8 +1059,8 @@ static void closeglobalvars(
 		return;
 	}
 
-	const FORM *formvar = listvar->var;
-	const FORM *formterm = listvar->name->curr_binding->root;
+	FORM *formvar = listvar->var;
+	FORM *formterm = listvar->name->curr_binding->root;
 	if (formvar->name == TRIANGLE)
 	{
 		FORM *newf = copy(formterm->nform[0],
@@ -1087,7 +1087,7 @@ static void intelligent_connect(
 	FORM *f2)
 {
 	int dep;
-	FORM *new;
+	FORM *newf;
 
 	switch (f1->name)
 	{
@@ -1170,10 +1170,10 @@ static void intelligent_connect(
 				f1->name = CONS1;
 				if (f1->nlevel[1] != 0)
 				{
-					new = allocate_form(TRIANGLE, f1->index - 1);
-					new->nlevel[1] = f1->nlevel[1];
-					connect1(new, 1, f1->nform[1], f1->nport[1]);
-					connect(f1, 1, new, 0);
+					newf = allocate_form(TRIANGLE, f1->index - 1);
+					newf->nlevel[1] = f1->nlevel[1];
+					connect1(newf, 1, f1->nform[1], f1->nport[1]);
+					connect(f1, 1, newf, 0);
 				}
 				if (f1->nlevel[2] != 0)
 				{
@@ -1202,10 +1202,10 @@ static void intelligent_connect(
 				dep = f1->nlevel[1];
 				f1->nlevel[1] = f1->nlevel[2];
 				f1->nlevel[2] = dep;
-				new = f1->nform[1];
+				newf = f1->nform[1];
 				dep = f1->nport[1];
 				connect1(f1, 1, f2->nform[1], f2->nport[1]);
-				connect1(f2, 1, new, dep);
+				connect1(f2, 1, newf, dep);
 				connect(f2, 0, f1, 2);
 			}
 			else
@@ -1230,10 +1230,10 @@ static void intelligent_connect(
 				f1->name = CONS1;
 				if (f1->nlevel[1] != 0)
 				{
-					new = allocate_form(TRIANGLE, f1->index - 1);
-					new->nlevel[1] = f1->nlevel[1];
-					connect1(new, 1, f1->nform[1], f1->nport[1]);
-					connect(f1, 2, new, 0);
+					newf = allocate_form(TRIANGLE, f1->index - 1);
+					newf->nlevel[1] = f1->nlevel[1];
+					connect1(newf, 1, f1->nform[1], f1->nport[1]);
+					connect(f1, 2, newf, 0);
 				}
 				else
 					connect(f1, 2, f1->nform[1], f1->nport[1]);
@@ -1264,10 +1264,10 @@ static void intelligent_connect(
 				dep = f1->nlevel[1];
 				f1->nlevel[1] = f1->nlevel[2];
 				f1->nlevel[2] = dep;
-				new = f1->nform[1];
+				newf = f1->nform[1];
 				dep = f1->nport[1];
 				connect1(f1, 1, f2->nform[1], f2->nport[1]);
-				connect1(f2, 1, new, dep);
+				connect1(f2, 1, newf, dep);
 				connect(f2, 0, f1, 2);
 			}
 			else

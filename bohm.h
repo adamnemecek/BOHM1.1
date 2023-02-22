@@ -25,6 +25,7 @@ extern unsigned num_nodes;
 
 char *malloc_da(unsigned size);
 char *strdup_da(char *s);
+
 FORM *closeterm(
     int level,
     TERM *t);
@@ -169,19 +170,19 @@ void create_variable_binding(
     STBUCKET *st, FORM *rootform);
 void destroy(void);
 void free_pattern(PATTERN *p);
-void info();
+void info(char *choices);
 void init_destroy(void);
 void init_garbage(void);
 void init_symbol_table(void);
 void ins_del(FORM *d);
 void inspect_driver(FORM *f);
 
-void menu();
+void menu(int choice);
 void myfree(FORM *form);
 void no_destroy(void);
 void pop_local_env(void);
 void push_local_env(void);
-void rdbk();
+void rdbk(FORM *form);
 void reduce_term(FORM *root);
 void reset_garbage(void);
 void save(

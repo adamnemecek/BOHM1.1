@@ -147,5 +147,5 @@ typedef union YYSTYPE
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
 
-YYSTYPE yylval;
+extern YYSTYPE yylval;
 

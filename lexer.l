@@ -103,7 +103,7 @@ string                  [^\"]*\"
                         if (loading_mode == 1) ECHO;
                         BEGIN 0;
                         astringlen=strlen(yytext);
-                        yylval.astring=malloc(astringlen);
+                        yylval.astring=(char*)malloc(astringlen);
                         strncpy(yylval.astring,yytext,astringlen-1);
                         yylval.astring[astringlen-1]=0;
                         return ASTRING;
