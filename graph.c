@@ -169,12 +169,13 @@ TERM *buildintterm(int level, long int value)
 /* lambda-abstraction */
 static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 {
-	TERM *t;			/* pointer to the new term to be created */
-	FORM *newf1;		/* pointer to the new form to be created */
-	VARENTRY *boundvar; /* pointer to the entry for the bound variable */
-	FORM *varform;		/* pointer to the bound variable form */
+	TERM *t;	   /* pointer to the new term to be created */
+	FORM *newf1;   /* pointer to the new form to be created */
+	FORM *varform; /* pointer to the bound variable form */
 
-	boundvar = lookfor(id, body->vars);
+	/* pointer to the entry for the bound variable */
+
+	VARENTRY *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
 		newf1 = allocate_form(LAMBDA, level);
@@ -282,12 +283,12 @@ TERM *build_mu_term(
 		/* pointer to the new term to be created */
 		*temp;
 	FORM *newf1; /* pointer to the new form to be created */
-	VARENTRY *boundvar;
-	/* pointer to the entry for the bound variable */
+
 	FORM *varform;
 	/* pointer to the bound variable form */
 
-	boundvar = lookfor(id, body->vars);
+	/* pointer to the entry for the bound variable */
+	VARENTRY *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
 		newf1 = allocate_form(FAN, level);
@@ -350,25 +351,22 @@ TERM *buildifelseterm(
 	TERM *arg2,
 	TERM *arg3)
 {
-	TERM *t; /* pointer to the term to be created */
-	VARENTRY *newvars, *tempvars;
-	/* free variables of the application */
-	FORM *newf,
-		*newf1;
-	/* pointers to the new forms */
 
-	newf = allocate_form(IFELSE, level);
-	newf1 = allocate_form(CONS, level);
+	/* free variables of the application */
+	FORM *newf = allocate_form(IFELSE, level);
+	FORM *newf1 = allocate_form(CONS, level);
+	/* pointers to the new forms */
 
 	connect1(newf, 0, arg1->root_form, arg1->root_ports);
 	connect(newf, 2, newf1, 0);
 	connect1(newf1, 1, arg2->root_form, arg2->root_ports);
 	connect1(newf1, 2, arg3->root_form, arg3->root_ports);
 
-	tempvars = share(level, arg2->vars, arg3->vars);
-	newvars = share(level, tempvars, arg1->vars);
+	VARENTRY *tempvars = share(level, arg2->vars, arg3->vars);
+	VARENTRY *newvars = share(level, tempvars, arg1->vars);
 
-	t = allocate_term(newf, 1, newvars);
+	/* pointer to the term to be created */
+	TERM *t = allocate_term(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	free(arg3);
@@ -383,9 +381,7 @@ TERM *buildletinterm(
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *temp;
-
-	temp = buildlambdaterm(level, id, arg2);
+	TERM *temp = buildlambdaterm(level, id, arg2);
 	return buildappterm(level, temp, arg1);
 }
 
@@ -396,21 +392,17 @@ TERM *buildandterm(
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *t;
-	/* pointer to the term to be created */
-	VARENTRY *newvars;
-	/* free variables of the application */
-	FORM *newf;
 	/* pointer to the new form to be created */
-
-	newf = allocate_form(AND, level);
+	FORM *newf = allocate_form(AND, level);
 
 	connect1(newf, 0, arg1->root_form, arg1->root_ports);
 	connect1(newf, 2, arg2->root_form, arg2->root_ports);
 
-	newvars = share(level, arg1->vars, arg2->vars);
+	/* free variables of the application */
+	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
-	t = allocate_term(newf, 1, newvars);
+	/* pointer to the term to be created */
+	TERM *t = allocate_term(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
@@ -423,21 +415,17 @@ TERM *buildorterm(
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *t;
-	/* pointer to the term to be created */
-	VARENTRY *newvars;
-	/* free variables of the application */
-	FORM *newf;
 	/* pointer to the new form to be created */
-
-	newf = allocate_form(OR, level);
+	FORM *newf = allocate_form(OR, level);
 
 	connect1(newf, 0, arg1->root_form, arg1->root_ports);
 	connect1(newf, 2, arg2->root_form, arg2->root_ports);
 
-	newvars = share(level, arg1->vars, arg2->vars);
+	/* free variables of the application */
+	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
-	t = allocate_term(newf, 1, newvars);
+	/* pointer to the term to be created */
+	TERM *t = allocate_term(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
@@ -449,17 +437,13 @@ TERM *buildnotterm(
 	int level,
 	TERM *arg)
 {
-	TERM *t;
-	/* pointer to the term to be created */
-
-	FORM *newf;
 	/* pointer to the new form to be created */
-
-	newf = allocate_form(NOT, level);
+	FORM *newf = allocate_form(NOT, level);
 
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
-	t = allocate_term(newf, 1, arg->vars);
+	/* pointer to the term to be created */
+	TERM *t = allocate_term(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
