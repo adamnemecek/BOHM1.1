@@ -53,21 +53,32 @@ extern TERM *build_mu_term(
     int level,
     STBUCKET *id,
     TERM *bod);
-extern TERM *buildnillist();
-extern TERM *buildnotterm();
-extern TERM *buildorterm();
+extern TERM *buildnillist(int level);
+extern TERM *buildnotterm(int level,
+                          TERM *arg);
+extern TERM *buildorterm(int level,
+                         TERM *arg1,
+                         TERM *arg2);
 extern TERM *buildplambdaterm(
     int level,
     PATTERN *pattern,
     TERM *body);
-extern TERM *buildrelopterm();
-extern TERM *buildtestnil();
-extern TERM *buildtrueterm();
+extern TERM *buildrelopterm(int level,
+                            TERM *arg1,
+                            TERM *arg2,
+                            int relop);
+extern TERM *buildtestnil(int level,
+                          TERM *arg);
+extern TERM *buildtrueterm(int level);
 extern TERM *buildvarterm(int level, STBUCKET *id);
-extern TERM *buildvoidterm();
-extern VARLIST *makevarlist();
-extern VARLIST *mergevarlist();
-FORM *allocate_form();
+extern TERM *buildvoidterm(int level);
+extern VARLIST *makevarlist(STBUCKET *e,
+                            TERM *t);
+extern VARLIST *mergevarlist(VARLIST *l1, VARLIST *l2);
+FORM *allocate_form(
+    int name,
+    /* index of the form */
+    int index);
 extern void bool_connect(FORM *form1,
                          int portf1,
                          int portf2);
@@ -88,10 +99,14 @@ extern void init_destroy(void);
 extern void init_garbage(void);
 extern void init_symbol_table(void);
 extern void ins_del(FORM *d);
-extern void inspect_driver();
-extern void int_connect();
+extern void inspect_driver(FORM *f);
+extern void int_connect(
+    FORM *form1,
+    int portf1,
+    FORM *form2,
+    int portf2);
 extern void menu();
-extern void myfree();
+extern void myfree(FORM *form);
 extern void no_destroy();
 extern void pop_local_env();
 extern void push_local_env();
