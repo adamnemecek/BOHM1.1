@@ -1,0 +1,2923 @@
+Grammar
+
+    0 $accept: input $end
+
+    1 input: directive
+
+    2 @1: /* empty */
+
+    3 input: @1 term
+    4      | /* empty */
+
+    5 directive: '#' INSPECTKW arg EXPRDELIM
+    6          | '#' TRAVELKW arg NUMCONST EXPRDELIM
+    7          | '#' QUITKW EXPRDELIM
+    8          | '#' LOADKW ASTRING EXPRDELIM
+    9          | '#' GARBAGEKW EXPRDELIM
+   10          | '#' OPTIONKW optint EXPRDELIM
+   11          | '#' INFOKW optstring EXPRDELIM
+   12          | '#' SAVEKW ASTRING EXPRDELIM
+   13          | '#' SAVEKW ASTRING ID EXPRDELIM
+
+   14 arg: /* empty */
+   15    | ID
+
+   16 optstring: /* empty */
+   17          | ASTRING
+
+   18 optint: /* empty */
+   19       | NUMCONST
+
+   20 term: expr EXPRDELIM
+   21     | global_decl EXPRDELIM
+
+   22 @2: /* empty */
+
+   23 global_decl: DEFKW ID '=' @2 expr
+
+   24 expr: expr0
+   25     | '-' expr
+   26     | expr ANDKW expr
+   27     | expr ORKW expr
+   28     | expr '<' expr
+   29     | expr EQUAL expr
+   30     | expr NOTEQUAL expr
+   31     | expr '>' expr
+   32     | expr LEQUAL expr
+   33     | expr MEQUAL expr
+   34     | expr '+' expr
+   35     | expr '-' expr
+   36     | expr '*' expr
+   37     | expr DIVKW expr
+   38     | expr MODKW expr
+
+   39 expr0: TRUEKW
+   40      | FALSEKW
+   41      | NUMCONST
+   42      | ID
+   43      | '(' applist ')'
+
+   44 @3: /* empty */
+
+   45 @4: /* empty */
+
+   46 expr0: '\\' @3 pattern @4 '.' expr
+
+   47 @5: /* empty */
+
+   48 @6: /* empty */
+
+   49 expr0: LETKW ID '=' @5 expr INKW @6 expr
+
+   50 @7: /* empty */
+
+   51 expr0: LETRECKW ID '=' @7 expr
+   52      | IFKW expr THENKW expr ELSEKW expr
+   53      | list
+   54      | NOTKW expr
+   55      | CONSKW '(' expr ',' expr ')'
+   56      | HEADKW '(' expr ')'
+   57      | TAILKW '(' expr ')'
+   58      | TESTNILKW '(' expr ')'
+
+   59 list: NILKW
+   60     | '[' ']'
+   61     | '[' exprlist
+
+   62 exprlist: expr ']'
+   63         | expr ',' exprlist
+   64         | expr '|' expr ']'
+
+   65 applist: expr
+   66        | expr ',' comlist
+
+   67 @8: /* empty */
+
+   68 applist: applist @8 expr0
+
+   69 comlist: expr
+   70        | expr ',' comlist
+
+   71 comlistpat: pattern
+   72           | pattern ',' comlistpat
+
+   73 pattern: CONSKW '(' pattern ',' pattern ')'
+   74        | NILKW
+   75        | '(' comlistpat ')'
+   76        | ID
+
+   77 term: error EXPRDELIM
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'#' (35) 5 6 7 8 9 10 11 12 13
+'(' (40) 43 55 56 57 58 73 75
+')' (41) 43 55 56 57 58 73 75
+'*' (42) 36
+'+' (43) 34
+',' (44) 55 63 66 70 72 73
+'-' (45) 25 35
+'.' (46) 46
+'<' (60) 28
+'=' (61) 23 49 51
+'>' (62) 31
+'[' (91) 60 61
+'\\' (92) 46
+']' (93) 60 62 64
+'|' (124) 64
+error (256) 77
+EXPRDELIM (257) 5 6 7 8 9 10 11 12 13 20 21 77
+ID (258) 13 15 23 42 49 51 76
+NUMCONST (259) 6 19 41
+EQUAL (260) 29
+LEQUAL (261) 32
+MEQUAL (262) 33
+NOTEQUAL (263) 30
+LETKW (400) 49
+INKW (401) 49
+INSPECTKW (402) 5
+QUITKW (403) 7
+LOADKW (404) 8
+LETRECKW (405) 51
+TRUEKW (406) 39
+FALSEKW (407) 40
+IFKW (408) 52
+THENKW (409) 52
+ELSEKW (410) 52
+ANDKW (411) 26
+ORKW (412) 27
+NOTKW (413) 54
+DIVKW (414) 37
+MODKW (415) 38
+CONSKW (416) 55 73
+HEADKW (417) 56
+TAILKW (418) 57
+TESTNILKW (419) 58
+DEFKW (420) 23
+NILKW (422) 59 74
+GARBAGEKW (423) 9
+OPTIONKW (424) 10
+INFOKW (425) 11
+SAVEKW (426) 12 13
+TRAVELKW (427) 6
+ASTRING (428) 8 12 13 17
+NEG (430)
+
+
+Nonterminals, with rules where they appear
+
+$accept (54)
+    on left: 0
+input (55)
+    on left: 1 3 4, on right: 0
+@1 (56)
+    on left: 2, on right: 3
+directive (57)
+    on left: 5 6 7 8 9 10 11 12 13, on right: 1
+arg (58)
+    on left: 14 15, on right: 5 6
+optstring (59)
+    on left: 16 17, on right: 11
+optint (60)
+    on left: 18 19, on right: 10
+term (61)
+    on left: 20 21 77, on right: 3
+global_decl (62)
+    on left: 23, on right: 21
+@2 (63)
+    on left: 22, on right: 23
+expr (64)
+    on left: 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38,
+    on right: 20 23 25 26 27 28 29 30 31 32 33 34 35 36 37 38 46 49
+    51 52 54 55 56 57 58 62 63 64 65 66 69 70
+expr0 (65)
+    on left: 39 40 41 42 43 46 49 51 52 53 54 55 56 57 58,
+    on right: 24 68
+@3 (66)
+    on left: 44, on right: 46
+@4 (67)
+    on left: 45, on right: 46
+@5 (68)
+    on left: 47, on right: 49
+@6 (69)
+    on left: 48, on right: 49
+@7 (70)
+    on left: 50, on right: 51
+list (71)
+    on left: 59 60 61, on right: 53
+exprlist (72)
+    on left: 62 63 64, on right: 61 63
+applist (73)
+    on left: 65 66 68, on right: 43 68
+@8 (74)
+    on left: 67, on right: 68
+comlist (75)
+    on left: 69 70, on right: 66 70
+comlistpat (76)
+    on left: 71 72, on right: 72 75
+pattern (77)
+    on left: 73 74 75 76, on right: 46 71 72 73
+
+
+state 0
+
+    0 $accept: . input $end
+
+    '#'  shift, and go to state 1
+
+    $end      reduce using rule 4 (input)
+    $default  reduce using rule 2 (@1)
+
+    input      go to state 2
+    @1         go to state 3
+    directive  go to state 4
+
+
+state 1
+
+    5 directive: '#' . INSPECTKW arg EXPRDELIM
+    6          | '#' . TRAVELKW arg NUMCONST EXPRDELIM
+    7          | '#' . QUITKW EXPRDELIM
+    8          | '#' . LOADKW ASTRING EXPRDELIM
+    9          | '#' . GARBAGEKW EXPRDELIM
+   10          | '#' . OPTIONKW optint EXPRDELIM
+   11          | '#' . INFOKW optstring EXPRDELIM
+   12          | '#' . SAVEKW ASTRING EXPRDELIM
+   13          | '#' . SAVEKW ASTRING ID EXPRDELIM
+
+    INSPECTKW  shift, and go to state 5
+    QUITKW     shift, and go to state 6
+    LOADKW     shift, and go to state 7
+    GARBAGEKW  shift, and go to state 8
+    OPTIONKW   shift, and go to state 9
+    INFOKW     shift, and go to state 10
+    SAVEKW     shift, and go to state 11
+    TRAVELKW   shift, and go to state 12
+
+
+state 2
+
+    0 $accept: input . $end
+
+    $end  shift, and go to state 13
+
+
+state 3
+
+    3 input: @1 . term
+
+    error      shift, and go to state 14
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    DEFKW      shift, and go to state 27
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    term         go to state 33
+    global_decl  go to state 34
+    expr         go to state 35
+    expr0        go to state 36
+    list         go to state 37
+
+
+state 4
+
+    1 input: directive .
+
+    $default  reduce using rule 1 (input)
+
+
+state 5
+
+    5 directive: '#' INSPECTKW . arg EXPRDELIM
+
+    ID  shift, and go to state 38
+
+    $default  reduce using rule 14 (arg)
+
+    arg  go to state 39
+
+
+state 6
+
+    7 directive: '#' QUITKW . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 40
+
+
+state 7
+
+    8 directive: '#' LOADKW . ASTRING EXPRDELIM
+
+    ASTRING  shift, and go to state 41
+
+
+state 8
+
+    9 directive: '#' GARBAGEKW . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 42
+
+
+state 9
+
+   10 directive: '#' OPTIONKW . optint EXPRDELIM
+
+    NUMCONST  shift, and go to state 43
+
+    $default  reduce using rule 18 (optint)
+
+    optint  go to state 44
+
+
+state 10
+
+   11 directive: '#' INFOKW . optstring EXPRDELIM
+
+    ASTRING  shift, and go to state 45
+
+    $default  reduce using rule 16 (optstring)
+
+    optstring  go to state 46
+
+
+state 11
+
+   12 directive: '#' SAVEKW . ASTRING EXPRDELIM
+   13          | '#' SAVEKW . ASTRING ID EXPRDELIM
+
+    ASTRING  shift, and go to state 47
+
+
+state 12
+
+    6 directive: '#' TRAVELKW . arg NUMCONST EXPRDELIM
+
+    ID  shift, and go to state 38
+
+    $default  reduce using rule 14 (arg)
+
+    arg  go to state 48
+
+
+state 13
+
+    0 $accept: input $end .
+
+    $default  accept
+
+
+state 14
+
+   77 term: error . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 49
+
+
+state 15
+
+   42 expr0: ID .
+
+    $default  reduce using rule 42 (expr0)
+
+
+state 16
+
+   41 expr0: NUMCONST .
+
+    $default  reduce using rule 41 (expr0)
+
+
+state 17
+
+   49 expr0: LETKW . ID '=' @5 expr INKW @6 expr
+
+    ID  shift, and go to state 50
+
+
+state 18
+
+   51 expr0: LETRECKW . ID '=' @7 expr
+
+    ID  shift, and go to state 51
+
+
+state 19
+
+   39 expr0: TRUEKW .
+
+    $default  reduce using rule 39 (expr0)
+
+
+state 20
+
+   40 expr0: FALSEKW .
+
+    $default  reduce using rule 40 (expr0)
+
+
+state 21
+
+   52 expr0: IFKW . expr THENKW expr ELSEKW expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 52
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 22
+
+   54 expr0: NOTKW . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 53
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 23
+
+   55 expr0: CONSKW . '(' expr ',' expr ')'
+
+    '('  shift, and go to state 54
+
+
+state 24
+
+   56 expr0: HEADKW . '(' expr ')'
+
+    '('  shift, and go to state 55
+
+
+state 25
+
+   57 expr0: TAILKW . '(' expr ')'
+
+    '('  shift, and go to state 56
+
+
+state 26
+
+   58 expr0: TESTNILKW . '(' expr ')'
+
+    '('  shift, and go to state 57
+
+
+state 27
+
+   23 global_decl: DEFKW . ID '=' @2 expr
+
+    ID  shift, and go to state 58
+
+
+state 28
+
+   59 list: NILKW .
+
+    $default  reduce using rule 59 (list)
+
+
+state 29
+
+   25 expr: '-' . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 59
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 30
+
+   43 expr0: '(' . applist ')'
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr     go to state 60
+    expr0    go to state 36
+    list     go to state 37
+    applist  go to state 61
+
+
+state 31
+
+   46 expr0: '\\' . @3 pattern @4 '.' expr
+
+    $default  reduce using rule 44 (@3)
+
+    @3  go to state 62
+
+
+state 32
+
+   60 list: '[' . ']'
+   61     | '[' . exprlist
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+    ']'        shift, and go to state 63
+
+    expr      go to state 64
+    expr0     go to state 36
+    list      go to state 37
+    exprlist  go to state 65
+
+
+state 33
+
+    3 input: @1 term .
+
+    $default  reduce using rule 3 (input)
+
+
+state 34
+
+   21 term: global_decl . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 66
+
+
+state 35
+
+   20 term: expr . EXPRDELIM
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    EXPRDELIM  shift, and go to state 67
+    EQUAL      shift, and go to state 68
+    LEQUAL     shift, and go to state 69
+    MEQUAL     shift, and go to state 70
+    NOTEQUAL   shift, and go to state 71
+    ANDKW      shift, and go to state 72
+    ORKW       shift, and go to state 73
+    DIVKW      shift, and go to state 74
+    MODKW      shift, and go to state 75
+    '<'        shift, and go to state 76
+    '>'        shift, and go to state 77
+    '+'        shift, and go to state 78
+    '-'        shift, and go to state 79
+    '*'        shift, and go to state 80
+
+
+state 36
+
+   24 expr: expr0 .
+
+    $default  reduce using rule 24 (expr)
+
+
+state 37
+
+   53 expr0: list .
+
+    $default  reduce using rule 53 (expr0)
+
+
+state 38
+
+   15 arg: ID .
+
+    $default  reduce using rule 15 (arg)
+
+
+state 39
+
+    5 directive: '#' INSPECTKW arg . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 81
+
+
+state 40
+
+    7 directive: '#' QUITKW EXPRDELIM .
+
+    $default  reduce using rule 7 (directive)
+
+
+state 41
+
+    8 directive: '#' LOADKW ASTRING . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 82
+
+
+state 42
+
+    9 directive: '#' GARBAGEKW EXPRDELIM .
+
+    $default  reduce using rule 9 (directive)
+
+
+state 43
+
+   19 optint: NUMCONST .
+
+    $default  reduce using rule 19 (optint)
+
+
+state 44
+
+   10 directive: '#' OPTIONKW optint . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 83
+
+
+state 45
+
+   17 optstring: ASTRING .
+
+    $default  reduce using rule 17 (optstring)
+
+
+state 46
+
+   11 directive: '#' INFOKW optstring . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 84
+
+
+state 47
+
+   12 directive: '#' SAVEKW ASTRING . EXPRDELIM
+   13          | '#' SAVEKW ASTRING . ID EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 85
+    ID         shift, and go to state 86
+
+
+state 48
+
+    6 directive: '#' TRAVELKW arg . NUMCONST EXPRDELIM
+
+    NUMCONST  shift, and go to state 87
+
+
+state 49
+
+   77 term: error EXPRDELIM .
+
+    $default  reduce using rule 77 (term)
+
+
+state 50
+
+   49 expr0: LETKW ID . '=' @5 expr INKW @6 expr
+
+    '='  shift, and go to state 88
+
+
+state 51
+
+   51 expr0: LETRECKW ID . '=' @7 expr
+
+    '='  shift, and go to state 89
+
+
+state 52
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   52 expr0: IFKW expr . THENKW expr ELSEKW expr
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    THENKW    shift, and go to state 90
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+
+state 53
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   54 expr0: NOTKW expr .
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 54 (expr0)
+
+
+state 54
+
+   55 expr0: CONSKW '(' . expr ',' expr ')'
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 91
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 55
+
+   56 expr0: HEADKW '(' . expr ')'
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 92
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 56
+
+   57 expr0: TAILKW '(' . expr ')'
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 93
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 57
+
+   58 expr0: TESTNILKW '(' . expr ')'
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 94
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 58
+
+   23 global_decl: DEFKW ID . '=' @2 expr
+
+    '='  shift, and go to state 95
+
+
+state 59
+
+   25 expr: '-' expr .
+   26     | expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    $default  reduce using rule 25 (expr)
+
+
+state 60
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   65 applist: expr .
+   66        | expr . ',' comlist
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ','       shift, and go to state 96
+
+    $default  reduce using rule 65 (applist)
+
+
+state 61
+
+   43 expr0: '(' applist . ')'
+   68 applist: applist . @8 expr0
+
+    ')'  shift, and go to state 97
+
+    $default  reduce using rule 67 (@8)
+
+    @8  go to state 98
+
+
+state 62
+
+   46 expr0: '\\' @3 . pattern @4 '.' expr
+
+    ID      shift, and go to state 99
+    CONSKW  shift, and go to state 100
+    NILKW   shift, and go to state 101
+    '('     shift, and go to state 102
+
+    pattern  go to state 103
+
+
+state 63
+
+   60 list: '[' ']' .
+
+    $default  reduce using rule 60 (list)
+
+
+state 64
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   62 exprlist: expr . ']'
+   63         | expr . ',' exprlist
+   64         | expr . '|' expr ']'
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ','       shift, and go to state 104
+    ']'       shift, and go to state 105
+    '|'       shift, and go to state 106
+
+
+state 65
+
+   61 list: '[' exprlist .
+
+    $default  reduce using rule 61 (list)
+
+
+state 66
+
+   21 term: global_decl EXPRDELIM .
+
+    $default  reduce using rule 21 (term)
+
+
+state 67
+
+   20 term: expr EXPRDELIM .
+
+    $default  reduce using rule 20 (term)
+
+
+state 68
+
+   29 expr: expr EQUAL . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 107
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 69
+
+   32 expr: expr LEQUAL . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 108
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 70
+
+   33 expr: expr MEQUAL . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 109
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 71
+
+   30 expr: expr NOTEQUAL . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 110
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 72
+
+   26 expr: expr ANDKW . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 111
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 73
+
+   27 expr: expr ORKW . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 112
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 74
+
+   37 expr: expr DIVKW . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 113
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 75
+
+   38 expr: expr MODKW . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 114
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 76
+
+   28 expr: expr '<' . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 115
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 77
+
+   31 expr: expr '>' . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 116
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 78
+
+   34 expr: expr '+' . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 117
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 79
+
+   35 expr: expr '-' . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 118
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 80
+
+   36 expr: expr '*' . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 119
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 81
+
+    5 directive: '#' INSPECTKW arg EXPRDELIM .
+
+    $default  reduce using rule 5 (directive)
+
+
+state 82
+
+    8 directive: '#' LOADKW ASTRING EXPRDELIM .
+
+    $default  reduce using rule 8 (directive)
+
+
+state 83
+
+   10 directive: '#' OPTIONKW optint EXPRDELIM .
+
+    $default  reduce using rule 10 (directive)
+
+
+state 84
+
+   11 directive: '#' INFOKW optstring EXPRDELIM .
+
+    $default  reduce using rule 11 (directive)
+
+
+state 85
+
+   12 directive: '#' SAVEKW ASTRING EXPRDELIM .
+
+    $default  reduce using rule 12 (directive)
+
+
+state 86
+
+   13 directive: '#' SAVEKW ASTRING ID . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 120
+
+
+state 87
+
+    6 directive: '#' TRAVELKW arg NUMCONST . EXPRDELIM
+
+    EXPRDELIM  shift, and go to state 121
+
+
+state 88
+
+   49 expr0: LETKW ID '=' . @5 expr INKW @6 expr
+
+    $default  reduce using rule 47 (@5)
+
+    @5  go to state 122
+
+
+state 89
+
+   51 expr0: LETRECKW ID '=' . @7 expr
+
+    $default  reduce using rule 50 (@7)
+
+    @7  go to state 123
+
+
+state 90
+
+   52 expr0: IFKW expr THENKW . expr ELSEKW expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 124
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 91
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   55 expr0: CONSKW '(' expr . ',' expr ')'
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ','       shift, and go to state 125
+
+
+state 92
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   56 expr0: HEADKW '(' expr . ')'
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ')'       shift, and go to state 126
+
+
+state 93
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   57 expr0: TAILKW '(' expr . ')'
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ')'       shift, and go to state 127
+
+
+state 94
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   58 expr0: TESTNILKW '(' expr . ')'
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ')'       shift, and go to state 128
+
+
+state 95
+
+   23 global_decl: DEFKW ID '=' . @2 expr
+
+    $default  reduce using rule 22 (@2)
+
+    @2  go to state 129
+
+
+state 96
+
+   66 applist: expr ',' . comlist
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr     go to state 130
+    expr0    go to state 36
+    list     go to state 37
+    comlist  go to state 131
+
+
+state 97
+
+   43 expr0: '(' applist ')' .
+
+    $default  reduce using rule 43 (expr0)
+
+
+state 98
+
+   68 applist: applist @8 . expr0
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr0  go to state 132
+    list   go to state 37
+
+
+state 99
+
+   76 pattern: ID .
+
+    $default  reduce using rule 76 (pattern)
+
+
+state 100
+
+   73 pattern: CONSKW . '(' pattern ',' pattern ')'
+
+    '('  shift, and go to state 133
+
+
+state 101
+
+   74 pattern: NILKW .
+
+    $default  reduce using rule 74 (pattern)
+
+
+state 102
+
+   75 pattern: '(' . comlistpat ')'
+
+    ID      shift, and go to state 99
+    CONSKW  shift, and go to state 100
+    NILKW   shift, and go to state 101
+    '('     shift, and go to state 102
+
+    comlistpat  go to state 134
+    pattern     go to state 135
+
+
+state 103
+
+   46 expr0: '\\' @3 pattern . @4 '.' expr
+
+    $default  reduce using rule 45 (@4)
+
+    @4  go to state 136
+
+
+state 104
+
+   63 exprlist: expr ',' . exprlist
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr      go to state 64
+    expr0     go to state 36
+    list      go to state 37
+    exprlist  go to state 137
+
+
+state 105
+
+   62 exprlist: expr ']' .
+
+    $default  reduce using rule 62 (exprlist)
+
+
+state 106
+
+   64 exprlist: expr '|' . expr ']'
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 138
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 107
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   29     | expr EQUAL expr .
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '+'    shift, and go to state 78
+    '-'    shift, and go to state 79
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 29 (expr)
+
+
+state 108
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   32     | expr LEQUAL expr .
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '+'    shift, and go to state 78
+    '-'    shift, and go to state 79
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 32 (expr)
+
+
+state 109
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   33     | expr MEQUAL expr .
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '+'    shift, and go to state 78
+    '-'    shift, and go to state 79
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 33 (expr)
+
+
+state 110
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   30     | expr NOTEQUAL expr .
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '+'    shift, and go to state 78
+    '-'    shift, and go to state 79
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 30 (expr)
+
+
+state 111
+
+   26 expr: expr . ANDKW expr
+   26     | expr ANDKW expr .
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 26 (expr)
+
+
+state 112
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   27     | expr ORKW expr .
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 27 (expr)
+
+
+state 113
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   37     | expr DIVKW expr .
+   38     | expr . MODKW expr
+
+    $default  reduce using rule 37 (expr)
+
+
+state 114
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   38     | expr MODKW expr .
+
+    $default  reduce using rule 38 (expr)
+
+
+state 115
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   28     | expr '<' expr .
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '+'    shift, and go to state 78
+    '-'    shift, and go to state 79
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 28 (expr)
+
+
+state 116
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   31     | expr '>' expr .
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '+'    shift, and go to state 78
+    '-'    shift, and go to state 79
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 31 (expr)
+
+
+state 117
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   34     | expr '+' expr .
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 34 (expr)
+
+
+state 118
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   35     | expr '-' expr .
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    DIVKW  shift, and go to state 74
+    MODKW  shift, and go to state 75
+    '*'    shift, and go to state 80
+
+    $default  reduce using rule 35 (expr)
+
+
+state 119
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   36     | expr '*' expr .
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    $default  reduce using rule 36 (expr)
+
+
+state 120
+
+   13 directive: '#' SAVEKW ASTRING ID EXPRDELIM .
+
+    $default  reduce using rule 13 (directive)
+
+
+state 121
+
+    6 directive: '#' TRAVELKW arg NUMCONST EXPRDELIM .
+
+    $default  reduce using rule 6 (directive)
+
+
+state 122
+
+   49 expr0: LETKW ID '=' @5 . expr INKW @6 expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 139
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 123
+
+   51 expr0: LETRECKW ID '=' @7 . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 140
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 124
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   52 expr0: IFKW expr THENKW expr . ELSEKW expr
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ELSEKW    shift, and go to state 141
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+
+state 125
+
+   55 expr0: CONSKW '(' expr ',' . expr ')'
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 142
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 126
+
+   56 expr0: HEADKW '(' expr ')' .
+
+    $default  reduce using rule 56 (expr0)
+
+
+state 127
+
+   57 expr0: TAILKW '(' expr ')' .
+
+    $default  reduce using rule 57 (expr0)
+
+
+state 128
+
+   58 expr0: TESTNILKW '(' expr ')' .
+
+    $default  reduce using rule 58 (expr0)
+
+
+state 129
+
+   23 global_decl: DEFKW ID '=' @2 . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 143
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 130
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   69 comlist: expr .
+   70        | expr . ',' comlist
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ','       shift, and go to state 144
+
+    $default  reduce using rule 69 (comlist)
+
+
+state 131
+
+   66 applist: expr ',' comlist .
+
+    $default  reduce using rule 66 (applist)
+
+
+state 132
+
+   68 applist: applist @8 expr0 .
+
+    $default  reduce using rule 68 (applist)
+
+
+state 133
+
+   73 pattern: CONSKW '(' . pattern ',' pattern ')'
+
+    ID      shift, and go to state 99
+    CONSKW  shift, and go to state 100
+    NILKW   shift, and go to state 101
+    '('     shift, and go to state 102
+
+    pattern  go to state 145
+
+
+state 134
+
+   75 pattern: '(' comlistpat . ')'
+
+    ')'  shift, and go to state 146
+
+
+state 135
+
+   71 comlistpat: pattern .
+   72           | pattern . ',' comlistpat
+
+    ','  shift, and go to state 147
+
+    $default  reduce using rule 71 (comlistpat)
+
+
+state 136
+
+   46 expr0: '\\' @3 pattern @4 . '.' expr
+
+    '.'  shift, and go to state 148
+
+
+state 137
+
+   63 exprlist: expr ',' exprlist .
+
+    $default  reduce using rule 63 (exprlist)
+
+
+state 138
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   64 exprlist: expr '|' expr . ']'
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ']'       shift, and go to state 149
+
+
+state 139
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   49 expr0: LETKW ID '=' @5 expr . INKW @6 expr
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    INKW      shift, and go to state 150
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+
+state 140
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   51 expr0: LETRECKW ID '=' @7 expr .
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 51 (expr0)
+
+
+state 141
+
+   52 expr0: IFKW expr THENKW expr ELSEKW . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 151
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 142
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   55 expr0: CONSKW '(' expr ',' expr . ')'
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+    ')'       shift, and go to state 152
+
+
+state 143
+
+   23 global_decl: DEFKW ID '=' @2 expr .
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 23 (global_decl)
+
+
+state 144
+
+   70 comlist: expr ',' . comlist
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr     go to state 130
+    expr0    go to state 36
+    list     go to state 37
+    comlist  go to state 153
+
+
+state 145
+
+   73 pattern: CONSKW '(' pattern . ',' pattern ')'
+
+    ','  shift, and go to state 154
+
+
+state 146
+
+   75 pattern: '(' comlistpat ')' .
+
+    $default  reduce using rule 75 (pattern)
+
+
+state 147
+
+   72 comlistpat: pattern ',' . comlistpat
+
+    ID      shift, and go to state 99
+    CONSKW  shift, and go to state 100
+    NILKW   shift, and go to state 101
+    '('     shift, and go to state 102
+
+    comlistpat  go to state 155
+    pattern     go to state 135
+
+
+state 148
+
+   46 expr0: '\\' @3 pattern @4 '.' . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 156
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 149
+
+   64 exprlist: expr '|' expr ']' .
+
+    $default  reduce using rule 64 (exprlist)
+
+
+state 150
+
+   49 expr0: LETKW ID '=' @5 expr INKW . @6 expr
+
+    $default  reduce using rule 48 (@6)
+
+    @6  go to state 157
+
+
+state 151
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   52 expr0: IFKW expr THENKW expr ELSEKW expr .
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 52 (expr0)
+
+
+state 152
+
+   55 expr0: CONSKW '(' expr ',' expr ')' .
+
+    $default  reduce using rule 55 (expr0)
+
+
+state 153
+
+   70 comlist: expr ',' comlist .
+
+    $default  reduce using rule 70 (comlist)
+
+
+state 154
+
+   73 pattern: CONSKW '(' pattern ',' . pattern ')'
+
+    ID      shift, and go to state 99
+    CONSKW  shift, and go to state 100
+    NILKW   shift, and go to state 101
+    '('     shift, and go to state 102
+
+    pattern  go to state 158
+
+
+state 155
+
+   72 comlistpat: pattern ',' comlistpat .
+
+    $default  reduce using rule 72 (comlistpat)
+
+
+state 156
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   46 expr0: '\\' @3 pattern @4 '.' expr .
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 46 (expr0)
+
+
+state 157
+
+   49 expr0: LETKW ID '=' @5 expr INKW @6 . expr
+
+    ID         shift, and go to state 15
+    NUMCONST   shift, and go to state 16
+    LETKW      shift, and go to state 17
+    LETRECKW   shift, and go to state 18
+    TRUEKW     shift, and go to state 19
+    FALSEKW    shift, and go to state 20
+    IFKW       shift, and go to state 21
+    NOTKW      shift, and go to state 22
+    CONSKW     shift, and go to state 23
+    HEADKW     shift, and go to state 24
+    TAILKW     shift, and go to state 25
+    TESTNILKW  shift, and go to state 26
+    NILKW      shift, and go to state 28
+    '-'        shift, and go to state 29
+    '('        shift, and go to state 30
+    '\\'       shift, and go to state 31
+    '['        shift, and go to state 32
+
+    expr   go to state 159
+    expr0  go to state 36
+    list   go to state 37
+
+
+state 158
+
+   73 pattern: CONSKW '(' pattern ',' pattern . ')'
+
+    ')'  shift, and go to state 160
+
+
+state 159
+
+   26 expr: expr . ANDKW expr
+   27     | expr . ORKW expr
+   28     | expr . '<' expr
+   29     | expr . EQUAL expr
+   30     | expr . NOTEQUAL expr
+   31     | expr . '>' expr
+   32     | expr . LEQUAL expr
+   33     | expr . MEQUAL expr
+   34     | expr . '+' expr
+   35     | expr . '-' expr
+   36     | expr . '*' expr
+   37     | expr . DIVKW expr
+   38     | expr . MODKW expr
+   49 expr0: LETKW ID '=' @5 expr INKW @6 expr .
+
+    EQUAL     shift, and go to state 68
+    LEQUAL    shift, and go to state 69
+    MEQUAL    shift, and go to state 70
+    NOTEQUAL  shift, and go to state 71
+    ANDKW     shift, and go to state 72
+    ORKW      shift, and go to state 73
+    DIVKW     shift, and go to state 74
+    MODKW     shift, and go to state 75
+    '<'       shift, and go to state 76
+    '>'       shift, and go to state 77
+    '+'       shift, and go to state 78
+    '-'       shift, and go to state 79
+    '*'       shift, and go to state 80
+
+    $default  reduce using rule 49 (expr0)
+
+
+state 160
+
+   73 pattern: CONSKW '(' pattern ',' pattern ')' .
+
+    $default  reduce using rule 73 (pattern)

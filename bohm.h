@@ -29,31 +29,31 @@ extern FORM *closeterm(
     int level,
     TERM *t);
 
-extern FORM *copy(
+FORM *copy(
     FORM *root,
     int p,
     int offset);
 
-extern FORM *inspect(int p, FORM *f);
+FORM *inspect(int p, FORM *f);
 
-extern TERM *buildandterm(int level,
-                          TERM *arg1,
-                          TERM *arg2);
+TERM *buildandterm(int level,
+                   TERM *arg1,
+                   TERM *arg2);
 
-extern TERM *buildappterm(
+TERM *buildappterm(
     int level,
     TERM *fun,
     TERM *arg);
 
-extern TERM *buildcarterm(
+TERM *buildcarterm(
     int level,
     TERM *arg);
 
-extern TERM *buildcdrterm(
+TERM *buildcdrterm(
     int level,
     TERM *arg);
 
-extern TERM *buildfalseterm(int level);
+TERM *buildfalseterm(int level);
 
 TERM *buildifelseterm(
     int level,
@@ -64,130 +64,130 @@ TERM *buildifelseterm(
 TERM *buildintterm(
     int level, long int value);
 
-extern TERM *buildletinterm(
+TERM *buildletinterm(
     int level,
     STBUCKET *id,
     TERM *arg1,
     TERM *arg2);
 
-extern TERM *buildlist(
+TERM *buildlist(
     int level,
     TERM *arg1,
     TERM *arg2);
 
-extern TERM *buildlist1(
+TERM *buildlist1(
     int level,
     TERM *arg1,
     TERM *arg2);
 
-extern TERM *buildmatterm(
+TERM *buildmatterm(
     int level,
     TERM *arg1,
     TERM *arg2,
     int op);
 
-extern TERM *buildminusterm(
+TERM *buildminusterm(
     int level,
     TERM *arg1);
 
-extern TERM *build_mu_term(
+TERM *build_mu_term(
     int level,
     STBUCKET *id,
     TERM *bod);
 
-extern TERM *buildnillist(int level);
+TERM *buildnillist(int level);
 
-extern TERM *buildnotterm(
+TERM *buildnotterm(
     int level,
     TERM *arg);
 
-extern TERM *buildorterm(
+TERM *buildorterm(
     int level,
     TERM *arg1,
     TERM *arg2);
 
-extern TERM *buildplambdaterm(
+TERM *buildplambdaterm(
     int level,
     PATTERN *pattern,
     TERM *body);
 
-extern TERM *buildrelopterm(
+TERM *buildrelopterm(
     int level,
     TERM *arg1,
     TERM *arg2,
     int relop);
 
-extern TERM *buildtestnil(
+TERM *buildtestnil(
     int level,
     TERM *arg);
 
-extern TERM *buildtrueterm(int level);
+TERM *buildtrueterm(int level);
 
-extern TERM *buildvarterm(
+TERM *buildvarterm(
     int level, STBUCKET *id);
 
-extern TERM *buildvoidterm(int level);
+TERM *buildvoidterm(int level);
 
-extern VARLIST *makevarlist(
+VARLIST *makevarlist(
     STBUCKET *e,
     TERM *t);
 
-extern VARLIST *mergevarlist(
+VARLIST *mergevarlist(
     VARLIST *l1, VARLIST *l2);
 
 FORM *allocate_form(
     int name,
     int index);
 
-extern void clean(void);
+void clean(void);
 
-extern void bool_connect(
+void bool_connect(
     FORM *form1,
     int portf1,
     int portf2);
 
-extern void connect(
-    FORM *form1,
-    int portf1,
-    FORM *form2,
-    int portf2);
-
-extern void connect1(
+void connect(
     FORM *form1,
     int portf1,
     FORM *form2,
     int portf2);
 
-extern void int_connect(
+void connect1(
     FORM *form1,
     int portf1,
     FORM *form2,
     int portf2);
 
-extern void create_variable_binding(
+void int_connect(
+    FORM *form1,
+    int portf1,
+    FORM *form2,
+    int portf2);
+
+void create_variable_binding(
     STBUCKET *st, FORM *rootform);
-extern void destroy(void);
-extern void free_pattern(PATTERN *p);
-extern void info();
-extern void init_destroy(void);
-extern void init_garbage(void);
-extern void init_symbol_table(void);
-extern void ins_del(FORM *d);
-extern void inspect_driver(FORM *f);
+void destroy(void);
+void free_pattern(PATTERN *p);
+void info();
+void init_destroy(void);
+void init_garbage(void);
+void init_symbol_table(void);
+void ins_del(FORM *d);
+void inspect_driver(FORM *f);
 
-extern void menu();
-extern void myfree(FORM *form);
-extern void no_destroy(void);
-extern void pop_local_env(void);
-extern void push_local_env(void);
-extern void rdbk();
-extern void reduce_term(FORM *root);
-extern void reset_garbage(void);
-extern void save(
+void menu();
+void myfree(FORM *form);
+void no_destroy(void);
+void pop_local_env(void);
+void push_local_env(void);
+void rdbk();
+void reduce_term(FORM *root);
+void reset_garbage(void);
+void save(
     char *name,
     FORM *root,
     char *id);
-extern STBUCKET *search_bucket(char *id);
+STBUCKET *search_bucket(char *id);
 void show_garb_stat(bool seetime);
-extern void signal_error(const char *msg);
-extern void user(void);
+void signal_error(const char *msg);
+void user(void);

@@ -55,7 +55,7 @@ void inspect_driver(FORM *f)
 	printf("**** end of inspection mode ****\n\n");
 }
 
-extern FORM *inspect(int p, FORM *f)
+FORM *inspect(int p, FORM *f)
 {
 	bool ok = true;
 	switch (p)
