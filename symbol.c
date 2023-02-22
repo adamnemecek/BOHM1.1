@@ -134,9 +134,7 @@ static void move_bucket(
 	STBUCKET *st,
 	int dict_index);
 
-static void allocate_bucket(
-	STBUCKET **st,
-	char *id);
+static STBUCKET *allocate_bucket(char *id);
 
 /* keywords */
 static char *keywords[] =
@@ -246,8 +244,7 @@ void search_bucket(
 	if (curr == NULL)
 	/* the identifier is not in the list */
 	{
-		allocate_bucket(st,
-						id);
+		*st = allocate_bucket(id);
 		move_bucket(*st,
 					dict_index);
 	}
@@ -325,20 +322,21 @@ void create_variable_binding(
 /****************************************************************/
 
 /* The following function allocates a bucket for an identifier. */
-static void allocate_bucket(
+static STBUCKET *allocate_bucket(
 	/* pointer to the bucket to be */
 	/* allocated */
-	STBUCKET **st,
+	// STBUCKET **st,
 
 	/* identifier */
 	char *id)
 
 {
-	*st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
-	(*st)->id = strdup_da(id);
-	(*st)->token = ID;
-	(*st)->curr_binding = NULL;
-	(*st)->next_st_bucket = NULL;
+	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
+	st->id = strdup_da(id);
+	st->token = ID;
+	st->curr_binding = NULL;
+	st->next_st_bucket = NULL;
+	return st;
 }
 
 /* The following function moves a bucket to the head of the */
