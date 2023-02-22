@@ -83,12 +83,28 @@ unsigned num_nodes, max_nodes;
 
 unsigned length_list = 0;
 
-static TERM *makebox();
-static VARENTRY *addbrackets();
-static VARENTRY *share();
-static VARENTRY *lookfor();
-static VARENTRY *remv();
-static VARENTRY *remvp();
+static TERM *makebox(int level, TERM *arg);
+
+static VARENTRY *addbrackets(
+	int index,
+	VARENTRY *listvar);
+
+static VARENTRY *share(
+	int index,
+	VARENTRY *l1,
+	VARENTRY *l2);
+
+static VARENTRY *lookfor(
+	STBUCKET *id,
+	VARENTRY *listvar);
+
+static VARENTRY *remv(
+	STBUCKET *id,
+	VARENTRY *listvar);
+
+static VARENTRY *remvp(
+	VARLIST *vl,
+	VARENTRY *listvar);
 
 static VARENTRY *allocate_var(
 	STBUCKET *id,
@@ -100,6 +116,7 @@ static void intelligent_connect(
 	FORM *f1,
 	int port,
 	FORM *f2);
+
 static void inspect_connect(
 	FORM *f1,
 	int p1,
