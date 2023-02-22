@@ -28,10 +28,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool do_menu1();
-static bool do_menu2();
-static void do_menu3();
-static int take_char();
+static bool do_menu1(void);
+static bool do_menu2(void);
+static void do_menu3(void);
+static int take_char(void);
 
 /***************************************************************************/
 /* 2. Definitions of variables to be exported.                             */
@@ -244,7 +244,7 @@ void info(char *choices)
 /* 4. Definitions of functions strictly local to the module.                */
 /****************************************************************************/
 
-static int take_char()
+static int take_char(void)
 {
 	int taken;
 	bool warning;
@@ -265,7 +265,7 @@ static int take_char()
 	return taken;
 }
 
-static bool do_menu1()
+static bool do_menu1(void)
 {
 	bool cont = false;
 	option = 0;
@@ -303,7 +303,7 @@ static bool do_menu1()
 	return cont;
 }
 
-static bool do_menu2()
+static bool do_menu2(void)
 {
 	bool cont = false;
 	int select = 0;
@@ -347,7 +347,7 @@ static bool do_menu2()
 	return cont;
 }
 
-static void do_menu3()
+static void do_menu3(void)
 {
 	while ((limit < 1000) || (limit > 50000))
 	{
