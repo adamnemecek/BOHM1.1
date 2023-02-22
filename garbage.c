@@ -84,7 +84,7 @@ void ins_del(FORM *d)
 /* the local function "garbage()" which propagates a single    */
 /* node and inserts in the erases list new operators 		*/
 /* originated by duplication rules during travelling.          */
-void clean()
+void clean(void)
 {
 	FORM *q;
 	struct tms partial_time, final_time;

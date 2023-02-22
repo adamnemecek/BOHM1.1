@@ -58,7 +58,7 @@ unsigned start_nodes;
 /* The following function initialises the destroyer by 	*/
 /* allocating two nodes (headfree and headfull) and 	*/
 /* linking them together.                               */
-void init_destroy()
+void init_destroy(void)
 {
   headfull = (FORM *)malloc_da(sizeof(FORM));
   headfree = (FORM *)malloc_da(sizeof(FORM));
@@ -73,7 +73,7 @@ void init_destroy()
 /* term, moving back headfree to the node following 	*/
 /* headfull, and doing so makes all the nodes available */
 /* for any furure usage					*/
-void destroy()
+void destroy(void)
 {
   if (headfree != headfull->next)
   {

@@ -186,7 +186,7 @@ static void to_lower_s(char *s)
 /* The following function initializes the symbol table by inserting */
 /* P keywords into the dictionary and the external and global */
 /* environments into the scope stack. */
-void init_symbol_table()
+void init_symbol_table(void)
 {
 	STBUCKET *st;
 

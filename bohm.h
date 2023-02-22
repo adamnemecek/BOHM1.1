@@ -68,18 +68,26 @@ extern TERM *buildvoidterm();
 extern VARLIST *makevarlist();
 extern VARLIST *mergevarlist();
 FORM *allocate_form();
-extern void bool_connect();
-extern void clean();
-extern void connect();
-extern void connect1();
-extern void create_variable_binding();
-extern void destroy();
-extern void free_pattern();
+extern void bool_connect(FORM *form1,
+                         int portf1,
+                         int portf2);
+extern void clean(void);
+extern void connect(FORM *form1,
+                    int portf1,
+                    FORM *form2,
+                    int portf2);
+extern void connect1(FORM *form1,
+                     int portf1,
+                     FORM *form2,
+                     int portf2);
+extern void create_variable_binding(STBUCKET *st, FORM *rootform);
+extern void destroy(void);
+extern void free_pattern(PATTERN *p);
 extern void info();
-extern void init_destroy();
-extern void init_garbage();
-extern void init_symbol_table();
-extern void ins_del();
+extern void init_destroy(void);
+extern void init_garbage(void);
+extern void init_symbol_table(void);
+extern void ins_del(FORM *d);
 extern void inspect_driver();
 extern void int_connect();
 extern void menu();
