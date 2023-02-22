@@ -89,11 +89,15 @@ static VARENTRY *addbrackets(),
 	*lookfor(),
 	*remv(),
 	*remvp();
-static void allocate_var(),
 
-	closeglobalvars(),
-	intelligent_connect(),
-	inspect_connect();
+static VARENTRY *allocate_var(
+	STBUCKET *id,
+	FORM *form,
+	VARENTRY *nextvar);
+
+static void closeglobalvars();
+static void intelligent_connect();
+static void inspect_connect();
 
 TERM *allocate_term(
 	FORM *root_form,
@@ -109,7 +113,7 @@ TERM *buildvarterm(int level, STBUCKET *id)
 
 	newf = allocate_form(TRIANGLE, level);
 	newf->nlevel[1] = -1;
-	allocate_var(&newvar, id, newf, NULL);
+	newvar = allocate_var(id, newf, NULL);
 	return allocate_term(newf, 1, newvar);
 }
 
@@ -300,14 +304,9 @@ TERM *buildappterm(
 	TERM *fun,
 	TERM *arg)
 {
-
-	// VARENTRY *newvars;
-	/* free variables of the application */
-	FORM *newf;
-
 	TERM *temp = makebox(level, arg);
-
-	newf = allocate_form(APP, level);
+	/* free variables of the application */
+	FORM *newf = allocate_form(APP, level);
 
 	connect1(newf, 0, fun->root_form, fun->root_ports);
 	connect1(newf, 2, temp->root_form, temp->root_ports);
@@ -887,10 +886,7 @@ void bool_connect(
 /****************************************************************/
 
 /* the following function allocate a new variable entry */
-static void allocate_var(
-	/* reference to the pointer of the */
-	/* free variable entry to be created */
-	VARENTRY **newvar,
+static VARENTRY *allocate_var(
 	/* identifier of the variable */
 	STBUCKET *id,
 	/* graphical form for the variable */
@@ -898,10 +894,13 @@ static void allocate_var(
 	/* pointer to the next free variable */
 	VARENTRY *nextvar)
 {
-	*newvar = (VARENTRY *)malloc_da(sizeof(VARENTRY));
-	(*newvar)->name = id;
-	(*newvar)->var = form;
-	(*newvar)->next = nextvar;
+	/* reference to the pointer of the */
+	/* free variable entry to be created */
+	VARENTRY *newvar = (VARENTRY *)malloc_da(sizeof(VARENTRY));
+	newvar->name = id;
+	newvar->var = form;
+	newvar->next = nextvar;
+	return newvar;
 }
 
 /* the following function allocate a new term entry */
@@ -938,7 +937,6 @@ static VARENTRY *addbrackets(
 	{
 		return NULL;
 	}
-	VARENTRY *res;
 	/* resulting variable entry list  */
 	FORM *variab;
 	FORM *bracket;
@@ -970,11 +968,9 @@ static VARENTRY *addbrackets(
 		bracket = allocate_form(TRIANGLE, index);
 		bracket->nlevel[1] = 1;
 		connect(bracket, 1, variab, 0);
-		allocate_var(&res,
-					 listvar->name,
-					 bracket,
-					 addbrackets(index, listvar->next));
-		return res;
+		return allocate_var(listvar->name,
+							bracket,
+							addbrackets(index, listvar->next));
 	}
 }
 
