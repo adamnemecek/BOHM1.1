@@ -1066,26 +1066,28 @@ static void closeglobalvars(
 	VARENTRY *listvar)
 /* pointer to the variable list to be scanned */
 {
-	if (listvar != NULL)
+	if (listvar == NULL)
 	{
-		const FORM *formvar = listvar->var;
-		const FORM *formterm = ((listvar->name)->curr_binding)->root;
-		if (formvar->name == TRIANGLE)
-		{
-			FORM *newf = copy(formterm->nform[0],
-							  formterm->nport[0],
-							  formvar->nlevel[1]);
-			connect1(formvar->nform[1], formvar->nport[1],
-					 newf, formterm->nport[0]);
-		}
-		else
-		{
-			FORM *newf = copy(formterm->nform[0], formterm->nport[0], 0);
-			connect1(formvar, 0,
-					 newf, formterm->nport[0]);
-		}
-		closeglobalvars(listvar->next);
+		return;
 	}
+
+	const FORM *formvar = listvar->var;
+	const FORM *formterm = listvar->name->curr_binding->root;
+	if (formvar->name == TRIANGLE)
+	{
+		FORM *newf = copy(formterm->nform[0],
+						  formterm->nport[0],
+						  formvar->nlevel[1]);
+		connect1(formvar->nform[1], formvar->nport[1],
+				 newf, formterm->nport[0]);
+	}
+	else
+	{
+		FORM *newf = copy(formterm->nform[0], formterm->nport[0], 0);
+		connect1(formvar, 0,
+				 newf, formterm->nport[0]);
+	}
+	closeglobalvars(listvar->next);
 }
 
 /* The following function tries to merge two forms into a single one. */
@@ -1351,12 +1353,10 @@ VARLIST *makevarlist(
 	STBUCKET *e,
 	TERM *t)
 {
-	BINDINGID *bid;
-	VARLIST *vl;
-	bid = (BINDINGID *)malloc(sizeof(BINDINGID));
+	BINDINGID *bid = (BINDINGID *)malloc(sizeof(BINDINGID));
 	bid->id = e;
 	bid->form = t->root_form;
-	vl = (VARLIST *)malloc(sizeof(VARLIST));
+	VARLIST *vl = (VARLIST *)malloc(sizeof(VARLIST));
 	vl->next = NULL;
 	vl->id = bid;
 	return vl;
@@ -1365,8 +1365,7 @@ VARLIST *makevarlist(
 TERM *buildvoidterm(int level)
 
 {
-	FORM *newf;
-	newf = allocate_form(TRIANGLE, level);
+	FORM *newf = allocate_form(TRIANGLE, level);
 	newf->nlevel[1] = 0;
 	return allocate_term(newf, 0, NULL);
 }

@@ -29,33 +29,30 @@
 
 void inspect_driver(FORM *f)
 {
-	FORM *travel;
-	int c;
-	if (f != NULL)
-	{
-		printf("**** inspection mode ****\n\n");
-		printf("you are at ROOT node\n");
-		printf("input next port to visit (0, 1, 2 or 3)\n");
-		printf("input  q  to exit\n");
-
-		travel = f;
-		c = getchar();
-		while (c != 'q')
-		{
-			while (c == ' ')
-				c = getchar();
-			if (c >= '0' && c <= '3')
-				travel = inspect(c - '0', travel);
-			c = getchar();
-		}
-		printf("**** end of inspection mode ****\n\n");
-	}
-	else
+	if (f == NULL)
 	{
 		printf("******************************************\n");
 		printf("* No terms inserted yet . . .            *\n");
 		printf("******************************************\n");
+		return;
 	}
+
+	printf("**** inspection mode ****\n\n");
+	printf("you are at ROOT node\n");
+	printf("input next port to visit (0, 1, 2 or 3)\n");
+	printf("input  q  to exit\n");
+
+	FORM *travel = f;
+	int c = getchar();
+	while (c != 'q')
+	{
+		while (c == ' ')
+			c = getchar();
+		if (c >= '0' && c <= '3')
+			travel = inspect(c - '0', travel);
+		c = getchar();
+	}
+	printf("**** end of inspection mode ****\n\n");
 }
 
 extern FORM *inspect(int p, FORM *f)
@@ -132,10 +129,7 @@ extern FORM *inspect(int p, FORM *f)
 	}
 	else
 	{
-		FORM *nextform;
-		int nextport;
-
-		nextport = f->nport[p];
+		int nextport = f->nport[p];
 
 		if (nextport < 0)
 		{
@@ -159,7 +153,7 @@ extern FORM *inspect(int p, FORM *f)
 		}
 		else
 		{
-			nextform = f->nform[p];
+			FORM *nextform = f->nform[p];
 			switch (nextform->name)
 			{
 			case FAN:
