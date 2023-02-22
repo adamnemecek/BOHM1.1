@@ -182,9 +182,7 @@ extern void rdbk();
 extern void reduce_term(FORM *root);
 extern void reset_garbage(void);
 extern void save();
-extern void search_bucket(
-    STBUCKET **st,
-    char *id);
+extern STBUCKET *search_bucket(char *id);
 void show_garb_stat(bool seetime);
 extern void signal_error(const char *msg);
 extern void user(void);

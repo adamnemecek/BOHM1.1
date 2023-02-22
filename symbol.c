@@ -196,8 +196,7 @@ void init_symbol_table(void)
 
 	for (int i = 0; i < KEYWORDNUM; i++)
 	{
-		search_bucket(&st,
-					  keywords[i]);
+		st = search_bucket(keywords[i]);
 		st->token = FIRSTKEYWORD + i;
 	}
 
@@ -215,10 +214,7 @@ void init_symbol_table(void)
 /* given identifier. The bucket associated with the given identifier */
 /* becomes the first one in its list. */
 
-void search_bucket(
-	/* pointer to the bucket containing */
-	/* the identifier */
-	STBUCKET **st,
+STBUCKET *search_bucket(
 	/* identifier */
 	char *id)
 {
@@ -227,6 +223,7 @@ void search_bucket(
 	/* hash function */
 	STBUCKET *prev;
 	STBUCKET *curr;
+	STBUCKET *st;
 
 	/* turn the identifier into lower case */
 	to_lower_s(id);
@@ -244,14 +241,14 @@ void search_bucket(
 	if (curr == NULL)
 	/* the identifier is not in the list */
 	{
-		*st = allocate_bucket(id);
-		move_bucket(*st,
+		st = allocate_bucket(id);
+		move_bucket(st,
 					dict_index);
 	}
 	else
 	/* the identifier is already in the list */
 	{
-		*st = curr;
+		st = curr;
 		if (prev != curr)
 		/* the identifier is not in the first position */
 		{
@@ -260,6 +257,7 @@ void search_bucket(
 						dict_index);
 		}
 	}
+	return st;
 }
 
 /* The following function pushes a new local environment entry onto */
@@ -322,14 +320,7 @@ void create_variable_binding(
 /****************************************************************/
 
 /* The following function allocates a bucket for an identifier. */
-static STBUCKET *allocate_bucket(
-	/* pointer to the bucket to be */
-	/* allocated */
-	// STBUCKET **st,
-
-	/* identifier */
-	char *id)
-
+static STBUCKET *allocate_bucket(char *id)
 {
 	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
 	st->id = strdup_da(id);
