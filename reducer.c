@@ -1142,7 +1142,7 @@ static void reduce_form(
 			eq++;
 			int_connect(f1->nform[1],
 						f1->nport[1],
-						(long int)f1->nform[2] + (long int)f1->nform[0],
+						(FORM *)((long int)f1->nform[2] + (long int)f1->nform[0]),
 						INT);
 			myfree(f1);
 			break;
@@ -1179,7 +1179,7 @@ static void reduce_form(
 			eq++;
 			int_connect(f1->nform[1],
 						f1->nport[1],
-						(long int)f1->nform[2] - (long int)f1->nform[0],
+						(FORM *)((long int)f1->nform[2] - (long int)f1->nform[0]),
 						INT);
 
 			myfree(f1);
@@ -1217,7 +1217,7 @@ static void reduce_form(
 			eq++;
 			int_connect(f1->nform[1],
 						f1->nport[1],
-						(long int)f1->nform[2] * (long int)f1->nform[0],
+						(FORM *)((long int)f1->nform[2] * (long int)f1->nform[0]),
 						INT);
 			myfree(f1);
 			break;
@@ -1254,7 +1254,7 @@ static void reduce_form(
 			eq++;
 			int_connect(f1->nform[1],
 						f1->nport[1],
-						(long int)f1->nform[2] / (long int)f1->nform[0],
+						(FORM *)((long int)f1->nform[2] / (long int)f1->nform[0]),
 						INT);
 			myfree(f1);
 			break;
@@ -1291,7 +1291,7 @@ static void reduce_form(
 			eq++;
 			int_connect(f1->nform[1],
 						f1->nport[1],
-						(long int)f1->nform[2] % (long int)f1->nform[0],
+						(FORM *)((long int)f1->nform[2] % (long int)f1->nform[0]),
 						INT);
 			myfree(f1);
 			break;

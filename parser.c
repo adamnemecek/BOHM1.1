@@ -154,9 +154,17 @@
 #include <stdlib.h>
 #line 110 "parser.y"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int yylex();
 int yyerror(const char *msg);
-#line 119 "parser.y"
+
+#ifdef __cplusplus
+}
+#endif
+#line 127 "parser.y"
 
 bool			quit,
 			       /* flag indicating quit request */
@@ -169,7 +177,7 @@ FORM                    *lastinputterm,
 			       /* term in input */
                         *current_pos;
  			       /* for inspection mode */
-#line 137 "parser.y"
+#line 145 "parser.y"
 
 #define UNBOUND_VARIABLE "scoping error: undefined variable"
 
@@ -199,7 +207,7 @@ static bool defined(STBUCKET	*st);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 150 "parser.y"
+#line 158 "parser.y"
 {
 		/* pointer to a symbol */
 		/* table bucket */
@@ -219,7 +227,7 @@ typedef union YYSTYPE
 		PATTERN         *pattern;
 	}
 /* Line 193 of yacc.c.  */
-#line 223 "y.tab.c"
+#line 231 "y.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -232,7 +240,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 236 "y.tab.c"
+#line 244 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -564,14 +572,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   258,   258,   259,   259,   269,   276,   283,   289,   294,
-     301,   306,   311,   316,   322,   337,   340,   353,   356,   362,
-     365,   370,   378,   388,   387,   400,   404,   408,   413,   418,
-     423,   428,   433,   438,   443,   448,   453,   458,   463,   468,
-     475,   479,   483,   487,   497,   502,   507,   501,   519,   523,
-     518,   535,   534,   546,   551,   556,   561,   566,   571,   576,
-     583,   587,   591,   596,   601,   606,   613,   614,   620,   619,
-     630,   634,   641,   645,   658,   670,   677,   681,   692
+       0,   266,   266,   267,   267,   277,   284,   291,   297,   302,
+     309,   314,   319,   324,   330,   345,   348,   361,   364,   370,
+     373,   378,   386,   396,   395,   408,   412,   416,   421,   426,
+     431,   436,   441,   446,   451,   456,   461,   466,   471,   476,
+     483,   487,   491,   495,   505,   510,   515,   509,   527,   531,
+     526,   543,   542,   554,   559,   564,   569,   574,   579,   584,
+     591,   595,   599,   604,   609,   614,   621,   622,   628,   627,
+     638,   642,   649,   653,   666,   678,   685,   689,   700
 };
 #endif
 
@@ -1664,7 +1672,7 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 259 "parser.y"
+#line 267 "parser.y"
     {
 				   app_nesting_depth = 0;
 				   destroy();
@@ -1673,14 +1681,14 @@ yyreduce:
     break;
 
   case 4:
-#line 265 "parser.y"
+#line 273 "parser.y"
     {
 				   (yyval.root) = (yyvsp[(2) - (2)].root);
 				}
     break;
 
   case 5:
-#line 269 "parser.y"
+#line 277 "parser.y"
     {
 				   printf("no more input");
 				   quit = true;
@@ -1689,7 +1697,7 @@ yyreduce:
     break;
 
   case 6:
-#line 277 "parser.y"
+#line 285 "parser.y"
     {
 				   if ((yyvsp[(3) - (4)].root) == NULL) (yyvsp[(3) - (4)].root)=lastinputterm;
 				   (yyval.root) = (yyvsp[(3) - (4)].root);
@@ -1699,7 +1707,7 @@ yyreduce:
     break;
 
   case 7:
-#line 284 "parser.y"
+#line 292 "parser.y"
     {
 				   if ((yyvsp[(3) - (5)].root) == NULL) (yyvsp[(3) - (5)].root)=current_pos;
 				   current_pos = inspect((yyvsp[(4) - (5)].num_const),(yyvsp[(3) - (5)].root));
@@ -1708,7 +1716,7 @@ yyreduce:
     break;
 
   case 8:
-#line 290 "parser.y"
+#line 298 "parser.y"
     {
 				   quit = true;
 				   YYACCEPT;
@@ -1716,7 +1724,7 @@ yyreduce:
     break;
 
   case 9:
-#line 295 "parser.y"
+#line 303 "parser.y"
     {
 				  include_file = (yyvsp[(3) - (4)].astring);
 				  loading_mode = true;
@@ -1726,7 +1734,7 @@ yyreduce:
     break;
 
   case 10:
-#line 302 "parser.y"
+#line 310 "parser.y"
     {
 				   user();
 				   YYACCEPT;
@@ -1734,7 +1742,7 @@ yyreduce:
     break;
 
   case 11:
-#line 307 "parser.y"
+#line 315 "parser.y"
     {
 				   menu((yyvsp[(3) - (4)].num_const));
 				   YYACCEPT;
@@ -1742,7 +1750,7 @@ yyreduce:
     break;
 
   case 12:
-#line 312 "parser.y"
+#line 320 "parser.y"
     {
 				   info((yyvsp[(3) - (4)].astring));
 				   YYACCEPT;
@@ -1750,7 +1758,7 @@ yyreduce:
     break;
 
   case 13:
-#line 317 "parser.y"
+#line 325 "parser.y"
     {
 				   save((yyvsp[(3) - (4)].astring),lastinputterm,NULL);
                                    free((yyvsp[(3) - (4)].astring));
@@ -1759,7 +1767,7 @@ yyreduce:
     break;
 
   case 14:
-#line 323 "parser.y"
+#line 331 "parser.y"
     {
 				   if (defined((yyvsp[(4) - (5)].st_bucket)))
 				      save((yyvsp[(3) - (5)].astring),(yyvsp[(4) - (5)].st_bucket)->curr_binding->root,(yyvsp[(4) - (5)].st_bucket)->id);
@@ -1774,14 +1782,14 @@ yyreduce:
     break;
 
   case 15:
-#line 337 "parser.y"
+#line 345 "parser.y"
     {
 				   (yyval.root) = NULL;
 				}
     break;
 
   case 16:
-#line 341 "parser.y"
+#line 349 "parser.y"
     {
 				   if (defined((yyvsp[(1) - (1)].st_bucket)))
 				      (yyval.root) = (yyvsp[(1) - (1)].st_bucket)->curr_binding->root;
@@ -1794,35 +1802,35 @@ yyreduce:
     break;
 
   case 17:
-#line 353 "parser.y"
+#line 361 "parser.y"
     {
 				   (yyval.astring) = "";
 				}
     break;
 
   case 18:
-#line 357 "parser.y"
+#line 365 "parser.y"
     {
 				   (yyval.astring) = (yyvsp[(1) - (1)].astring);
 				}
     break;
 
   case 19:
-#line 362 "parser.y"
+#line 370 "parser.y"
     {
 				   (yyval.num_const) = -1;
 				}
     break;
 
   case 20:
-#line 366 "parser.y"
+#line 374 "parser.y"
     {
 				   (yyval.num_const) = (yyvsp[(1) - (1)].num_const);
 				}
     break;
 
   case 21:
-#line 371 "parser.y"
+#line 379 "parser.y"
     {
 				  lastinputterm = closeterm(0,(yyvsp[(1) - (2)].term));
 				  current_pos = lastinputterm;
@@ -1833,7 +1841,7 @@ yyreduce:
     break;
 
   case 22:
-#line 379 "parser.y"
+#line 387 "parser.y"
     {
 				  no_destroy();
 				  YYACCEPT;
@@ -1841,14 +1849,14 @@ yyreduce:
     break;
 
   case 23:
-#line 388 "parser.y"
+#line 396 "parser.y"
     {
 				  app_nesting_depth++;
 				}
     break;
 
   case 24:
-#line 392 "parser.y"
+#line 400 "parser.y"
     {
 				  app_nesting_depth--;
 				  lastinputterm = closeterm(1,(yyvsp[(5) - (5)].term));
@@ -1858,21 +1866,21 @@ yyreduce:
     break;
 
   case 25:
-#line 401 "parser.y"
+#line 409 "parser.y"
     {
                                   (yyval.term) = (yyvsp[(1) - (1)].term);
                                 }
     break;
 
   case 26:
-#line 405 "parser.y"
+#line 413 "parser.y"
     {
 		 		  (yyval.term) = buildminusterm(app_nesting_depth, (yyvsp[(2) - (2)].term));
 				}
     break;
 
   case 27:
-#line 409 "parser.y"
+#line 417 "parser.y"
     {
 				  (yyval.term) = buildandterm(app_nesting_depth,
 						       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
@@ -1880,7 +1888,7 @@ yyreduce:
     break;
 
   case 28:
-#line 414 "parser.y"
+#line 422 "parser.y"
     {
 				  (yyval.term) = buildorterm(app_nesting_depth,
 						       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
@@ -1888,7 +1896,7 @@ yyreduce:
     break;
 
   case 29:
-#line 419 "parser.y"
+#line 427 "parser.y"
     {
 		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),LESS);
@@ -1896,7 +1904,7 @@ yyreduce:
     break;
 
   case 30:
-#line 424 "parser.y"
+#line 432 "parser.y"
     {
 		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),EQ);
@@ -1904,7 +1912,7 @@ yyreduce:
     break;
 
   case 31:
-#line 429 "parser.y"
+#line 437 "parser.y"
     {
 				  (yyval.term) = buildrelopterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),NOTEQ);
@@ -1912,7 +1920,7 @@ yyreduce:
     break;
 
   case 32:
-#line 434 "parser.y"
+#line 442 "parser.y"
     {
 		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MORE);
@@ -1920,7 +1928,7 @@ yyreduce:
     break;
 
   case 33:
-#line 439 "parser.y"
+#line 447 "parser.y"
     {
 		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),LEQ);
@@ -1928,7 +1936,7 @@ yyreduce:
     break;
 
   case 34:
-#line 444 "parser.y"
+#line 452 "parser.y"
     {
 		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MEQ);
@@ -1936,7 +1944,7 @@ yyreduce:
     break;
 
   case 35:
-#line 449 "parser.y"
+#line 457 "parser.y"
     {
 				  (yyval.term) = buildmatterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),ADD);
@@ -1944,7 +1952,7 @@ yyreduce:
     break;
 
   case 36:
-#line 454 "parser.y"
+#line 462 "parser.y"
     {
 		 		  (yyval.term) = buildmatterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),SUB);
@@ -1952,7 +1960,7 @@ yyreduce:
     break;
 
   case 37:
-#line 459 "parser.y"
+#line 467 "parser.y"
     {
 		 		  (yyval.term) = buildmatterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),PROD);
@@ -1960,7 +1968,7 @@ yyreduce:
     break;
 
   case 38:
-#line 464 "parser.y"
+#line 472 "parser.y"
     {
 		 		  (yyval.term) = buildmatterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),DIV);
@@ -1968,7 +1976,7 @@ yyreduce:
     break;
 
   case 39:
-#line 469 "parser.y"
+#line 477 "parser.y"
     {
 				  (yyval.term) = buildmatterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MOD);
@@ -1976,28 +1984,28 @@ yyreduce:
     break;
 
   case 40:
-#line 476 "parser.y"
+#line 484 "parser.y"
     {
 				  (yyval.term) = buildtrueterm(app_nesting_depth);
 				}
     break;
 
   case 41:
-#line 480 "parser.y"
+#line 488 "parser.y"
     {
 				  (yyval.term) = buildfalseterm(app_nesting_depth);
 				}
     break;
 
   case 42:
-#line 484 "parser.y"
+#line 492 "parser.y"
     {
 				  (yyval.term) = buildintterm(app_nesting_depth,(yyvsp[(1) - (1)].num_const));
 				}
     break;
 
   case 43:
-#line 488 "parser.y"
+#line 496 "parser.y"
     {
 				  if (defined((yyvsp[(1) - (1)].st_bucket)))
 				     (yyval.term) = buildvarterm(app_nesting_depth,(yyvsp[(1) - (1)].st_bucket));
@@ -2010,14 +2018,14 @@ yyreduce:
     break;
 
   case 44:
-#line 498 "parser.y"
+#line 506 "parser.y"
     {
 				  (yyval.term) = (yyvsp[(2) - (3)].term);
 				}
     break;
 
   case 45:
-#line 502 "parser.y"
+#line 510 "parser.y"
     {
 				  push_local_env();
                                   app_nesting_depth++;
@@ -2025,14 +2033,14 @@ yyreduce:
     break;
 
   case 46:
-#line 507 "parser.y"
+#line 515 "parser.y"
     {
                                   app_nesting_depth--;
                                 }
     break;
 
   case 47:
-#line 511 "parser.y"
+#line 519 "parser.y"
     {
                                   pattmp=(yyvsp[(3) - (6)].pattern);
                                   (yyval.term) = 
@@ -2043,14 +2051,14 @@ yyreduce:
     break;
 
   case 48:
-#line 519 "parser.y"
+#line 527 "parser.y"
     {
 				  app_nesting_depth++;
 				}
     break;
 
   case 49:
-#line 523 "parser.y"
+#line 531 "parser.y"
     {
 				  app_nesting_depth--;
 				  push_local_env();
@@ -2059,7 +2067,7 @@ yyreduce:
     break;
 
   case 50:
-#line 529 "parser.y"
+#line 537 "parser.y"
     {
 				  (yyval.term) = buildletinterm(app_nesting_depth,
 						      (yyvsp[(2) - (8)].st_bucket),(yyvsp[(5) - (8)].term),(yyvsp[(8) - (8)].term));
@@ -2068,7 +2076,7 @@ yyreduce:
     break;
 
   case 51:
-#line 535 "parser.y"
+#line 543 "parser.y"
     {
 				  push_local_env();
 				  create_variable_binding((yyvsp[(2) - (3)].st_bucket), NULL);
@@ -2077,7 +2085,7 @@ yyreduce:
     break;
 
   case 52:
-#line 541 "parser.y"
+#line 549 "parser.y"
     {
 				  (yyval.term) = build_mu_term(--app_nesting_depth,
 						     (yyvsp[(2) - (5)].st_bucket),(yyvsp[(5) - (5)].term));
@@ -2086,7 +2094,7 @@ yyreduce:
     break;
 
   case 53:
-#line 547 "parser.y"
+#line 555 "parser.y"
     {
 				  (yyval.term) = buildifelseterm(app_nesting_depth,
 						       (yyvsp[(2) - (6)].term),(yyvsp[(4) - (6)].term),(yyvsp[(6) - (6)].term));
@@ -2094,14 +2102,14 @@ yyreduce:
     break;
 
   case 54:
-#line 552 "parser.y"
+#line 560 "parser.y"
     {
 				  (yyval.term) = (yyvsp[(1) - (1)].term);
 				}
     break;
 
   case 55:
-#line 557 "parser.y"
+#line 565 "parser.y"
     {
 				  (yyval.term) = buildnotterm(app_nesting_depth,
 		 		  		       (yyvsp[(2) - (2)].term));
@@ -2109,7 +2117,7 @@ yyreduce:
     break;
 
   case 56:
-#line 562 "parser.y"
+#line 570 "parser.y"
     {
 		 		  (yyval.term) = buildlist(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (6)].term),(yyvsp[(5) - (6)].term));
@@ -2117,7 +2125,7 @@ yyreduce:
     break;
 
   case 57:
-#line 567 "parser.y"
+#line 575 "parser.y"
     {
 		 		  (yyval.term) = buildcarterm(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
@@ -2125,7 +2133,7 @@ yyreduce:
     break;
 
   case 58:
-#line 572 "parser.y"
+#line 580 "parser.y"
     {
 				  (yyval.term) = buildcdrterm(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
@@ -2133,7 +2141,7 @@ yyreduce:
     break;
 
   case 59:
-#line 577 "parser.y"
+#line 585 "parser.y"
     {
 		 		  (yyval.term) = buildtestnil(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
@@ -2141,28 +2149,28 @@ yyreduce:
     break;
 
   case 60:
-#line 584 "parser.y"
+#line 592 "parser.y"
     {
 				  (yyval.term) = buildnillist(app_nesting_depth);
 				}
     break;
 
   case 61:
-#line 588 "parser.y"
+#line 596 "parser.y"
     {
                                   (yyval.term) = buildnillist(app_nesting_depth);
 				}
     break;
 
   case 62:
-#line 592 "parser.y"
+#line 600 "parser.y"
     {
 				  (yyval.term) = (yyvsp[(2) - (2)].term);
 				}
     break;
 
   case 63:
-#line 597 "parser.y"
+#line 605 "parser.y"
     {
 				  (yyval.term) = buildlist(app_nesting_depth,
 						(yyvsp[(1) - (2)].term),NULL);
@@ -2170,7 +2178,7 @@ yyreduce:
     break;
 
   case 64:
-#line 602 "parser.y"
+#line 610 "parser.y"
     {
 				  (yyval.term) = buildlist(app_nesting_depth,
 						(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
@@ -2178,7 +2186,7 @@ yyreduce:
     break;
 
   case 65:
-#line 607 "parser.y"
+#line 615 "parser.y"
     {
 				  (yyval.term) = buildlist(app_nesting_depth,
 						 (yyvsp[(1) - (4)].term),(yyvsp[(3) - (4)].term));
@@ -2186,7 +2194,7 @@ yyreduce:
     break;
 
   case 67:
-#line 615 "parser.y"
+#line 623 "parser.y"
     {
 		 		  (yyval.term) = buildlist(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
@@ -2194,28 +2202,28 @@ yyreduce:
     break;
 
   case 68:
-#line 620 "parser.y"
+#line 628 "parser.y"
     {
 				  app_nesting_depth++;
 				}
     break;
 
   case 69:
-#line 624 "parser.y"
+#line 632 "parser.y"
     { app_nesting_depth--;
 				  (yyval.term) = buildappterm(app_nesting_depth,(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
 
   case 70:
-#line 631 "parser.y"
+#line 639 "parser.y"
     {
                                   (yyval.term)=(yyvsp[(1) - (1)].term);
                                 }
     break;
 
   case 71:
-#line 635 "parser.y"
+#line 643 "parser.y"
     {
 		 		  (yyval.term) = buildlist(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
@@ -2223,14 +2231,14 @@ yyreduce:
     break;
 
   case 72:
-#line 642 "parser.y"
+#line 650 "parser.y"
     {
                                   (yyval.pattern)=(yyvsp[(1) - (1)].pattern);
                                 }
     break;
 
   case 73:
-#line 646 "parser.y"
+#line 654 "parser.y"
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
@@ -2245,7 +2253,7 @@ yyreduce:
     break;
 
   case 74:
-#line 659 "parser.y"
+#line 667 "parser.y"
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
@@ -2260,7 +2268,7 @@ yyreduce:
     break;
 
   case 75:
-#line 671 "parser.y"
+#line 679 "parser.y"
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=buildnillist(app_nesting_depth);
@@ -2270,14 +2278,14 @@ yyreduce:
     break;
 
   case 76:
-#line 678 "parser.y"
+#line 686 "parser.y"
     {
                                   (yyval.pattern)=(yyvsp[(2) - (3)].pattern);
                                 }
     break;
 
   case 77:
-#line 682 "parser.y"
+#line 690 "parser.y"
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
@@ -2290,7 +2298,7 @@ yyreduce:
     break;
 
   case 78:
-#line 693 "parser.y"
+#line 701 "parser.y"
     {
                                   error_detected = true;
                                   yyerrok;
@@ -2300,7 +2308,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 2304 "y.tab.c"
+#line 2312 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2514,7 +2522,7 @@ yyreturn:
 }
 
 
-#line 700 "parser.y"
+#line 708 "parser.y"
 
 
 /* The following function checks if an identifier has been */

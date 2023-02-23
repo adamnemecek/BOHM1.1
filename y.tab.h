@@ -120,7 +120,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 150 "parser.y"
+#line 158 "parser.y"
 {
 		/* pointer to a symbol */
 		/* table bucket */

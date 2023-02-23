@@ -127,17 +127,17 @@ static STBUCKET *dictionary[DICTSIZE];
 static int curr_nesting_depth;
 /* current nesting depth */
 
-static int hash_pjw(char *id);
+static int hash_pjw(const char *id);
 static void allocate_local_env_entry(void);
 
 static void move_bucket(
 	STBUCKET *st,
 	int dict_index);
 
-static STBUCKET *allocate_bucket(char *id);
+static STBUCKET *allocate_bucket(const char *id);
 
 /* keywords */
-static char *keywords[] =
+const char *keywords[] =
 	{
 		"let",
 		"in",
@@ -216,13 +216,13 @@ void init_symbol_table(void)
 
 STBUCKET *search_bucket(
 	/* identifier */
-	char *id)
+	const char *id)
 {
 	STBUCKET *curr;
 	STBUCKET *st;
 
 	/* turn the identifier into lower case */
-	to_lower_s(id);
+	// to_lower_s(id);
 
 	/* apply the hash function */
 	int dict_index = hash_pjw(id);
@@ -311,7 +311,7 @@ void create_variable_binding(
 /****************************************************************/
 
 /* The following function allocates a bucket for an identifier. */
-static STBUCKET *allocate_bucket(char *id)
+static STBUCKET *allocate_bucket(const char *id)
 {
 	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
 	st->id = strdup_da(id);
@@ -337,7 +337,7 @@ static void move_bucket(
 }
 
 /* The following function implements Weinberger's hash function. */
-static int hash_pjw(char *id)
+static int hash_pjw(const char *id)
 {
 	unsigned h;
 

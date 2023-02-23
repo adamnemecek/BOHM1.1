@@ -66,14 +66,9 @@ char *malloc_da(unsigned size)
 
 /* The following function implements a control interface for the */
 /* library function strdup(). */
-char *
-strdup_da(char *s)
-
-/* string to be allocated */
+char *strdup_da(const char *s)
 {
-	char *p;
-
-	p = strdup(s);
+	char *p = strdup(s);
 	if (!p)
 		signal_crash(NOTENOUGHMEMORY);
 

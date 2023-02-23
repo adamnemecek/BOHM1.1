@@ -130,7 +130,7 @@ static void garbage(
 	FORM *erase)
 {
 	bool end = false;
-	FORM *form, *newform;
+	FORM *newform;
 	int port;
 	int p1, p2;
 
@@ -139,7 +139,7 @@ static void garbage(
 	myfree(erase);
 	while (!end)
 	{
-		form = nextform;
+		FORM *form = nextform;
 		port = nextport;
 		if (port < 0)
 		{

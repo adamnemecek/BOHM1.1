@@ -23,8 +23,20 @@ extern unsigned limit;
 extern unsigned max_nodes;
 extern unsigned num_nodes;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+    int yylex();
+    int yyerror(const char *msg);
+
+#ifdef __cplusplus
+}
+#endif
+
 char *malloc_da(unsigned size);
-char *strdup_da(char *s);
+char *strdup_da(const char *s);
 
 FORM *closeterm(
     int level,
@@ -189,7 +201,7 @@ void save(
     char *name,
     FORM *root,
     char *id);
-STBUCKET *search_bucket(char *id);
+STBUCKET *search_bucket(const char *id);
 void show_garb_stat(bool seetime);
 void signal_error(const char *msg);
 void user(void);
