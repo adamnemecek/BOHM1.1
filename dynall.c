@@ -55,12 +55,9 @@ char *malloc_da(unsigned size)
 /* size of the object to be */
 /* allocated */
 {
-	char *p;
-
-	p = (char *)malloc(size);
+	char *p = (char *)malloc(size);
 	if (!p)
 		signal_crash(NOTENOUGHMEMORY);
-
 	return p;
 }
 

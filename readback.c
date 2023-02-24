@@ -22,11 +22,11 @@
 static int left_to_print;
 /* maximum number of characters yet to print */
 
-static void rdbk_1(
+void rdbk_1(
     FORM *form,
     int port);
 
-static void rdbk_list(
+void rdbk_list(
     FORM *form,
     int port);
 
@@ -41,7 +41,7 @@ void rdbk(FORM *form)
   printf("\n");
 }
 
-static void rdbk_1(
+void rdbk_1(
     FORM *form,
     int port)
 {
@@ -106,7 +106,7 @@ static void rdbk_1(
     left_to_print -= printf("...");
 }
 
-static void rdbk_list(
+void rdbk_list(
     FORM *form,
     int port)
 {
