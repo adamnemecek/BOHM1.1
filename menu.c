@@ -112,7 +112,7 @@ void info(char *choices)
 		select = 'x';
 	else
 		select = choices[1];
-	while ((select != 'y') && (select != 'n'))
+	while (select != 'y' && select != 'n')
 	{
 		printf("Display number of interactions?\n");
 		printf("Please answer 'y' or 'n' (type 'h' for help).\n\n>");
@@ -194,7 +194,7 @@ void info(char *choices)
 		select = 'x';
 	else
 		select = choices[3];
-	while ((select != 'y') && (select != 'n'))
+	while (select != 'y' && select != 'n')
 	{
 		printf("Display garbage collection informations ?\n");
 		printf("Please answer 'y' or 'n' (type 'h' for help).\n\n>");
@@ -269,7 +269,7 @@ static bool do_menu1(void)
 {
 	bool cont = false;
 	option = 0;
-	while ((option != 1) && (option != 2) && (option != 3))
+	while (option != 1 && option != 2 && option != 3)
 	{
 		printf("Please choose one of the following strategies:\n");
 		printf("1. Garbage collection performed whenever possible.\n");
@@ -307,7 +307,7 @@ static bool do_menu2(void)
 {
 	bool cont = false;
 	int select = 0;
-	while ((select != 1) && (select != 2) && (select != 3) && (select != 4))
+	while (select != 1 && select != 2 && select != 3 && select != 4)
 	{
 		printf("Please choose a limit for memory occupation:\n");
 		printf("1. 5000 operators.\n");
@@ -349,14 +349,14 @@ static bool do_menu2(void)
 
 static void do_menu3(void)
 {
-	while ((limit < 1000) || (limit > 50000))
+	while (limit < 1000 || limit > 50000)
 	{
 		printf("Please insert an upper bound for memory utililization:\n>");
 		scanf("%u", &limit);
 		while (getchar() != '\n')
 			;
 		system("clear");
-		if ((limit < 1000) || (limit > 50000))
+		if (limit < 1000 || limit > 50000)
 		{
 			limit = 0;
 			printf("You have to fix an upper bound for the number of\n");

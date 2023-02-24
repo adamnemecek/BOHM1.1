@@ -229,7 +229,7 @@ STBUCKET *search_bucket(
 
 	/* scan the bucket list indicated by the hash function */
 	STBUCKET *prev = curr = dictionary[dict_index];
-	while ((curr != NULL) && (strcmp(id, curr->id) != 0))
+	while (curr != NULL && strcmp(id, curr->id) != 0)
 	{
 		prev = curr;
 		curr = curr->next_st_bucket;
