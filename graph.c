@@ -233,7 +233,7 @@ TERM *buildplambdaterm(
 					fprintf(stderr, "You lose\n");
 					exit(1974);
 				}
-				if ((varform->name == TRIANGLE) && (varform->nlevel[1] == 0))
+				if (varform->name == TRIANGLE && varform->nlevel[1] == 0)
 				{
 					connect(varform->nform[1],
 							varform->nport[1],
@@ -931,15 +931,15 @@ static VARENTRY *addbrackets(
 		{
 		case TRIANGLE:
 			variab->index = index;
-			variab->nlevel[1] = variab->nlevel[1] + 1;
+			variab->nlevel[1]++;
 			break;
 		case CDR1:
 		case CAR1:
 		case TESTNIL1:
 		case FAN:
 			variab->index--;
-			variab->nlevel[1] = variab->nlevel[1] + 1;
-			variab->nlevel[2] = variab->nlevel[2] + 1;
+			variab->nlevel[1]++;
+			variab->nlevel[2]++;
 			break;
 		};
 		listvar->next = addbrackets(index, listvar->next);

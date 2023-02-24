@@ -219,7 +219,7 @@ static void reduce_redex(
 	FORM *new1,
 		*new2;
 
-	if ((option == 2) && (del_head != NULL) && (num_nodes > limit))
+	if (option == 2 && del_head != NULL && num_nodes > limit)
 		clean();
 
 	if (f1->index == f2->index)
@@ -228,8 +228,8 @@ static void reduce_redex(
 			switch (f1->name)
 			{
 			case FAN:
-				if ((f1->nlevel[1] != f2->nlevel[1]) ||
-					(f1->nlevel[2] != f2->nlevel[2]))
+				if (f1->nlevel[1] != f2->nlevel[1] ||
+					f1->nlevel[2] != f2->nlevel[2])
 					printf("warning\n");
 				connect1(f1->nform[1],
 						 f1->nport[1],
@@ -630,7 +630,7 @@ static void reduce_redex(
 			case APP:
 			case LAMBDA:
 				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
-				f2->index = f2->index + f1->nlevel[1];
+				f2->index += f1->nlevel[1];
 				new2 = allocate_form(FAN, f1->index);
 				new2->num_safe = f1->num_safe;
 				new2->nlevel[1] = f1->nlevel[1];
@@ -651,7 +651,7 @@ static void reduce_redex(
 			case CDR1:
 			case CONS1:
 				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
-				f2->index = f2->index + f1->nlevel[1];
+				f2->index += f1->nlevel[1];
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
 				new1->nlevel[2] = f2->nlevel[2];
@@ -676,7 +676,7 @@ static void reduce_redex(
 				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
-				f2->index = f2->index + f1->nlevel[1];
+				f2->index += f1->nlevel[1];
 				connect1(f2, 0, f1->nform[1], f1->nport[1]);
 				connect1(new1, 0, f1->nform[2], f1->nport[2]);
 				connect1(f1, 0, f2->nform[1], f2->nport[1]);
@@ -703,7 +703,7 @@ static void reduce_redex(
 				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nform[2] = f2->nform[2];
-				f2->index = f2->index + f1->nlevel[1];
+				f2->index += f1->nlevel[1];
 				connect1(f2, 0, f1->nform[1], f1->nport[1]);
 				connect1(new1, 0, f1->nform[2], f1->nport[2]);
 				connect1(f1, 0, f2->nform[1], f2->nport[1]);
@@ -749,7 +749,7 @@ static void reduce_redex(
 				new1->nlevel[1] = f1->nlevel[1];
 				new1->num_safe = f1->num_safe;
 
-				f2->index = f2->index + f1->nlevel[1];
+				f2->index += f1->nlevel[1];
 
 				connect1(f2, 0, f1->nform[1], f1->nport[1]);
 				connect1(new1, 0, f2->nform[1], f2->nport[1]);
@@ -777,7 +777,7 @@ static void reduce_redex(
 			case LAMBDAUNB:
 			case UNS_FAN1:
 			case UNS_FAN2:
-				f2->index = f2->index + f1->nlevel[1];
+				f2->index += f1->nlevel[1];
 
 				connect1(f2, 0, f1->nform[1], f1->nport[1]);
 				connect1(f1, 0, f2->nform[1], f2->nport[1]);
@@ -1470,7 +1470,7 @@ static FORM *lo_redex(
 				switch (next->name)
 				{
 				case TRIANGLE:
-					next->nlevel[1] = next->nlevel[1] + temp->nlevel[1];
+					next->nlevel[1] += temp->nlevel[1];
 					if (next->nlevel[1] == 0)
 					{
 						connect1(temp->nform[1],
@@ -1492,7 +1492,7 @@ static FORM *lo_redex(
 					break;
 
 				case FAN:
-					next->nlevel[p] = next->nlevel[p] + temp->nlevel[1];
+					next->nlevel[p] += temp->nlevel[1];
 					connect(temp->nform[1],
 							temp->nport[1],
 							next, p);
@@ -1508,8 +1508,8 @@ static FORM *lo_redex(
 				case TRIANGLE:
 					temp->num_safe = true;
 					temp->index = next->index;
-					temp->nlevel[1] = temp->nlevel[1] + next->nlevel[1];
-					temp->nlevel[2] = temp->nlevel[2] + next->nlevel[1];
+					temp->nlevel[1] += next->nlevel[1];
+					temp->nlevel[2] += next->nlevel[1];
 					connect1(temp, 0,
 							 next->nform[0],
 							 next->nport[0]);
