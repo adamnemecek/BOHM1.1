@@ -145,9 +145,7 @@ static void stampa(
 	int p,
 	int card)
 {
-	int p1;
-
-	p1 = form->nport[p];
+	const int p1 = form->nport[p];
 	fprintf(save_file, "%4d ", card);
 	put_form(form);
 	if (p1 < 0)
@@ -168,18 +166,17 @@ static void save_aux(
 	FORM *root,
 	int p)
 {
-	int n, p1;
-
 	int card = present(root);
-	if (card)
+	if (!card)
 	{
-		n = num_port(root->name);
-		for (p1 = 0; p1 < n; p1++)
-			stampa(root, p1, card);
-		for (p1 = 0; p1 < n; p1++)
-			if (root->nport[p1] >= 0)
-				save_aux(root->nform[p1], root->nport[p1]);
+		return;
 	}
+	int n = num_port(root->name);
+	for (int p1 = 0; p1 < n; p1++)
+		stampa(root, p1, card);
+	for (int p1 = 0; p1 < n; p1++)
+		if (root->nport[p1] >= 0)
+			save_aux(root->nform[p1], root->nport[p1]);
 }
 
 /* The following function prints form name.			*/
@@ -318,7 +315,7 @@ static void put_form(
 }
 
 /* The following function prints NIL, INT and BOOL forms names.	*/
-static void put_int(FORM *f, int p)
+static void put_int(FORM *f, const int p)
 {
 	switch (p)
 	{
