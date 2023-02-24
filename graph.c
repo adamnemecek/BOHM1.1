@@ -173,7 +173,7 @@ static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
 	{
 		FORM *newf1 = allocate_form(LAMBDA, level);
 		FORM *varform = boundvar->var;
-		if ((varform->name == TRIANGLE) && (varform->nlevel[1] == 0))
+		if (varform->name == TRIANGLE && varform->nlevel[1] == 0)
 		{
 			connect(varform->nform[1],
 					varform->nport[1],

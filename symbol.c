@@ -173,7 +173,7 @@ const char *keywords[] =
 static void to_lower_s(char *s)
 {
 	for (; *s != '\0'; s++)
-		if (('A' <= *s) && (*s <= 'Z'))
+		if ('A' <= *s && *s <= 'Z')
 			*s += 'a' - 'A';
 }
 

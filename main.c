@@ -24,11 +24,11 @@ static void compile(char *file)
 	else
 	{
 		loading_mode = 1;
-		while ((quit == 0) && (error_detected == false))
+		while (quit == 0 && !error_detected)
 		{
 			yyparse();
 		}
-		if (error_detected == false)
+		if (!error_detected)
 			printf("\n******** %s loaded ********\n", file);
 		else
 		{
@@ -62,10 +62,10 @@ int main(
 				exit(1);
 			}
 		else if (argc == 3)
-			if (((strcmp(argv[1], "-s") == 0) &&
-				 (strcmp(argv[2], "-i") == 0)) ||
-				((strcmp(argv[2], "-s") == 0) &&
-				 (strcmp(argv[1], "-i") == 0)))
+			if ((strcmp(argv[1], "-s") == 0 &&
+				 strcmp(argv[2], "-i") == 0) ||
+				(strcmp(argv[2], "-s") == 0 &&
+				 strcmp(argv[1], "-i") == 0))
 			{
 
 				// info();

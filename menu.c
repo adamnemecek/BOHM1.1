@@ -75,7 +75,7 @@ void info(char *choices)
 		select = 'x';
 	else
 		select = choices[0];
-	while ((select != 'y') && (select != 'n'))
+	while (select != 'y' && select != 'n')
 	{
 		printf("Display time?\n");
 		printf("Please answer 'y' or 'n' (type 'h' for help).\n\n>");
@@ -152,7 +152,7 @@ void info(char *choices)
 		select = 'x';
 	else
 		select = choices[2];
-	while ((select != 'y') && (select != 'n'))
+	while (select != 'y' && select != 'n')
 	{
 		printf("Display memory occupation informations ?\n");
 		printf("Please answer 'y' or 'n' (type 'h' for help).\n\n>");
@@ -295,7 +295,7 @@ static bool do_menu1(void)
 			printf("Option 3. prevents  g.c. if not explicitly called\n");
 			printf("by the user via the '#garbage' directive.\n\n");
 		}
-		else if ((option != 1) && (option != 2) && (option != 3))
+		else if (option != 1 && option != 2 && option != 3)
 			printf("Illegal option . . .\n\n");
 	}
 	if (option == 2)
@@ -326,7 +326,7 @@ static bool do_menu2(void)
 			printf("specified value.\n");
 			printf("Option 4. allows you to input a different value.\n");
 		}
-		else if ((select != 1) && (select != 2) && (select != 3) && (select != 4))
+		else if (select != 1 && select != 2 && select != 3 && select != 4)
 			printf("Illegal option . . .\n\n");
 	}
 	switch (select)

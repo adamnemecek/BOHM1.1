@@ -134,7 +134,7 @@ void reduce_term(
 	init_stack();
 	f1 = lo_redex(root);
 	reset_garbage();
-	while ((f1 != root) && (!type_error))
+	while (f1 != root && !type_error)
 	{
 		if (f1->nport[0] == 0)
 		{
@@ -195,7 +195,7 @@ void reduce_term(
 		printf("Max index:%d\n", max_index);
 		printf("*****************************************************\n");
 	}
-	if ((option != 3) && (seegarb))
+	if (option != 3 && seegarb)
 		show_garb_stat(seetime);
 	if (seenode)
 	{

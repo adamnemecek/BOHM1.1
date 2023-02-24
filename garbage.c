@@ -94,7 +94,7 @@ void clean(void)
 	while ((q = del_head->nform[1]) != NULL)
 	{
 		del_head->nform[1] = q->nform[1];
-		if ((q->index) == NOTEXISTENT)
+		if (q->index == NOTEXISTENT)
 			myfree(q);
 		else
 			garbage(q);
