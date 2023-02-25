@@ -527,7 +527,6 @@ TERM *buildminusterm(
 	TERM *arg1)
 {
 	/* pointer to the term to be created */
-
 	if (arg1->root_ports == INT)
 	{
 		arg1->root_form = (FORM *)(-(long int)arg1->root_form);

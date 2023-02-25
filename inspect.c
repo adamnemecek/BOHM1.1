@@ -127,167 +127,162 @@ FORM *inspect(int p, FORM *f)
 		printf("there is nothing there\n");
 		return f;
 	}
-	else
-	{
-		int nextport = f->nport[p];
+	int nextport = f->nport[p];
 
-		if (nextport < 0)
+	if (nextport < 0)
+	{
+		switch (nextport)
 		{
-			switch (nextport)
-			{
-			case T:
-				printf("form = T\n");
-				break;
-			case F:
-				printf("form = F\n");
-				break;
-			case INT:
-				printf("form = INT value = %" PRIdPTR "\n", (intptr_t)f->nform[0]);
-				break;
-			case NIL:
-				printf("form = NIL\n");
-				break;
-			}
-			printf("at port = 0\n\n");
-			return f;
+		case T:
+			printf("form = T\n");
+			break;
+		case F:
+			printf("form = F\n");
+			break;
+		case INT:
+			printf("form = INT value = %" PRIdPTR "\n", (intptr_t)f->nform[0]);
+			break;
+		case NIL:
+			printf("form = NIL\n");
+			break;
 		}
-		else
-		{
-			FORM *nextform = f->nform[p];
-			switch (nextform->name)
-			{
-			case FAN:
-				printf("form = FAN\n");
-				break;
-			case TRIANGLE:
-				printf("form = TRIANGLE\n");
-				break;
-			case ROOT:
-				printf("form = ROOT\n");
-				break;
-			case APP:
-				printf("form = APP\n");
-				break;
-			case LAMBDA:
-				printf("form = LAMBDA\n");
-				break;
-			case IFELSE:
-				printf("form = IFELSE\n");
-				break;
-			case AND:
-				printf("form = AND\n");
-				break;
-			case OR:
-				printf("form = OR\n");
-				break;
-			case NOT:
-				printf("form = NOT\n");
-				break;
-			case LESS:
-				printf("form = LESS\n");
-				break;
-			case LESS1:
-				printf("form = LESS1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case EQ:
-				printf("form = EQ\n");
-				break;
-			case EQ1:
-				printf("form = EQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case NOTEQ:
-				printf("form = NOTEQ\n");
-				break;
-			case NOTEQ1:
-				printf("form = NOTEQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case MORE:
-				printf("form = MORE\n");
-				break;
-			case MORE1:
-				printf("form = MORE1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case LEQ:
-				printf("form = LEQ\n");
-				break;
-			case LEQ1:
-				printf("form = LEQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case MEQ:
-				printf("form = MEQ\n");
-				break;
-			case MEQ1:
-				printf("form = MEQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case ADD:
-				printf("form = ADD\n");
-				break;
-			case ADD1:
-				printf("form = ADD1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case SUB:
-				printf("form = SUB\n");
-				break;
-			case SUB1:
-				printf("form = SUB1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case PROD:
-				printf("form = PROD\n");
-				break;
-			case PROD1:
-				printf("form = PROD1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case DIV:
-				printf("form = DIV\n");
-				break;
-			case DIV1:
-				printf("form = DIV1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case MOD:
-				printf("form = MOD\n");
-				break;
-			case MOD1:
-				printf("form = MOD1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
-				break;
-			case CONS:
-				printf("form = CONS\n");
-				break;
-			case CAR:
-				printf("form = CAR\n");
-				break;
-			case CDR:
-				printf("form = CDR\n");
-				break;
-			case TESTNIL:
-				printf("form = TESTNIL\n");
-				break;
-			case LAMBDAUNB:
-				printf("form = LAMBDAUNB\n");
-				break;
-			case UNS_FAN1:
-				printf("form = UNS_FAN1\n");
-				break;
-			case UNS_FAN2:
-				printf("form = UNS_FAN2\n");
-				break;
-			case CAR1:
-				printf("form = CAR1\n");
-				break;
-			case CDR1:
-				printf("form = CDR1\n");
-				break;
-			case TESTNIL1:
-				printf("form = TESTNIL1\n");
-				break;
-			case CONS1:
-				printf("form = CONS1\n");
-				break;
-			}
-			printf("with index = %d\n", nextform->index);
-			printf("at port = %d\n\n", nextport);
-			return nextform;
-		}
+		printf("at port = 0\n\n");
+		return f;
 	}
+
+	FORM *nextform = f->nform[p];
+	switch (nextform->name)
+	{
+	case FAN:
+		printf("form = FAN\n");
+		break;
+	case TRIANGLE:
+		printf("form = TRIANGLE\n");
+		break;
+	case ROOT:
+		printf("form = ROOT\n");
+		break;
+	case APP:
+		printf("form = APP\n");
+		break;
+	case LAMBDA:
+		printf("form = LAMBDA\n");
+		break;
+	case IFELSE:
+		printf("form = IFELSE\n");
+		break;
+	case AND:
+		printf("form = AND\n");
+		break;
+	case OR:
+		printf("form = OR\n");
+		break;
+	case NOT:
+		printf("form = NOT\n");
+		break;
+	case LESS:
+		printf("form = LESS\n");
+		break;
+	case LESS1:
+		printf("form = LESS1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case EQ:
+		printf("form = EQ\n");
+		break;
+	case EQ1:
+		printf("form = EQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case NOTEQ:
+		printf("form = NOTEQ\n");
+		break;
+	case NOTEQ1:
+		printf("form = NOTEQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case MORE:
+		printf("form = MORE\n");
+		break;
+	case MORE1:
+		printf("form = MORE1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case LEQ:
+		printf("form = LEQ\n");
+		break;
+	case LEQ1:
+		printf("form = LEQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case MEQ:
+		printf("form = MEQ\n");
+		break;
+	case MEQ1:
+		printf("form = MEQ1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case ADD:
+		printf("form = ADD\n");
+		break;
+	case ADD1:
+		printf("form = ADD1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case SUB:
+		printf("form = SUB\n");
+		break;
+	case SUB1:
+		printf("form = SUB1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case PROD:
+		printf("form = PROD\n");
+		break;
+	case PROD1:
+		printf("form = PROD1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case DIV:
+		printf("form = DIV\n");
+		break;
+	case DIV1:
+		printf("form = DIV1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case MOD:
+		printf("form = MOD\n");
+		break;
+	case MOD1:
+		printf("form = MOD1 value = %" PRIdPTR "\n", (intptr_t)nextform->nform[2]);
+		break;
+	case CONS:
+		printf("form = CONS\n");
+		break;
+	case CAR:
+		printf("form = CAR\n");
+		break;
+	case CDR:
+		printf("form = CDR\n");
+		break;
+	case TESTNIL:
+		printf("form = TESTNIL\n");
+		break;
+	case LAMBDAUNB:
+		printf("form = LAMBDAUNB\n");
+		break;
+	case UNS_FAN1:
+		printf("form = UNS_FAN1\n");
+		break;
+	case UNS_FAN2:
+		printf("form = UNS_FAN2\n");
+		break;
+	case CAR1:
+		printf("form = CAR1\n");
+		break;
+	case CDR1:
+		printf("form = CDR1\n");
+		break;
+	case TESTNIL1:
+		printf("form = TESTNIL1\n");
+		break;
+	case CONS1:
+		printf("form = CONS1\n");
+		break;
+	}
+	printf("with index = %d\n", nextform->index);
+	printf("at port = %d\n\n", nextport);
+	return nextform;
 }
 
 /****************************************************************/
