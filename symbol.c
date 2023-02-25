@@ -237,17 +237,15 @@ STBUCKET *search_bucket(
 	{
 		st = allocate_bucket(id);
 		move_bucket(st, dict_index);
+		return st;
 	}
-	else
 	/* the identifier is already in the list */
+	st = curr;
+	if (prev != curr)
+	/* the identifier is not in the first position */
 	{
-		st = curr;
-		if (prev != curr)
-		/* the identifier is not in the first position */
-		{
-			prev->next_st_bucket = curr->next_st_bucket;
-			move_bucket(curr, dict_index);
-		}
+		prev->next_st_bucket = curr->next_st_bucket;
+		move_bucket(curr, dict_index);
 	}
 	return st;
 }
