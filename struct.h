@@ -68,7 +68,7 @@ typedef struct form
 	/* name of the form */
 	/* (FAN, ROOT, CROISSANT */
 	/* BRACKET)  */
-	char name;
+	char kind;
 	/* Integer value for numeric */
 	/* forms or indicator of safeness */
 	/* for other forms  */

@@ -146,14 +146,14 @@ static void garbage(
 			end = true;
 			continue;
 		}
-		switch (form->name)
+		switch (form->kind)
 		{
 
 		case TESTNIL1:
 			if (port == 0)
 			{
 				er_count++;
-				form->name = ERASE;
+				form->kind = ERASE;
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				connect1(form, 0, form->nform[1], form->nport[1]);
@@ -173,7 +173,7 @@ static void garbage(
 					}
 					else
 					{
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 						connect1(form, 1, form->nform[2], form->nport[2]);
 						form->nlevel[1] = form->nlevel[2];
 						form->index -= 1;
@@ -183,11 +183,11 @@ static void garbage(
 				{
 					if (form->nlevel[1] == 0)
 					{
-						form->name = TESTNIL;
+						form->kind = TESTNIL;
 					}
 					else
 					{
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 						newform = allocate_form(TESTNIL, form->index);
 						connect1(newform, 0, form->nform[0], form->nport[0]);
 						connect(newform, 1, form, 0);
@@ -202,7 +202,7 @@ static void garbage(
 			if (port == 0)
 			{
 				er_count++;
-				form->name = ERASE;
+				form->kind = ERASE;
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				connect1(form, 0, form->nform[1], form->nport[1]);
@@ -222,7 +222,7 @@ static void garbage(
 					}
 					else
 					{
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 						connect1(form, 1, form->nform[2], form->nport[2]);
 						form->nlevel[1] = form->nlevel[2];
 						form->index -= 1;
@@ -232,11 +232,11 @@ static void garbage(
 				{
 					if (form->nlevel[1] == 0)
 					{
-						form->name = CAR;
+						form->kind = CAR;
 					}
 					else
 					{
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 						newform = allocate_form(CAR, form->index);
 						connect1(newform, 0, form->nform[0], form->nport[0]);
 						connect(newform, 1, form, 0);
@@ -251,7 +251,7 @@ static void garbage(
 			if (port == 0)
 			{
 				er_count++;
-				form->name = ERASE;
+				form->kind = ERASE;
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				connect1(form, 0, form->nform[1], form->nport[1]);
@@ -271,7 +271,7 @@ static void garbage(
 					}
 					else
 					{
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 						connect1(form, 1, form->nform[2], form->nport[2]);
 						form->nlevel[1] = form->nlevel[2];
 						form->index -= 1;
@@ -281,11 +281,11 @@ static void garbage(
 				{
 					if (form->nlevel[1] == 0)
 					{
-						form->name = CDR;
+						form->kind = CDR;
 					}
 					else
 					{
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 						newform = allocate_form(CDR, form->index);
 						connect1(newform, 0, form->nform[0], form->nport[0]);
 						connect(newform, 1, form, 0);
@@ -302,7 +302,7 @@ static void garbage(
 				er_count++;
 				nextform = form->nform[2];
 				nextport = form->nport[2];
-				form->name = ERASE;
+				form->kind = ERASE;
 				connect1(form, 0, form->nform[1], form->nport[1]);
 				ins_del(form);
 			}
@@ -310,11 +310,11 @@ static void garbage(
 			{
 				if (port == 1)
 				{
-					form->name = CDR;
+					form->kind = CDR;
 					connect1(form->nform[2], form->nport[2], form, 1);
 				}
 				else
-					form->name = CAR;
+					form->kind = CAR;
 				end = true;
 			}
 			break;
@@ -325,7 +325,7 @@ static void garbage(
 				er_count++;
 				nextform = form->nform[2];
 				nextport = form->nport[2];
-				form->name = ERASE;
+				form->kind = ERASE;
 				connect1(form, 0, form->nform[1], form->nport[1]);
 				ins_del(form);
 			}
@@ -334,20 +334,20 @@ static void garbage(
 				if (form->num_safe)
 					if (port == 1)
 					{
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 						connect1(form, 1, form->nform[2], form->nport[2]);
 						form->nlevel[1] = form->nlevel[2];
 					}
 					else
-						form->name = TRIANGLE;
+						form->kind = TRIANGLE;
 				else if (port == 1)
 				{
-					form->name = UNS_FAN1;
+					form->kind = UNS_FAN1;
 					connect1(form, 1, form->nform[2], form->nport[2]);
 					form->nlevel[1] = form->nlevel[2];
 				}
 				else
-					form->name = UNS_FAN2;
+					form->kind = UNS_FAN2;
 				end = true;
 			}
 			break;
@@ -419,7 +419,7 @@ static void garbage(
 			}
 			nextform = form->nform[p2];
 			nextport = form->nport[p2];
-			form->name = ERASE;
+			form->kind = ERASE;
 			connect1(form, 0, form->nform[p1], form->nport[p1]);
 			ins_del(form);
 			break;
@@ -430,13 +430,13 @@ static void garbage(
 				er_count++;
 				nextform = form->nform[!port];
 				nextport = form->nport[!port];
-				form->name = ERASE;
+				form->kind = ERASE;
 				connect1(form, 0, form->nform[2], form->nport[2]);
 				ins_del(form);
 			}
 			else
 			{
-				form->name = LAMBDAUNB;
+				form->kind = LAMBDAUNB;
 				end = true;
 			}
 			break;
@@ -448,7 +448,7 @@ static void garbage(
 			break;
 
 		default:
-			printf("Error: form %d\n", (erase->nform[0])->name);
+			printf("Error: form %d\n", (erase->nform[0])->kind);
 			exit(1);
 			break;
 		}

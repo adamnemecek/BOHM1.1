@@ -219,8 +219,8 @@ static void reduce_redex(
 
 	if (f1->index == f2->index)
 	{
-		if (f1->name == f2->name)
-			switch (f1->name)
+		if (f1->kind == f2->kind)
+			switch (f1->kind)
 			{
 			case FAN:
 				if (f1->nlevel[1] != f2->nlevel[1] ||
@@ -262,12 +262,12 @@ static void reduce_redex(
 			}
 		else
 
-			switch (f1->name)
+			switch (f1->kind)
 			{
 			case APP:
 				redexes = redexes + 1;
 
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case LAMBDA:
 					eq++;
@@ -288,7 +288,7 @@ static void reduce_redex(
 							 f1->nport[1],
 							 f2->nform[1],
 							 f2->nport[1]);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					connect1(f1, 0, f1->nform[2], f1->nport[2]);
 					ins_del(f1);
 					if (option == 1)
@@ -303,7 +303,7 @@ static void reduce_redex(
 				break;
 
 			case CAR:
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case CONS:
 					eq++;
@@ -311,7 +311,7 @@ static void reduce_redex(
 							 f1->nport[1],
 							 f2->nform[1],
 							 f2->nport[1]);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[2], f2->nport[2]);
 					ins_del(f1);
 					if (option == 1)
@@ -319,19 +319,19 @@ static void reduce_redex(
 					myfree(f2);
 					break;
 				default:
-					printf("--->   type error28 %d\n", f2->name);
+					printf("--->   type error28 %d\n", f2->kind);
 					type_error = true;
 					break;
 				}
 				break;
 
 			case CAR1:
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case CONS:
 					eq++;
 					f1->index -= 1;
-					f1->name = FAN;
+					f1->kind = FAN;
 					connect(f1->nform[2], f1->nport[2], f2, 0);
 					connect1(f1, 0, f2->nform[1], f2->nport[1]);
 					connect(f1, 2, f2, 1);
@@ -345,14 +345,14 @@ static void reduce_redex(
 					}
 					break;
 				default:
-					printf("--->   type error28 bis %d\n", f2->name);
+					printf("--->   type error28 bis %d\n", f2->kind);
 					type_error = true;
 					break;
 				}
 				break;
 
 			case CDR:
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case CONS:
 					eq++;
@@ -360,7 +360,7 @@ static void reduce_redex(
 							 f1->nport[1],
 							 f2->nform[2],
 							 f2->nport[2]);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[1], f2->nport[1]);
 					ins_del(f1);
 					if (option == 1)
@@ -375,14 +375,14 @@ static void reduce_redex(
 				break;
 
 			case CDR1:
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case CONS:
 					eq++;
 					connect(f1->nform[2], f1->nport[2], f2, 0);
 					connect1(f1, 0, f2->nform[2], f2->nport[2]);
 					connect(f1, 2, f2, 2);
-					f1->name = FAN;
+					f1->kind = FAN;
 					f1->index -= 1;
 					if (f1->nlevel[2] != 0)
 					{
@@ -401,12 +401,12 @@ static void reduce_redex(
 				break;
 
 			case TESTNIL:
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case CONS:
 					eq++;
 					bool_connect(f1->nform[1], f1->nport[1], F);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					ins_del(f1);
 					connect(f1, 0, f2, 0);
 					if (option == 1)
@@ -420,7 +420,7 @@ static void reduce_redex(
 				break;
 
 			case TESTNIL1:
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case CONS:
 					eq++;
@@ -432,7 +432,7 @@ static void reduce_redex(
 						new1->nlevel[1] = f1->nlevel[2];
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 						connect(new1, 1, f2, 1);
-						f1->name = TRIANGLE;
+						f1->kind = TRIANGLE;
 						f1->index--;
 						f1->nlevel[1] = f1->nlevel[2];
 						connect1(f1, 0, f2->nform[2], f2->nport[2]);
@@ -450,7 +450,7 @@ static void reduce_redex(
 				break;
 
 			case CONS1:
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case CONS:
 					if (f1->nport[1] >= 0)
@@ -476,7 +476,7 @@ static void reduce_redex(
 					}
 					else
 					{
-						f2->name = ERASE;
+						f2->kind = ERASE;
 						ins_del(f2);
 						connect(f2, 0, f2->nform[1], f2->nport[1]);
 					}
@@ -493,12 +493,12 @@ static void reduce_redex(
 			case UNS_FAN1:
 				unsafe++;
 				fan_int++;
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case FAN:
 					connect1(f1->nform[1], f1->nport[1],
 							 f2->nform[2], f2->nport[2]);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[1], f2->nport[1]);
 					ins_del(f1);
 					if (option == 1)
@@ -507,8 +507,8 @@ static void reduce_redex(
 					break;
 
 				case UNS_FAN2:
-					f1->name = ERASE;
-					f2->name = ERASE;
+					f1->kind = ERASE;
+					f2->kind = ERASE;
 					connect1(f1, 0, f1->nform[1], f1->nport[1]);
 					connect1(f2, 0, f2->nform[1], f2->nport[1]);
 					ins_del(f1);
@@ -526,12 +526,12 @@ static void reduce_redex(
 			case UNS_FAN2:
 				unsafe++;
 				fan_int++;
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case FAN:
 					connect1(f1->nform[1], f1->nport[1],
 							 f2->nform[1], f2->nport[1]);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[2], f2->nport[2]);
 					ins_del(f1);
 					if (option == 1)
@@ -540,8 +540,8 @@ static void reduce_redex(
 					break;
 
 				case UNS_FAN1:
-					f1->name = ERASE;
-					f2->name = ERASE;
+					f1->kind = ERASE;
+					f2->kind = ERASE;
 					connect1(f1, 0, f1->nform[1], f1->nport[1]);
 					connect1(f2, 0, f2->nform[1], f2->nport[1]);
 					ins_del(new1);
@@ -558,13 +558,13 @@ static void reduce_redex(
 
 			case FAN:
 				fan_int++;
-				switch (f2->name)
+				switch (f2->kind)
 				{
 				case UNS_FAN1:
 					unsafe++;
 					connect1(f1->nform[2], f1->nport[2],
 							 f2->nform[1], f2->nport[1]);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					connect1(f1, 0, f1->nform[1], f1->nport[1]);
 					ins_del(f1);
 					if (option == 1)
@@ -576,7 +576,7 @@ static void reduce_redex(
 					unsafe++;
 					connect1(f1->nform[1], f1->nport[1],
 							 f2->nform[1], f2->nport[1]);
-					f1->name = ERASE;
+					f1->kind = ERASE;
 					connect1(f1, 0, f1->nform[2], f1->nport[2]);
 					ins_del(f1);
 					if (option == 1)
@@ -597,14 +597,14 @@ static void reduce_redex(
 	}
 	else
 	{ /* f1.index < f2.index */
-		switch (f1->name)
+		switch (f1->kind)
 		{
 		case FAN:
-			if (f2->name != TRIANGLE)
+			if (f2->kind != TRIANGLE)
 				fan_int++;
-			if (f2->name == LAMBDA)
+			if (f2->kind == LAMBDA)
 				f1->num_safe = false;
-			switch (f2->name)
+			switch (f2->kind)
 			{
 			case CONS:
 			case EQ:
@@ -623,7 +623,7 @@ static void reduce_redex(
 			case IFELSE:
 			case APP:
 			case LAMBDA:
-				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
+				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
 				f2->index += f1->nlevel[1];
 				new2 = allocate_form(FAN, f1->index);
 				new2->num_safe = f1->num_safe;
@@ -644,7 +644,7 @@ static void reduce_redex(
 			case CAR1:
 			case CDR1:
 			case CONS1:
-				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
+				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
 				f2->index += f1->nlevel[1];
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
@@ -667,7 +667,7 @@ static void reduce_redex(
 			case UNS_FAN2:
 				unsafe++;
 			case TRIANGLE:
-				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
+				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
 				f2->index += f1->nlevel[1];
@@ -694,7 +694,7 @@ static void reduce_redex(
 			case PROD1:
 			case DIV1:
 			case MOD1:
-				new1 = allocate_form(f2->name, f2->index + f1->nlevel[2]);
+				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nform[2] = f2->nform[2];
 				f2->index += f1->nlevel[1];
@@ -709,13 +709,13 @@ static void reduce_redex(
 
 		case UNS_FAN1:
 		case UNS_FAN2:
-			if (f2->name != TRIANGLE)
+			if (f2->kind != TRIANGLE)
 				fan_int++;
 			unsafe++;
 		case TRIANGLE:
-			if (f2->name == LAMBDA)
+			if (f2->kind == LAMBDA)
 				f1->num_safe = false;
-			switch (f2->name)
+			switch (f2->kind)
 			{
 			case CONS:
 			case EQ:
@@ -739,7 +739,7 @@ static void reduce_redex(
 			case CAR1:
 			case CDR1:
 			case CONS1:
-				new1 = allocate_form(f1->name, f1->index);
+				new1 = allocate_form(f1->kind, f1->index);
 				new1->nlevel[1] = f1->nlevel[1];
 				new1->num_safe = f1->num_safe;
 
@@ -790,20 +790,20 @@ static void reduce_form(
 	FORM *f1)
 {
 	FORM *tmp;
-	switch (f1->name)
+	switch (f1->kind)
 	{
 	case IFELSE:
 		switch (f1->nport[0])
 		{
 		case T:
 			eq++;
-			f1->name = CAR;
+			f1->kind = CAR;
 			connect(f1, 0, f1->nform[2], f1->nport[2]);
 			break;
 
 		case F:
 			eq++;
-			f1->name = CDR;
+			f1->kind = CDR;
 			connect(f1, 0, f1->nform[2], f1->nport[2]);
 			break;
 
@@ -820,7 +820,7 @@ static void reduce_form(
 		case F:
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->name = ERASE;
+			f1->kind = ERASE;
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			ins_del(f1);
 			if (option == 1)
@@ -848,7 +848,7 @@ static void reduce_form(
 		case T:
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], T);
-			f1->name = ERASE;
+			f1->kind = ERASE;
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			ins_del(f1);
 			if (option == 1)
@@ -894,7 +894,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = LESS1;
+			f1->kind = LESS1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -931,7 +931,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = EQ1;
+			f1->kind = EQ1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -968,7 +968,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = NOTEQ1;
+			f1->kind = NOTEQ1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1005,7 +1005,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = LEQ1;
+			f1->kind = LEQ1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1042,7 +1042,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = MEQ1;
+			f1->kind = MEQ1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1079,7 +1079,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = MORE1;
+			f1->kind = MORE1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1116,7 +1116,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = ADD1;
+			f1->kind = ADD1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1153,7 +1153,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = SUB1;
+			f1->kind = SUB1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1191,7 +1191,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = PROD1;
+			f1->kind = PROD1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1228,7 +1228,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = DIV1;
+			f1->kind = DIV1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1265,7 +1265,7 @@ static void reduce_form(
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			f1->name = MOD1;
+			f1->kind = MOD1;
 			tmp = f1->nform[0];
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
 			f1->nform[2] = tmp;
@@ -1393,7 +1393,7 @@ static void reduce_form(
 	case TRIANGLE:
 	case UNS_FAN1:
 	case UNS_FAN2:
-		if (f1->name != TRIANGLE)
+		if (f1->kind != TRIANGLE)
 			fan_int++;
 		switch (f1->nport[0])
 		{
@@ -1433,16 +1433,16 @@ static FORM *lo_redex(
 
 	while (p > 0)
 	{
-		while (temp->name == TRIANGLE && temp->nlevel[1] == 0 && temp->num_safe)
+		while (temp->kind == TRIANGLE && temp->nlevel[1] == 0 && temp->num_safe)
 		{
 			connect1(temp->nform[1], temp->nport[1],
 					 temp->nform[0], temp->nport[0]);
 			myfree(temp);
 			temp = pop();
 		}
-		if ((temp->name == TRIANGLE || temp->name == FAN ||
-			 temp->name == UNS_FAN1 || temp->name == UNS_FAN2) &&
-			(next->name == TRIANGLE || next->name == FAN) &&
+		if ((temp->kind == TRIANGLE || temp->kind == FAN ||
+			 temp->kind == UNS_FAN1 || temp->kind == UNS_FAN2) &&
+			(next->kind == TRIANGLE || next->kind == FAN) &&
 			(next->num_safe) &&
 			(((next->nlevel[p] >= 0) && (temp->index >= next->index) &&
 			  (temp->index <= next->index + next->nlevel[p])) ||
@@ -1450,14 +1450,14 @@ static FORM *lo_redex(
 			  (next->nlevel[p] < 0) && (temp->index <= next->index) &&
 			  (temp->index >= next->index + next->nlevel[p]))))
 		{
-			switch (temp->name)
+			switch (temp->kind)
 			{
 			case TRIANGLE:
 			case UNS_FAN1:
 			case UNS_FAN2:
 				counter++;
 				optim++;
-				switch (next->name)
+				switch (next->kind)
 				{
 				case TRIANGLE:
 					next->nlevel[1] += temp->nlevel[1];
@@ -1493,7 +1493,7 @@ static FORM *lo_redex(
 				break;
 
 			case FAN:
-				switch (next->name)
+				switch (next->kind)
 				{
 				case TRIANGLE:
 					temp->num_safe = true;

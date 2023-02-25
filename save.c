@@ -169,7 +169,7 @@ static void save_aux(
 	{
 		return;
 	}
-	int n = num_port(root->name);
+	int n = num_port(root->kind);
 	for (int p1 = 0; p1 < n; p1++)
 		stampa(root, p1, card);
 	for (int p1 = 0; p1 < n; p1++)
@@ -181,7 +181,7 @@ static void save_aux(
 static void put_form(
 	FORM *f)
 {
-	switch (f->name)
+	switch (f->kind)
 	{
 	case FAN:
 		fprintf(save_file, "FAN       ");
@@ -396,7 +396,7 @@ static void eindex(ELEM *elem)
 	fprintf(save_file, "%3d ", elem->num);
 	put_form(elem->node);
 	fprintf(save_file, "index: %2d", elem->node->index);
-	switch (elem->node->name)
+	switch (elem->node->kind)
 	{
 	case FAN:
 	case CAR1:

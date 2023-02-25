@@ -63,7 +63,7 @@ FORM *inspect(int p, FORM *f)
 	case 0:
 		break;
 	case 1:
-		switch (f->name)
+		switch (f->kind)
 		{
 		case ERASE:
 		case ROOT:
@@ -74,7 +74,7 @@ FORM *inspect(int p, FORM *f)
 		}
 		break;
 	case 2:
-		switch (f->name)
+		switch (f->kind)
 		{
 		case ERASE:
 		case ROOT:
@@ -108,7 +108,7 @@ FORM *inspect(int p, FORM *f)
 		}
 		break;
 	case 3:
-		switch (f->name)
+		switch (f->kind)
 		{
 		case IFELSE:
 			break;
@@ -151,7 +151,7 @@ FORM *inspect(int p, FORM *f)
 	}
 
 	FORM *nextform = f->nform[p];
-	switch (nextform->name)
+	switch (nextform->kind)
 	{
 	case FAN:
 		printf("form = FAN\n");

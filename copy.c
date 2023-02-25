@@ -78,10 +78,10 @@ static FORM *copy_aux(
 	int q;
 
 	FORM *temp = root;
-	switch (temp->name)
+	switch (temp->kind)
 	{
 	case TRIANGLE:
-		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		newf1 = allocate_form(temp->kind, (temp->index) + offset);
 		newf1->nlevel[1] = temp->nlevel[1];
 		if (temp->nport[0] >= 0)
 		{
@@ -112,7 +112,7 @@ static FORM *copy_aux(
 			q = 1;
 		else
 			q = 0;
-		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		newf1 = allocate_form(temp->kind, (temp->index) + offset);
 		newf1->num_safe = temp->num_safe;
 		newf1->nform[2] = temp->nform[2];
 		if (temp->nport[q] >= 0)
@@ -127,7 +127,7 @@ static FORM *copy_aux(
 	case LAMBDA:
 		if (p != 0)
 			return is_in_relation(temp);
-		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		newf1 = allocate_form(temp->kind, (temp->index) + offset);
 		put_relation(temp, newf1);
 		newf2 = copy_aux(temp->nform[1], temp->nport[1], offset);
 		connect1(newf1, 1, newf2, temp->nport[1]);
@@ -140,7 +140,7 @@ static FORM *copy_aux(
 	case FAN:
 		if ((newf1 = is_in_relation(temp)) != NULL)
 			return newf1;
-		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		newf1 = allocate_form(temp->kind, (temp->index) + offset);
 		newf1->nlevel[1] = temp->nlevel[1];
 		newf1->nlevel[2] = temp->nlevel[2];
 		put_relation(temp, newf1);
@@ -168,7 +168,7 @@ static FORM *copy_aux(
 	case LEQ:
 	case MEQ:
 	case IFELSE:
-		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		newf1 = allocate_form(temp->kind, (temp->index) + offset);
 		if (temp->nport[0] >= 0)
 		{
 			newf2 = copy_aux(temp->nform[0], temp->nport[0], offset);
@@ -186,7 +186,7 @@ static FORM *copy_aux(
 		return newf1;
 
 	case CONS:
-		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		newf1 = allocate_form(temp->kind, (temp->index) + offset);
 		if (temp->nport[1] >= 0)
 		{
 			newf2 = copy_aux(temp->nform[1], temp->nport[1], offset);

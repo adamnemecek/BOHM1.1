@@ -180,7 +180,7 @@ static TERM *buildlambdaterm(
 	{
 		FORM *newf1 = allocate_form(LAMBDA, level);
 		FORM *varform = boundvar->var;
-		if (varform->name == TRIANGLE && varform->nlevel[1] == 0)
+		if (varform->kind == TRIANGLE && varform->nlevel[1] == 0)
 		{
 			connect(varform->nform[1],
 					varform->nport[1],
@@ -240,7 +240,7 @@ TERM *buildplambdaterm(
 					fprintf(stderr, "You lose\n");
 					exit(1974);
 				}
-				if (varform->name == TRIANGLE && varform->nlevel[1] == 0)
+				if (varform->kind == TRIANGLE && varform->nlevel[1] == 0)
 				{
 					connect(varform->nform[1],
 							varform->nport[1],
@@ -295,7 +295,7 @@ TERM *build_mu_term(
 		newf1->nlevel[2] = 1;
 		varform = boundvar->var;
 
-		if ((varform->name == TRIANGLE) &&
+		if ((varform->kind == TRIANGLE) &&
 			(varform->nlevel[1] == 0))
 		{
 			connect(varform->nform[1],
@@ -462,22 +462,22 @@ TERM *buildmatterm(
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
-		switch (newf->name)
+		switch (newf->kind)
 		{
 		case ADD:
-			newf->name = ADD1;
+			newf->kind = ADD1;
 			break;
 		case SUB:
-			newf->name = SUB1;
+			newf->kind = SUB1;
 			break;
 		case PROD:
-			newf->name = PROD1;
+			newf->kind = PROD1;
 			break;
 		case DIV:
-			newf->name = DIV1;
+			newf->kind = DIV1;
 			break;
 		case MOD:
-			newf->name = MOD1;
+			newf->kind = MOD1;
 			break;
 		}
 		connect1(newf, 0, arg2->root_form, arg2->root_ports);
@@ -488,17 +488,17 @@ TERM *buildmatterm(
 		if (arg2->root_ports == INT && op != DIV && op != MOD)
 		{
 			newf->nform[2] = arg2->root_form;
-			switch (newf->name)
+			switch (newf->kind)
 			{
 			case ADD:
-				newf->name = ADD1;
+				newf->kind = ADD1;
 				break;
 			case SUB:
-				newf->name = ADD1;
+				newf->kind = ADD1;
 				newf->nform[2] = (FORM *)-(long int)newf->nform[2];
 				break;
 			case PROD:
-				newf->name = PROD1;
+				newf->kind = PROD1;
 				break;
 			}
 			connect1(newf, 0, arg1->root_form, arg1->root_ports);
@@ -556,25 +556,25 @@ TERM *buildrelopterm(
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
-		switch (newf->name)
+		switch (newf->kind)
 		{
 		case LESS:
-			newf->name = LESS1;
+			newf->kind = LESS1;
 			break;
 		case EQ:
-			newf->name = EQ1;
+			newf->kind = EQ1;
 			break;
 		case MORE:
-			newf->name = MORE1;
+			newf->kind = MORE1;
 			break;
 		case LEQ:
-			newf->name = LEQ1;
+			newf->kind = LEQ1;
 			break;
 		case MEQ:
-			newf->name = MEQ1;
+			newf->kind = MEQ1;
 			break;
 		case NOTEQ:
-			newf->name = NOTEQ1;
+			newf->kind = NOTEQ1;
 			break;
 		}
 		connect1(newf, 0, arg2->root_form, arg2->root_ports);
@@ -585,25 +585,25 @@ TERM *buildrelopterm(
 		if (arg2->root_ports == INT)
 		{
 			newf->nform[2] = arg2->root_form;
-			switch (newf->name)
+			switch (newf->kind)
 			{
 			case LESS:
-				newf->name = MORE1;
+				newf->kind = MORE1;
 				break;
 			case EQ:
-				newf->name = EQ1;
+				newf->kind = EQ1;
 				break;
 			case MORE:
-				newf->name = LESS1;
+				newf->kind = LESS1;
 				break;
 			case LEQ:
-				newf->name = MEQ1;
+				newf->kind = MEQ1;
 				break;
 			case MEQ:
-				newf->name = LEQ1;
+				newf->kind = LEQ1;
 				break;
 			case NOTEQ:
-				newf->name = NOTEQ1;
+				newf->kind = NOTEQ1;
 				break;
 			}
 			connect1(newf, 0, arg1->root_form, arg1->root_ports);
@@ -784,7 +784,7 @@ FORM *allocate_form(
 	num_nodes++;
 	if (num_nodes > max_nodes)
 		max_nodes = num_nodes;
-	form->name = name;
+	form->kind = name;
 	form->index = index;
 	form->nform[0] = NULL;
 	form->nform[1] = NULL;
@@ -924,9 +924,9 @@ static VARENTRY *addbrackets(
 	/* new form to be created */
 
 	FORM *variab = listvar->var;
-	if (variab->name != CONS1)
+	if (variab->kind != CONS1)
 	{
-		switch (variab->name)
+		switch (variab->kind)
 		{
 		case TRIANGLE:
 			variab->index = index;
@@ -1056,7 +1056,7 @@ static void closeglobalvars(
 
 	FORM *formvar = listvar->var;
 	FORM *formterm = listvar->name->curr_binding->root;
-	if (formvar->name == TRIANGLE)
+	if (formvar->kind == TRIANGLE)
 	{
 		FORM *newf = copy(formterm->nform[0],
 						  formterm->nport[0],
@@ -1084,10 +1084,10 @@ static void intelligent_connect(
 	int dep;
 	FORM *newf;
 
-	switch (f1->name)
+	switch (f1->kind)
 	{
 	case FAN:
-		switch (f2->name)
+		switch (f2->kind)
 		{
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
@@ -1095,7 +1095,7 @@ static void intelligent_connect(
 			myfree(f2);
 			break;
 		case TESTNIL:
-			f1->name = TESTNIL1;
+			f1->kind = TESTNIL1;
 			f1->index = f2->index - f1->nlevel[port];
 			if (port == 2)
 			{
@@ -1108,7 +1108,7 @@ static void intelligent_connect(
 			myfree(f2);
 			break;
 		case CAR:
-			f1->name = CAR1;
+			f1->kind = CAR1;
 			f1->index = f2->index - f1->nlevel[port];
 			if (port == 2)
 			{
@@ -1121,7 +1121,7 @@ static void intelligent_connect(
 			myfree(f2);
 			break;
 		case CDR:
-			f1->name = CDR1;
+			f1->kind = CDR1;
 			f1->index = f2->index - f1->nlevel[port];
 			if (port == 2)
 			{
@@ -1139,7 +1139,7 @@ static void intelligent_connect(
 		}
 		break;
 	case TESTNIL1:
-		switch (f2->name)
+		switch (f2->kind)
 		{
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
@@ -1152,7 +1152,7 @@ static void intelligent_connect(
 		}
 		break;
 	case CAR1:
-		switch (f2->name)
+		switch (f2->kind)
 		{
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
@@ -1162,7 +1162,7 @@ static void intelligent_connect(
 		case CDR:
 			if (port == 2)
 			{
-				f1->name = CONS1;
+				f1->kind = CONS1;
 				if (f1->nlevel[1] != 0)
 				{
 					newf = allocate_form(TRIANGLE, f1->index - 1);
@@ -1172,7 +1172,7 @@ static void intelligent_connect(
 				}
 				if (f1->nlevel[2] != 0)
 				{
-					f2->name = TRIANGLE;
+					f2->kind = TRIANGLE;
 					f2->nlevel[1] = f1->nlevel[2];
 					f2->index = f1->index - 1;
 					connect(f1, 2, f2, 0);
@@ -1189,8 +1189,8 @@ static void intelligent_connect(
 		case TESTNIL:
 			if (port == 2)
 			{
-				f1->name = TESTNIL1;
-				f2->name = CAR;
+				f1->kind = TESTNIL1;
+				f2->kind = CAR;
 				dep = f2->index;
 				f2->index = f1->index + f1->nlevel[1];
 				f1->index = dep - f1->nlevel[2];
@@ -1212,7 +1212,7 @@ static void intelligent_connect(
 		}
 		break;
 	case CDR1:
-		switch (f2->name)
+		switch (f2->kind)
 		{
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
@@ -1222,7 +1222,7 @@ static void intelligent_connect(
 		case CAR:
 			if (port == 2)
 			{
-				f1->name = CONS1;
+				f1->kind = CONS1;
 				if (f1->nlevel[1] != 0)
 				{
 					newf = allocate_form(TRIANGLE, f1->index - 1);
@@ -1234,7 +1234,7 @@ static void intelligent_connect(
 					connect(f1, 2, f1->nform[1], f1->nport[1]);
 				if (f1->nlevel[2] != 0)
 				{
-					f2->name = TRIANGLE;
+					f2->kind = TRIANGLE;
 					f2->nlevel[1] = f1->nlevel[2];
 					f2->index = f1->index - 1;
 					connect(f1, 1, f2, 0);
@@ -1251,8 +1251,8 @@ static void intelligent_connect(
 		case TESTNIL:
 			if (port == 2)
 			{
-				f1->name = TESTNIL1;
-				f2->name = CDR;
+				f1->kind = TESTNIL1;
+				f2->kind = CDR;
 				dep = f2->index;
 				f2->index = f1->index + f1->nlevel[1];
 				f1->index = dep - f1->nlevel[2];

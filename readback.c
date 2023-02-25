@@ -67,7 +67,7 @@ void rdbk_1(
       }
     }
     else
-      switch (form->nform[port]->name)
+      switch (form->nform[port]->kind)
       {
       case LAMBDA:
       case LAMBDAUNB:
@@ -120,10 +120,10 @@ void rdbk_list(
     rdbk_1(form, port);
     left_to_print -= printf("]");
   }
-  else if (form->nform[port]->name == TRIANGLE ||
-           (form->nform[port]->name == FAN && form->nport[port] != 0))
+  else if (form->nform[port]->kind == TRIANGLE ||
+           (form->nform[port]->kind == FAN && form->nport[port] != 0))
     rdbk_list(form->nform[port], !form->nport[port]);
-  else if (form->nform[port]->name != CONS || form->nport[port] != 0)
+  else if (form->nform[port]->kind != CONS || form->nport[port] != 0)
   {
     left_to_print -= printf("|");
     rdbk_1(form, port);
