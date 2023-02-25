@@ -68,6 +68,5 @@ char *strdup_da(const char *s)
 	char *p = strdup(s);
 	if (!p)
 		signal_crash(NOTENOUGHMEMORY);
-
 	return p;
 }

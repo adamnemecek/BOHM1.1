@@ -131,7 +131,6 @@ static void garbage(
 {
 	bool end = false;
 	FORM *newform;
-	int port;
 	int p1, p2;
 
 	FORM *nextform = erase->nform[0];
@@ -140,7 +139,7 @@ static void garbage(
 	while (!end)
 	{
 		FORM *form = nextform;
-		port = nextport;
+		int port = nextport;
 		if (port < 0)
 		{
 			er_count++;
