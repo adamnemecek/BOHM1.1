@@ -144,315 +144,313 @@ static void garbage(
 		{
 			er_count++;
 			end = true;
+			continue;
 		}
-		else
+		switch (form->name)
 		{
-			switch (form->name)
+
+		case TESTNIL1:
+			if (port == 0)
 			{
-
-			case TESTNIL1:
-				if (port == 0)
+				er_count++;
+				form->name = ERASE;
+				nextform = form->nform[2];
+				nextport = form->nport[2];
+				connect1(form, 0, form->nform[1], form->nport[1]);
+				ins_del(form);
+			}
+			else
+			{
+				if (port == 1)
 				{
-					er_count++;
-					form->name = ERASE;
-					nextform = form->nform[2];
-					nextport = form->nport[2];
-					connect1(form, 0, form->nform[1], form->nport[1]);
-					ins_del(form);
-				}
-				else
-				{
-					if (port == 1)
+					if (form->nlevel[2] == 0)
 					{
-						if (form->nlevel[2] == 0)
-						{
-							connect1(form->nform[2],
-									 form->nport[2],
-									 form->nform[0],
-									 form->nport[0]);
-							myfree(form);
-						}
-						else
-						{
-							form->name = TRIANGLE;
-							connect1(form, 1, form->nform[2], form->nport[2]);
-							form->nlevel[1] = form->nlevel[2];
-							form->index -= 1;
-						}
+						connect1(form->nform[2],
+								 form->nport[2],
+								 form->nform[0],
+								 form->nport[0]);
+						myfree(form);
 					}
 					else
 					{
-						if (form->nlevel[1] == 0)
-						{
-							form->name = TESTNIL;
-						}
-						else
-						{
-							form->name = TRIANGLE;
-							newform = allocate_form(TESTNIL, form->index);
-							connect1(newform, 0, form->nform[0], form->nport[0]);
-							connect(newform, 1, form, 0);
-							form->index -= 1;
-						}
+						form->name = TRIANGLE;
+						connect1(form, 1, form->nform[2], form->nport[2]);
+						form->nlevel[1] = form->nlevel[2];
+						form->index -= 1;
 					}
-					end = true;
-				}
-				break;
-
-			case CAR1:
-				if (port == 0)
-				{
-					er_count++;
-					form->name = ERASE;
-					nextform = form->nform[2];
-					nextport = form->nport[2];
-					connect1(form, 0, form->nform[1], form->nport[1]);
-					ins_del(form);
 				}
 				else
 				{
-					if (port == 1)
+					if (form->nlevel[1] == 0)
 					{
-						if (form->nlevel[2] == 0)
-						{
-							connect1(form->nform[2],
-									 form->nport[2],
-									 form->nform[0],
-									 form->nport[0]);
-							myfree(form);
-						}
-						else
-						{
-							form->name = TRIANGLE;
-							connect1(form, 1, form->nform[2], form->nport[2]);
-							form->nlevel[1] = form->nlevel[2];
-							form->index -= 1;
-						}
+						form->name = TESTNIL;
 					}
 					else
 					{
-						if (form->nlevel[1] == 0)
-						{
-							form->name = CAR;
-						}
-						else
-						{
-							form->name = TRIANGLE;
-							newform = allocate_form(CAR, form->index);
-							connect1(newform, 0, form->nform[0], form->nport[0]);
-							connect(newform, 1, form, 0);
-							form->index -= 1;
-						}
+						form->name = TRIANGLE;
+						newform = allocate_form(TESTNIL, form->index);
+						connect1(newform, 0, form->nform[0], form->nport[0]);
+						connect(newform, 1, form, 0);
+						form->index -= 1;
 					}
-					end = true;
 				}
-				break;
+				end = true;
+			}
+			break;
 
-			case CDR1:
-				if (port == 0)
+		case CAR1:
+			if (port == 0)
+			{
+				er_count++;
+				form->name = ERASE;
+				nextform = form->nform[2];
+				nextport = form->nport[2];
+				connect1(form, 0, form->nform[1], form->nport[1]);
+				ins_del(form);
+			}
+			else
+			{
+				if (port == 1)
 				{
-					er_count++;
-					form->name = ERASE;
-					nextform = form->nform[2];
-					nextport = form->nport[2];
-					connect1(form, 0, form->nform[1], form->nport[1]);
-					ins_del(form);
-				}
-				else
-				{
-					if (port == 1)
+					if (form->nlevel[2] == 0)
 					{
-						if (form->nlevel[2] == 0)
-						{
-							connect1(form->nform[2],
-									 form->nport[2],
-									 form->nform[0],
-									 form->nport[0]);
-							myfree(form);
-						}
-						else
-						{
-							form->name = TRIANGLE;
-							connect1(form, 1, form->nform[2], form->nport[2]);
-							form->nlevel[1] = form->nlevel[2];
-							form->index -= 1;
-						}
+						connect1(form->nform[2],
+								 form->nport[2],
+								 form->nform[0],
+								 form->nport[0]);
+						myfree(form);
 					}
 					else
 					{
-						if (form->nlevel[1] == 0)
-						{
-							form->name = CDR;
-						}
-						else
-						{
-							form->name = TRIANGLE;
-							newform = allocate_form(CDR, form->index);
-							connect1(newform, 0, form->nform[0], form->nport[0]);
-							connect(newform, 1, form, 0);
-							form->index -= 1;
-						}
+						form->name = TRIANGLE;
+						connect1(form, 1, form->nform[2], form->nport[2]);
+						form->nlevel[1] = form->nlevel[2];
+						form->index -= 1;
 					}
-					end = true;
-				}
-				break;
-
-			case CONS1:
-				if (port == 0)
-				{
-					er_count++;
-					nextform = form->nform[2];
-					nextport = form->nport[2];
-					form->name = ERASE;
-					connect1(form, 0, form->nform[1], form->nport[1]);
-					ins_del(form);
 				}
 				else
 				{
-					if (port == 1)
+					if (form->nlevel[1] == 0)
+					{
+						form->name = CAR;
+					}
+					else
+					{
+						form->name = TRIANGLE;
+						newform = allocate_form(CAR, form->index);
+						connect1(newform, 0, form->nform[0], form->nport[0]);
+						connect(newform, 1, form, 0);
+						form->index -= 1;
+					}
+				}
+				end = true;
+			}
+			break;
+
+		case CDR1:
+			if (port == 0)
+			{
+				er_count++;
+				form->name = ERASE;
+				nextform = form->nform[2];
+				nextport = form->nport[2];
+				connect1(form, 0, form->nform[1], form->nport[1]);
+				ins_del(form);
+			}
+			else
+			{
+				if (port == 1)
+				{
+					if (form->nlevel[2] == 0)
+					{
+						connect1(form->nform[2],
+								 form->nport[2],
+								 form->nform[0],
+								 form->nport[0]);
+						myfree(form);
+					}
+					else
+					{
+						form->name = TRIANGLE;
+						connect1(form, 1, form->nform[2], form->nport[2]);
+						form->nlevel[1] = form->nlevel[2];
+						form->index -= 1;
+					}
+				}
+				else
+				{
+					if (form->nlevel[1] == 0)
 					{
 						form->name = CDR;
-						connect1(form->nform[2], form->nport[2], form, 1);
 					}
 					else
-						form->name = CAR;
-					end = true;
+					{
+						form->name = TRIANGLE;
+						newform = allocate_form(CDR, form->index);
+						connect1(newform, 0, form->nform[0], form->nport[0]);
+						connect(newform, 1, form, 0);
+						form->index -= 1;
+					}
 				}
-				break;
+				end = true;
+			}
+			break;
 
-			case FAN:
-				if (port == 0)
+		case CONS1:
+			if (port == 0)
+			{
+				er_count++;
+				nextform = form->nform[2];
+				nextport = form->nport[2];
+				form->name = ERASE;
+				connect1(form, 0, form->nform[1], form->nport[1]);
+				ins_del(form);
+			}
+			else
+			{
+				if (port == 1)
 				{
-					er_count++;
-					nextform = form->nform[2];
-					nextport = form->nport[2];
-					form->name = ERASE;
-					connect1(form, 0, form->nform[1], form->nport[1]);
-					ins_del(form);
+					form->name = CDR;
+					connect1(form->nform[2], form->nport[2], form, 1);
 				}
 				else
-				{
-					if (form->num_safe)
-						if (port == 1)
-						{
-							form->name = TRIANGLE;
-							connect1(form, 1, form->nform[2], form->nport[2]);
-							form->nlevel[1] = form->nlevel[2];
-						}
-						else
-							form->name = TRIANGLE;
-					else if (port == 1)
+					form->name = CAR;
+				end = true;
+			}
+			break;
+
+		case FAN:
+			if (port == 0)
+			{
+				er_count++;
+				nextform = form->nform[2];
+				nextport = form->nport[2];
+				form->name = ERASE;
+				connect1(form, 0, form->nform[1], form->nport[1]);
+				ins_del(form);
+			}
+			else
+			{
+				if (form->num_safe)
+					if (port == 1)
 					{
-						form->name = UNS_FAN1;
+						form->name = TRIANGLE;
 						connect1(form, 1, form->nform[2], form->nport[2]);
 						form->nlevel[1] = form->nlevel[2];
 					}
 					else
-						form->name = UNS_FAN2;
-					end = true;
-				}
-				break;
-
-			case TRIANGLE:
-			case LAMBDAUNB:
-			case TESTNIL:
-			case CAR:
-			case CDR:
-			case NOT:
-			case EQ1:
-			case NOTEQ1:
-			case LEQ1:
-			case MEQ1:
-			case MORE1:
-			case LESS1:
-			case ADD1:
-			case SUB1:
-			case PROD1:
-			case DIV1:
-			case MOD1:
-			case UNS_FAN1:
-			case UNS_FAN2:
-				er_count++;
-				if (port == 0)
+						form->name = TRIANGLE;
+				else if (port == 1)
 				{
-					nextform = form->nform[1];
-					nextport = form->nport[1];
+					form->name = UNS_FAN1;
+					connect1(form, 1, form->nform[2], form->nport[2]);
+					form->nlevel[1] = form->nlevel[2];
 				}
 				else
-				{
-					nextform = form->nform[0];
-					nextport = form->nport[0];
-				}
-				myfree(form);
-				break;
-
-			case APP:
-			case CONS:
-			case EQ:
-			case NOTEQ:
-			case LEQ:
-			case MEQ:
-			case MORE:
-			case LESS:
-			case ADD:
-			case SUB:
-			case PROD:
-			case DIV:
-			case MOD:
-			case AND:
-			case OR:
-			case IFELSE:
-				er_count++;
-				switch (port)
-				{
-				case 0:
-					p1 = 1;
-					p2 = 2;
-					break;
-				case 1:
-					p1 = 0;
-					p2 = 2;
-					break;
-				case 2:
-					p1 = 0;
-					p2 = 1;
-					break;
-				}
-				nextform = form->nform[p2];
-				nextport = form->nport[p2];
-				form->name = ERASE;
-				connect1(form, 0, form->nform[p1], form->nport[p1]);
-				ins_del(form);
-				break;
-
-			case LAMBDA:
-				if (port != 2)
-				{
-					er_count++;
-					nextform = form->nform[!port];
-					nextport = form->nport[!port];
-					form->name = ERASE;
-					connect1(form, 0, form->nform[2], form->nport[2]);
-					ins_del(form);
-				}
-				else
-				{
-					form->name = LAMBDAUNB;
-					end = true;
-				}
-				break;
-
-			case ERASE:
-				er_count++;
-				form->index = NOTEXISTENT;
+					form->name = UNS_FAN2;
 				end = true;
-				break;
+			}
+			break;
 
-			default:
-				printf("Error: form %d\n", (erase->nform[0])->name);
-				exit(1);
+		case TRIANGLE:
+		case LAMBDAUNB:
+		case TESTNIL:
+		case CAR:
+		case CDR:
+		case NOT:
+		case EQ1:
+		case NOTEQ1:
+		case LEQ1:
+		case MEQ1:
+		case MORE1:
+		case LESS1:
+		case ADD1:
+		case SUB1:
+		case PROD1:
+		case DIV1:
+		case MOD1:
+		case UNS_FAN1:
+		case UNS_FAN2:
+			er_count++;
+			if (port == 0)
+			{
+				nextform = form->nform[1];
+				nextport = form->nport[1];
+			}
+			else
+			{
+				nextform = form->nform[0];
+				nextport = form->nport[0];
+			}
+			myfree(form);
+			break;
+
+		case APP:
+		case CONS:
+		case EQ:
+		case NOTEQ:
+		case LEQ:
+		case MEQ:
+		case MORE:
+		case LESS:
+		case ADD:
+		case SUB:
+		case PROD:
+		case DIV:
+		case MOD:
+		case AND:
+		case OR:
+		case IFELSE:
+			er_count++;
+			switch (port)
+			{
+			case 0:
+				p1 = 1;
+				p2 = 2;
+				break;
+			case 1:
+				p1 = 0;
+				p2 = 2;
+				break;
+			case 2:
+				p1 = 0;
+				p2 = 1;
 				break;
 			}
+			nextform = form->nform[p2];
+			nextport = form->nport[p2];
+			form->name = ERASE;
+			connect1(form, 0, form->nform[p1], form->nport[p1]);
+			ins_del(form);
+			break;
+
+		case LAMBDA:
+			if (port != 2)
+			{
+				er_count++;
+				nextform = form->nform[!port];
+				nextport = form->nport[!port];
+				form->name = ERASE;
+				connect1(form, 0, form->nform[2], form->nport[2]);
+				ins_del(form);
+			}
+			else
+			{
+				form->name = LAMBDAUNB;
+				end = true;
+			}
+			break;
+
+		case ERASE:
+			er_count++;
+			form->index = NOTEXISTENT;
+			end = true;
+			break;
+
+		default:
+			printf("Error: form %d\n", (erase->nform[0])->name);
+			exit(1);
+			break;
 		}
 	}
 }
