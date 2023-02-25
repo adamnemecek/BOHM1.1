@@ -768,12 +768,11 @@ FORM *allocate_form(
 	int name,
 	/* index of the form */
 	int index)
-
 {
 	if (headfree->next == NULL)
 	{
-		FORM *dep;
-		headfree->next = dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
+		FORM *dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
+		headfree->next = dep;
 		dep->next = dep + 1;
 		dep->prev = headfree;
 		dep = dep->next;
