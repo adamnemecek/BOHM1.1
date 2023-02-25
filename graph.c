@@ -527,22 +527,18 @@ TERM *buildminusterm(
 	TERM *arg1)
 {
 	/* pointer to the term to be created */
-	TERM *t;
 
 	if (arg1->root_ports == INT)
 	{
 		arg1->root_form = (FORM *)(-(long int)arg1->root_form);
-		t = arg1;
+		return arg1;
 	}
-	else
-	{
-		/* pointer to the new form to be created */
-		FORM *newf = allocate_form(SUB1, level);
-		newf->num_safe = 0;
-		connect1(newf, 0, arg1->root_form, arg1->root_ports);
-		t = allocate_term(newf, 1, arg1->vars);
-		free(arg1);
-	}
+	/* pointer to the new form to be created */
+	FORM *newf = allocate_form(SUB1, level);
+	newf->num_safe = 0;
+	connect1(newf, 0, arg1->root_form, arg1->root_ports);
+	TERM *t = allocate_term(newf, 1, arg1->vars);
+	free(arg1);
 	return t;
 }
 

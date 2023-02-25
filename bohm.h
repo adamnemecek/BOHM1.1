@@ -47,7 +47,9 @@ FORM *copy(
     int p,
     int offset);
 
-FORM *inspect(int p, FORM *f);
+FORM *inspect(
+    int p,
+    FORM *f);
 
 TERM *buildandterm(
     int level,
@@ -67,7 +69,8 @@ TERM *buildcdrterm(
     int level,
     TERM *arg);
 
-TERM *buildfalseterm(int level);
+TERM *buildfalseterm(
+    int level);
 
 TERM *buildifelseterm(
     int level,
@@ -76,7 +79,8 @@ TERM *buildifelseterm(
     TERM *arg3);
 
 TERM *buildintterm(
-    int level, long int value);
+    int level,
+    long int value);
 
 TERM *buildletinterm(
     int level,
