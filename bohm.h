@@ -151,7 +151,8 @@ VARLIST *makevarlist(
     TERM *t);
 
 VARLIST *mergevarlist(
-    VARLIST *l1, VARLIST *l2);
+    VARLIST *l1,
+    VARLIST *l2);
 
 FORM *allocate_form(
     int name,
@@ -183,7 +184,9 @@ void int_connect(
     int portf2);
 
 void create_variable_binding(
-    STBUCKET *st, FORM *rootform);
+    STBUCKET *st,
+    FORM *rootform);
+
 void destroy(void);
 void free_pattern(PATTERN *p);
 void info(char *choices);
