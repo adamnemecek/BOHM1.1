@@ -277,7 +277,6 @@ TERM *build_mu_term(
 	int level,
 	STBUCKET *id,
 	TERM *body)
-
 {
 	TERM *t,
 		/* pointer to the new term to be created */
@@ -945,15 +944,13 @@ static VARENTRY *addbrackets(
 		listvar->next = addbrackets(index, listvar->next);
 		return listvar;
 	}
-	else
-	{
-		FORM *bracket = allocate_form(TRIANGLE, index);
-		bracket->nlevel[1] = 1;
-		connect(bracket, 1, variab, 0);
-		return allocate_var(listvar->name,
-							bracket,
-							addbrackets(index, listvar->next));
-	}
+
+	FORM *bracket = allocate_form(TRIANGLE, index);
+	bracket->nlevel[1] = 1;
+	connect(bracket, 1, variab, 0);
+	return allocate_var(listvar->name,
+						bracket,
+						addbrackets(index, listvar->next));
 }
 
 /* The following function shares the free variables of	*/
@@ -1021,17 +1018,16 @@ static VARENTRY *remv(
 	{
 		return NULL;
 	}
+
 	if (id == listvar->name)
 	{
 		VARENTRY *temp = listvar->next;
 		free(listvar);
 		return temp;
 	}
-	else
-	{
-		listvar->next = remv(id, listvar->next);
-		return listvar;
-	}
+
+	listvar->next = remv(id, listvar->next);
+	return listvar;
 }
 
 /* the following functions does the set substraction of two variable lists */
@@ -1350,7 +1346,6 @@ VARLIST *makevarlist(
 }
 
 TERM *buildvoidterm(int level)
-
 {
 	FORM *newf = allocate_form(TRIANGLE, level);
 	newf->nlevel[1] = 0;
