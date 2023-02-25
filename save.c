@@ -67,8 +67,6 @@ void save(
 	FORM *root,
 	char *id)
 {
-	ELEM *p, *dep;
-
 	if (root == NULL)
 	{
 		printf("******************************************\n");
@@ -84,12 +82,12 @@ void save(
 	stampa(root, 0, present(root));
 	if (root->nport[0] >= 0)
 		save_aux(root->nform[0], root->nport[0]);
-	p = head;
+	ELEM *p = head;
 	fprintf(save_file, "\n\n\nI N D E X :\n\n");
 	while (p != NULL)
 	{
 		eindex(p);
-		dep = p;
+		ELEM *dep = p;
 		p = p->next;
 		free(dep);
 	}
@@ -112,10 +110,9 @@ void save(
 /* been copied once.						*/
 static int present(FORM *form)
 {
-	ELEM *p;
 	int risp = true;
 
-	p = head;
+	ELEM *p = head;
 	while (p != NULL && risp)
 		if (p->node == form)
 			risp = false;
