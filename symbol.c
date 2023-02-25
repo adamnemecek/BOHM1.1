@@ -232,8 +232,8 @@ STBUCKET *search_bucket(
 		curr = curr->next_st_bucket;
 	}
 
-	if (curr == NULL)
 	/* the identifier is not in the list */
+	if (curr == NULL)
 	{
 		st = allocate_bucket(id);
 		move_bucket(st, dict_index);
