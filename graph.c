@@ -1001,17 +1001,18 @@ static VARENTRY *share(
 
 /* The following function searches for a variable inside a list. */
 static VARENTRY *lookfor(
-	STBUCKET *id,
 	/* pointer to the identifier to be found  */
+	STBUCKET *id,
+	/* pointer to the variable list to be scanned */
 	VARENTRY *listvar)
-/* pointer to the variable list to be scanned */
 {
 	if (listvar == NULL)
 		return NULL;
-	else if (listvar->name == id)
+
+	if (listvar->name == id)
 		return listvar;
-	else
-		return lookfor(id, listvar->next);
+
+	return lookfor(id, listvar->next);
 }
 
 /* the following function remove an identifier form a list */
