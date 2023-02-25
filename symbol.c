@@ -186,17 +186,14 @@ static void to_lower_s(char *s)
 /* environments into the scope stack. */
 void init_symbol_table(void)
 {
-	STBUCKET *st;
-
 	/* initialize the dictionary */
 	for (int i = 0; i < DICTSIZE; i++)
 		dictionary[i] = NULL;
 
 	/* insert P keywords into the appropriate bucket lists */
-
 	for (int i = 0; i < KEYWORDNUM; i++)
 	{
-		st = search_bucket(keywords[i]);
+		STBUCKET *st = search_bucket(keywords[i]);
 		st->token = FIRSTKEYWORD + i;
 	}
 
@@ -234,6 +231,7 @@ STBUCKET *search_bucket(
 		prev = curr;
 		curr = curr->next_st_bucket;
 	}
+
 	if (curr == NULL)
 	/* the identifier is not in the list */
 	{
