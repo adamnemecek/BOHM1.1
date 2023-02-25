@@ -351,7 +351,6 @@ TERM *buildifelseterm(
 	TERM *arg2,
 	TERM *arg3)
 {
-
 	/* free variables of the application */
 	FORM *newf = allocate_form(IFELSE, level);
 	FORM *newf1 = allocate_form(CONS, level);
@@ -976,7 +975,7 @@ static VARENTRY *share(
 	{
 		return l2;
 	}
-	VARENTRY *res;
+	VARENTRY *res = NULL;
 
 	VARENTRY *var = lookfor(l1->name, l2);
 	if (var == NULL)
@@ -1023,14 +1022,13 @@ static VARENTRY *remv(
 	VARENTRY *listvar)
 /* pointer to the variable list to be scanned */
 {
-	VARENTRY *temp;
 	if (listvar == NULL)
 	{
 		return NULL;
 	}
 	if (id == listvar->name)
 	{
-		temp = listvar->next;
+		VARENTRY *temp = listvar->next;
 		free(listvar);
 		return temp;
 	}
@@ -1320,27 +1318,27 @@ static bool membervarlist(
 }
 
 VARLIST *mergevarlist(
-	VARLIST *l1, VARLIST *l2)
+	VARLIST *l1,
+	VARLIST *l2)
 {
-	VARLIST *p;
-	if (l1)
+	if (!l1)
 	{
-		for (p = l1; p->next; p = p->next)
-		{
-			if (membervarlist(p->id, l2))
-			{
-				fprintf(stderr, "Pattern is not linear - expect garbage out!\n");
-			}
-		}
+		return l2;
+	}
+	VARLIST *p;
+	for (p = l1; p->next; p = p->next)
+	{
 		if (membervarlist(p->id, l2))
 		{
 			fprintf(stderr, "Pattern is not linear - expect garbage out!\n");
 		}
-		p->next = l2;
-		return l1;
 	}
-	else
-		return l2;
+	if (membervarlist(p->id, l2))
+	{
+		fprintf(stderr, "Pattern is not linear - expect garbage out!\n");
+	}
+	p->next = l2;
+	return l1;
 }
 
 VARLIST *makevarlist(
