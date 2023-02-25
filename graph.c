@@ -130,7 +130,9 @@ TERM *allocate_term(
 
 /* The following function creates the graph representation of */
 /* a variable */
-TERM *buildvarterm(int level, STBUCKET *id)
+TERM *buildvarterm(
+	int level,
+	STBUCKET *id)
 {
 	/* pointer to the new form to be created */
 	FORM *newf = allocate_form(TRIANGLE, level);
@@ -157,14 +159,19 @@ TERM *buildfalseterm(int level)
 
 /* The following function creates the graph representation of */
 /* a numerical constant */
-TERM *buildintterm(int level, long int value)
+TERM *buildintterm(
+	int level,
+	long int value)
 {
 	return allocate_term((FORM *)value, INT, NULL);
 }
 
 /* The following function creates the graph representation of a */
 /* lambda-abstraction */
-static TERM *buildlambdaterm(int level, STBUCKET *id, TERM *body)
+static TERM *buildlambdaterm(
+	int level,
+	STBUCKET *id,
+	TERM *body)
 {
 	TERM *t; /* pointer to the new term to be created */
 
@@ -1040,7 +1047,6 @@ static VARENTRY *remvp(
 	VARLIST *vl,
 	VARENTRY *listvar) /* pointer to the variable list to be scanned */
 {
-	;
 	for (VARLIST *v = vl; v; v = v->next)
 	{
 		listvar = remv(v->id->id, listvar);

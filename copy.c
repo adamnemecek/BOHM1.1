@@ -36,14 +36,16 @@
 #define DIM_REL 256
 
 static COPY_FORM *copy_relation[DIM_REL];
-static void put_relation(FORM *src,
-						 FORM *dest);
+static void put_relation(
+	FORM *src,
+	FORM *dest);
 static void start_copy(void);
 static void end_copy(void);
-static FORM *is_in_relation(FORM *src),
-	*copy_aux(FORM *root,
-			  int p,
-			  int offset);
+static FORM *is_in_relation(FORM *src);
+static FORM *copy_aux(
+	FORM *root,
+	int p,
+	int offset);
 static int entry(FORM *src);
 
 /* The following function initialises the hash table, calls 	*/

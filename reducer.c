@@ -1433,13 +1433,9 @@ static void reduce_form(
 static FORM *lo_redex(
 	FORM *f)
 {
-	FORM *temp;
-	FORM *next;
-	int p;
-
-	temp = f;
-	next = temp->nform[0];
-	p = temp->nport[0];
+	FORM *temp = f;
+	FORM *next = temp->nform[0];
+	int p = temp->nport[0];
 
 	while (p > 0)
 	{
