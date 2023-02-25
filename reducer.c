@@ -107,7 +107,6 @@ int counter;
 void reduce_term(
 	FORM *root)
 {
-	int ans;
 	struct tms time;
 
 	unsafe = 0;
@@ -162,7 +161,7 @@ void reduce_term(
 	if (type_error)
 	{
 		printf("--->   bad definition, sorry . . .\n");
-		ans = getchar();
+		int ans = getchar();
 		if (ans == 'i')
 			inspect_driver(root);
 		return;
@@ -596,7 +595,6 @@ static void reduce_redex(
 				exit(1);
 			}
 	}
-
 	else
 	{ /* f1.index < f2.index */
 		switch (f1->name)
