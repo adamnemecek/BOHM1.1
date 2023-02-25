@@ -236,8 +236,7 @@ STBUCKET *search_bucket(
 	/* the identifier is not in the list */
 	{
 		st = allocate_bucket(id);
-		move_bucket(st,
-					dict_index);
+		move_bucket(st, dict_index);
 	}
 	else
 	/* the identifier is already in the list */
@@ -247,8 +246,7 @@ STBUCKET *search_bucket(
 		/* the identifier is not in the first position */
 		{
 			prev->next_st_bucket = curr->next_st_bucket;
-			move_bucket(curr,
-						dict_index);
+			move_bucket(curr, dict_index);
 		}
 	}
 	return st;
