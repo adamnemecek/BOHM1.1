@@ -107,12 +107,8 @@ int counter;
 void reduce_term(
 	FORM *root)
 {
-	FORM *f1;
-	FORM *f2;
 	int ans;
 	struct tms time;
-	clock_t usr_time;
-	clock_t sys_time;
 
 	unsafe = 0;
 	optim = 0;
@@ -129,16 +125,16 @@ void reduce_term(
 		printf("*****************************************************\n");
 	}
 	times(&time);
-	usr_time = time.tms_utime;
-	sys_time = time.tms_stime;
+	clock_t usr_time = time.tms_utime;
+	clock_t sys_time = time.tms_stime;
 	init_stack();
-	f1 = lo_redex(root);
+	FORM *f1 = lo_redex(root);
 	reset_garbage();
 	while (f1 != root && !type_error)
 	{
 		if (f1->nport[0] == 0)
 		{
-			f2 = f1->nform[0];
+			FORM *f2 = f1->nform[0];
 			if (f1->index <= f2->index)
 			{
 				reduce_redex(f1, f2);
