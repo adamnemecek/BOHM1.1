@@ -91,7 +91,6 @@ static FORM *copy_aux(
 		else
 			int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
 		return newf1;
-		break;
 
 	case NOTEQ1:
 	case ADD1:
@@ -124,44 +123,35 @@ static FORM *copy_aux(
 		else
 			int_connect(newf1, q, temp->nform[q], temp->nport[q]);
 		return newf1;
-		break;
 
 	case LAMBDA:
-		if (p == 0)
-		{
-			newf1 = allocate_form(temp->name, (temp->index) + offset);
-			put_relation(temp, newf1);
-			newf2 = copy_aux(temp->nform[1], temp->nport[1], offset);
-			connect1(newf1, 1, newf2, temp->nport[1]);
-			return newf1;
-		}
-		else
+		if (p != 0)
 			return is_in_relation(temp);
-		break;
+		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		put_relation(temp, newf1);
+		newf2 = copy_aux(temp->nform[1], temp->nport[1], offset);
+		connect1(newf1, 1, newf2, temp->nport[1]);
+		return newf1;
 
 	case TESTNIL1:
 	case CDR1:
 	case CAR1:
 	case CONS1:
 	case FAN:
-		if ((newf1 = is_in_relation(temp)) == NULL)
-		{
-			newf1 = allocate_form(temp->name, (temp->index) + offset);
-			newf1->nlevel[1] = temp->nlevel[1];
-			newf1->nlevel[2] = temp->nlevel[2];
-			put_relation(temp, newf1);
-			if (temp->nport[0] >= 0)
-			{
-				newf2 = copy_aux(temp->nform[0], temp->nport[0], offset);
-				connect1(newf1, 0, newf2, temp->nport[0]);
-			}
-			else
-				int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
+		if ((newf1 = is_in_relation(temp)) != NULL)
 			return newf1;
+		newf1 = allocate_form(temp->name, (temp->index) + offset);
+		newf1->nlevel[1] = temp->nlevel[1];
+		newf1->nlevel[2] = temp->nlevel[2];
+		put_relation(temp, newf1);
+		if (temp->nport[0] >= 0)
+		{
+			newf2 = copy_aux(temp->nform[0], temp->nport[0], offset);
+			connect1(newf1, 0, newf2, temp->nport[0]);
 		}
 		else
-			return newf1;
-		break;
+			int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
+		return newf1;
 
 	case APP:
 	case AND:
@@ -194,7 +184,6 @@ static FORM *copy_aux(
 		else
 			int_connect(newf1, 2, temp->nform[2], temp->nport[2]);
 		return newf1;
-		break;
 
 	case CONS:
 		newf1 = allocate_form(temp->name, (temp->index) + offset);
@@ -213,7 +202,6 @@ static FORM *copy_aux(
 		else
 			int_connect(newf1, 2, temp->nform[2], temp->nport[2]);
 		return newf1;
-		break;
 	default:
 		return NULL;
 	}
@@ -239,12 +227,13 @@ static FORM *is_in_relation(FORM *src)
 	COPY_FORM *dep = copy_relation[entry(src)];
 	if (dep == NULL)
 		return NULL;
+
 	while (dep->src != src && dep->next != NULL)
 		dep = dep->next;
+
 	if (dep->src == src)
 		return dep->dest;
-	else
-		return NULL;
+	return NULL;
 }
 
 /* The following function implements hash function.		*/
@@ -259,7 +248,6 @@ static int entry(FORM *src)
 static void
 start_copy(void)
 {
-
 	for (int i = 0; i < DIM_REL; i++)
 		copy_relation[i] = NULL;
 }
@@ -271,9 +259,11 @@ end_copy(void)
 	COPY_FORM *dep;
 
 	for (int i = 0; i < DIM_REL; i++)
+	{
 		while ((dep = copy_relation[i]) != NULL)
 		{
 			copy_relation[i] = dep->next;
 			free(dep);
 		}
+	}
 }
