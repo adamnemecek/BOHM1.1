@@ -52,7 +52,8 @@ static void stampa(
 	int p,
 	int card);
 static void put_int(
-	FORM *f, int p);
+	FORM *f,
+	int p);
 static void put_form(FORM *f);
 static int num_port(int name);
 static void eindex(ELEM *elem);
@@ -118,21 +119,21 @@ static int present(FORM *form)
 			risp = false;
 		else
 			p = p->next;
-	if (risp)
+	if (!risp)
+		return risp;
+
+	if (head == NULL)
 	{
-		if (head == NULL)
-		{
-			head = tail = (ELEM *)malloc_da(sizeof(ELEM));
-		}
-		else
-		{
-			tail->next = (ELEM *)malloc_da(sizeof(ELEM));
-			tail = tail->next;
-		}
-		tail->node = form;
-		tail->next = NULL;
-		tail->num = risp = max++;
+		head = tail = (ELEM *)malloc_da(sizeof(ELEM));
 	}
+	else
+	{
+		tail->next = (ELEM *)malloc_da(sizeof(ELEM));
+		tail = tail->next;
+	}
+	tail->node = form;
+	tail->next = NULL;
+	tail->num = risp = max++;
 	return risp;
 }
 

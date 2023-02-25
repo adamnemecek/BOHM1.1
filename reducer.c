@@ -211,8 +211,8 @@ static void reduce_redex(
 	FORM *f1,
 	FORM *f2)
 {
-	FORM *new1,
-		*new2;
+	FORM *new1;
+	FORM *new2;
 
 	if (option == 2 && del_head != NULL && num_nodes > limit)
 		clean();

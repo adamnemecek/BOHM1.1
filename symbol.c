@@ -121,7 +121,7 @@ static LOCALENVENTRY *curr_local_env;
 /* pointer to the entry for the */
 /* current local environment */
 
-static STBUCKET *dictionary[DICTSIZE];
+static STBUCKET *dictionary[DICTSIZE] = {0};
 /* pointers to bucket lists */
 
 static int curr_nesting_depth;
