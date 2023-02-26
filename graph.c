@@ -122,7 +122,7 @@ static void inspect_connect(
 
 /* The following function creates the graph representation of */
 /* a variable */
-TERM *buildvarterm(
+TERM *TERM::var(
 	int level,
 	STBUCKET *id)
 {
@@ -615,7 +615,7 @@ TERM *TERM::relop(
 	return t;
 }
 
-TERM *buildnillist(int level)
+TERM *TERM::nillist(int level)
 {
 	return new TERM(NULL, NIL, NULL);
 }
@@ -1344,7 +1344,7 @@ VARLIST *makevarlist(
 // 	// return nullptr;
 // }
 
-TERM *buildvoidterm(int level)
+TERM *TERM::void_(int level)
 {
 	FORM *newf = new FORM(TRIANGLE, level);
 	newf->nlevel[1] = 0;

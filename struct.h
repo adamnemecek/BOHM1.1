@@ -243,6 +243,7 @@ struct TERM
 		PATTERN *pattern,
 		TERM *body);
 
+	static TERM *nillist(int level);
 	static TERM *testnil(
 		int level,
 		TERM *arg);
@@ -252,6 +253,11 @@ struct TERM
 		TERM *arg1,
 		TERM *arg2,
 		int relop);
+
+	static TERM *var(
+		int level, STBUCKET *id);
+
+	static TERM *void_(int level);
 
 	FORM *close(int level);
 

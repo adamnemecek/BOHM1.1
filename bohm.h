@@ -110,16 +110,16 @@ FORM *inspect(
 //     TERM *arg2,
 //     int op);
 
-TERM *buildminusterm(
-    int level,
-    TERM *arg1);
+// TERM *buildminusterm(
+//     int level,
+//     TERM *arg1);
 
 // TERM *build_mu_term(
 //     int level,
 //     STBUCKET *id,
 //     TERM *bod);
 
-TERM *buildnillist(int level);
+// TERM *buildnillist(int level);
 
 // TERM *buildnotterm(
 //     int level,
@@ -147,10 +147,10 @@ TERM *buildnillist(int level);
 
 // TERM *buildtrueterm(int level);
 
-TERM *buildvarterm(
-    int level, STBUCKET *id);
+// TERM *buildvarterm(
+//     int level, STBUCKET *id);
 
-TERM *buildvoidterm(int level);
+// TERM *buildvoidterm(int level);
 
 VARLIST *makevarlist(
     STBUCKET *e,

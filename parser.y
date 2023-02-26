@@ -493,7 +493,7 @@ expr0           : 	TRUEKW
 		|       ID
 				{
 				  if (defined($1))
-				     $$ = buildvarterm(app_nesting_depth,$1);
+				     $$ = TERM::var(app_nesting_depth,$1);
 				  else
 				     {
 					signal_error(UNBOUND_VARIABLE);
@@ -588,11 +588,11 @@ expr0           : 	TRUEKW
 
 list		 :	NILKW
 				{
-				  $$ = buildnillist(app_nesting_depth);
+				  $$ = TERM::nillist(app_nesting_depth);
 				}
 		 |      '[' ']'
                                 {
-                                  $$ = buildnillist(app_nesting_depth);
+                                  $$ = TERM::nillist(app_nesting_depth);
 				}
 		 |	'[' exprlist
 				{
@@ -676,7 +676,7 @@ pattern         :       CONSKW '(' pattern ',' pattern ')'
                 |       NILKW
                                 {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
-                                  pattmp->term=buildnillist(app_nesting_depth);
+                                  pattmp->term=TERM::nillist(app_nesting_depth);
                                   pattmp->var_list=NULL;
                                   $$=pattmp;
                                 }
@@ -688,7 +688,7 @@ pattern         :       CONSKW '(' pattern ',' pattern ')'
                                 {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
-                                    buildvoidterm(app_nesting_depth);
+                                    TERM::void_(app_nesting_depth);
                                   create_variable_binding($1, NULL);
                                   pattmp->var_list=
                                     makevarlist($1,pattmp->term);

@@ -2006,7 +2006,7 @@ yyreduce:
 #line 494 "parser.y"
     {
 				  if (defined((yyvsp[(1) - (1)].st_bucket)))
-				     (yyval.term) = buildvarterm(app_nesting_depth,(yyvsp[(1) - (1)].st_bucket));
+				     (yyval.term) = TERM::var(app_nesting_depth,(yyvsp[(1) - (1)].st_bucket));
 				  else
 				     {
 					signal_error(UNBOUND_VARIABLE);
@@ -2149,14 +2149,14 @@ yyreduce:
   case 60:
 #line 590 "parser.y"
     {
-				  (yyval.term) = buildnillist(app_nesting_depth);
+				  (yyval.term) = TERM::nillist(app_nesting_depth);
 				}
     break;
 
   case 61:
 #line 594 "parser.y"
     {
-                                  (yyval.term) = buildnillist(app_nesting_depth);
+                                  (yyval.term) = TERM::nillist(app_nesting_depth);
 				}
     break;
 
@@ -2269,7 +2269,7 @@ yyreduce:
 #line 677 "parser.y"
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
-                                  pattmp->term=buildnillist(app_nesting_depth);
+                                  pattmp->term=TERM::nillist(app_nesting_depth);
                                   pattmp->var_list=NULL;
                                   (yyval.pattern)=pattmp;
                                 }
@@ -2287,7 +2287,7 @@ yyreduce:
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
-                                    buildvoidterm(app_nesting_depth);
+                                    TERM::void_(app_nesting_depth);
                                   create_variable_binding((yyvsp[(1) - (1)].st_bucket), NULL);
                                   pattmp->var_list=
                                     makevarlist((yyvsp[(1) - (1)].st_bucket),pattmp->term);
