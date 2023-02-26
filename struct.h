@@ -68,6 +68,16 @@ struct STBUCKET
 	/* hashing in the same */
 	/* linked list of buckets */
 	STBUCKET *next_st_bucket;
+
+	STBUCKET(
+		const char *id,
+		int token)
+	{
+		this->id = strdup(id);
+		this->token = token;
+		this->curr_binding = NULL;
+		this->next_st_bucket = NULL;
+	}
 };
 
 /* binding entry descriptor type */

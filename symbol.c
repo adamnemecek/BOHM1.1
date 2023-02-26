@@ -118,6 +118,21 @@ static LOCALENVENTRY *curr_local_env;
 /* current local environment */
 
 static STBUCKET *dictionary[DICTSIZE] = {0};
+
+struct Dictionary
+{
+	STBUCKET *dictionary[DICTSIZE];
+	int curr_nesting_depth;
+
+	Dictionary()
+	{
+		// dictionary = {0};
+		//
+	}
+
+	STBUCKET *find(const char *id);
+};
+
 /* pointers to bucket lists */
 
 static int curr_nesting_depth;
@@ -130,7 +145,7 @@ static void move_bucket(
 	STBUCKET *st,
 	int dict_index);
 
-static STBUCKET *allocate_bucket(const char *id);
+// static STBUCKET *allocate_bucket(const char *id);
 
 /* keywords */
 const char *keywords[] =
@@ -231,7 +246,7 @@ STBUCKET *search_bucket(
 	/* the identifier is not in the list */
 	if (curr == NULL)
 	{
-		st = allocate_bucket(id);
+		st = new STBUCKET(id, ID);
 		move_bucket(st, dict_index);
 		return st;
 	}
@@ -244,6 +259,11 @@ STBUCKET *search_bucket(
 		move_bucket(curr, dict_index);
 	}
 	return st;
+}
+
+STBUCKET *Dictionary::find(const char *id)
+{
+	return nullptr;
 }
 
 /* The following function pushes a new local environment entry onto */
