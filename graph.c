@@ -60,7 +60,7 @@
 /* during reduction.                                            */
 /* The following functions are local to the module:             */
 /*  - allocate_var(): it allocates a new entry for a variable.  */
-/*  - allocate_term(): it allocates a new entry for a term.     */
+/*  - new TERM(): it allocates a new entry for a term.     */
 /*  - makebox(): it builds a box around a term.                 */
 /*  - addbrackets(): it adds a sequence of brackets of          */
 /*                   specified index along a sequence of        */
@@ -123,11 +123,6 @@ static void inspect_connect(
 	FORM *f2,
 	int p2);
 
-TERM *allocate_term(
-	FORM *root_form,
-	int root_ports,
-	VARENTRY *freevars);
-
 /* The following function creates the graph representation of */
 /* a variable */
 TERM *buildvarterm(
@@ -140,21 +135,21 @@ TERM *buildvarterm(
 
 	/* pointer to the new free variable entry */
 	VARENTRY *newvar = new VARENTRY(id, newf, NULL);
-	return allocate_term(newf, 1, newvar);
+	return new TERM(newf, 1, newvar);
 }
 
 /* The following function creates the graph representation of */
 /* a true constant */
 TERM *buildtrueterm(int level)
 {
-	return allocate_term(NULL, T, NULL);
+	return new TERM(NULL, T, NULL);
 }
 
 /* The following function creates the graph representation of */
 /* a false constant */
 TERM *buildfalseterm(int level)
 {
-	return allocate_term(NULL, F, NULL);
+	return new TERM(NULL, F, NULL);
 }
 
 /* The following function creates the graph representation of */
@@ -163,7 +158,7 @@ TERM *buildintterm(
 	int level,
 	long int value)
 {
-	return allocate_term((FORM *)value, INT, NULL);
+	return new TERM((FORM *)value, INT, NULL);
 }
 
 /* The following function creates the graph representation of a */
@@ -173,7 +168,7 @@ static TERM *buildlambdaterm(
 	STBUCKET *id,
 	TERM *body)
 {
-	TERM *t; /* pointer to the new term to be created */
+	TERM *t; /* pointer to the new TERM to be created */
 
 	VARENTRY *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
@@ -190,12 +185,12 @@ static TERM *buildlambdaterm(
 		else
 			connect(varform, 0, newf1, 2);
 		connect(newf1, 1, body->root_form, body->root_ports);
-		t = allocate_term(newf1, 0, remv(id, body->vars));
+		t = new TERM(newf1, 0, remv(id, body->vars));
 	}
 	else
 	{
 		FORM *newf1 = new FORM(LAMBDAUNB, level);
-		t = allocate_term(newf1, 0, body->vars);
+		t = new TERM(newf1, 0, body->vars);
 		connect1(newf1, 1, body->root_form, body->root_ports);
 	}
 	free(body);
@@ -207,7 +202,7 @@ TERM *buildplambdaterm(
 	PATTERN *pattern,
 	TERM *body)
 {
-	TERM *t; /* pointer to the new term to be created */
+	TERM *t; /* pointer to the new TERM to be created */
 	VARLIST *vp;
 	FORM *newf1;
 	FORM *newf2;		/* pointers to the new forms to be created */
@@ -257,14 +252,14 @@ TERM *buildplambdaterm(
 			}
 			vp->id->form->uninit();
 		} /* for */
-		t = allocate_term(newf1, 0, remvp(pattern->var_list, body->vars));
+		t = new TERM(newf1, 0, remvp(pattern->var_list, body->vars));
 		connect(newf1, 1, body->root_form, body->root_ports);
 	}
 	else
 	{
 		/* apparent memory leak, but there's the destroyer */
 		newf1 = new FORM(LAMBDAUNB, level);
-		t = allocate_term(newf1, 0, body->vars);
+		t = new TERM(newf1, 0, body->vars);
 		connect1(newf1, 1, body->root_form, body->root_ports);
 	}
 	free(body);
@@ -279,7 +274,7 @@ TERM *build_mu_term(
 	TERM *body)
 {
 	TERM *t,
-		/* pointer to the new term to be created */
+		/* pointer to the new TERM to be created */
 		*temp;
 	FORM *newf1; /* pointer to the new form to be created */
 
@@ -305,7 +300,7 @@ TERM *build_mu_term(
 		}
 		else
 			intelligent_connect(newf1, 2, varform);
-		temp = allocate_term(newf1, 1, remv(id, body->vars));
+		temp = new TERM(newf1, 1, remv(id, body->vars));
 		t = makebox(level, temp);
 		connect(newf1, 0, body->root_form, body->root_ports);
 	}
@@ -314,7 +309,7 @@ TERM *build_mu_term(
 		newf1 = new FORM(TRIANGLE, level);
 		newf1->nlevel[1] = -1;
 		connect1(newf1, 0, body->root_form, body->root_ports);
-		temp = allocate_term(newf1, 1, body->vars);
+		temp = new TERM(newf1, 1, body->vars);
 		t = makebox(level, temp);
 	}
 	free(body);
@@ -336,7 +331,7 @@ TERM *buildappterm(
 	connect1(newf, 2, temp->root_form, temp->root_ports);
 	VARENTRY *newvars = share(level, fun->vars, temp->vars);
 
-	TERM *t = allocate_term(newf, 1, newvars);
+	TERM *t = new TERM(newf, 1, newvars);
 	free(arg);
 	free(fun);
 	return t;
@@ -364,7 +359,7 @@ TERM *buildifelseterm(
 	VARENTRY *newvars = share(level, tempvars, arg1->vars);
 
 	/* pointer to the term to be created */
-	TERM *t = allocate_term(newf, 1, newvars);
+	TERM *t = new TERM(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	free(arg3);
@@ -400,7 +395,7 @@ TERM *buildandterm(
 	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
 	/* pointer to the term to be created */
-	TERM *t = allocate_term(newf, 1, newvars);
+	TERM *t = new TERM(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
@@ -423,7 +418,7 @@ TERM *buildorterm(
 	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
 	/* pointer to the term to be created */
-	TERM *t = allocate_term(newf, 1, newvars);
+	TERM *t = new TERM(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
@@ -441,7 +436,7 @@ TERM *buildnotterm(
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
 	/* pointer to the term to be created */
-	TERM *t = allocate_term(newf, 1, arg->vars);
+	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
@@ -481,7 +476,7 @@ TERM *buildmatterm(
 			break;
 		}
 		connect1(newf, 0, arg2->root_form, arg2->root_ports);
-		t = allocate_term(newf, 1, arg2->vars);
+		t = new TERM(newf, 1, arg2->vars);
 	}
 	else
 	{
@@ -502,7 +497,7 @@ TERM *buildmatterm(
 				break;
 			}
 			connect1(newf, 0, arg1->root_form, arg1->root_ports);
-			t = allocate_term(newf, 1, arg1->vars);
+			t = new TERM(newf, 1, arg1->vars);
 		}
 		else
 		{
@@ -511,7 +506,7 @@ TERM *buildmatterm(
 			/* free variables of the application */
 
 			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-			t = allocate_term(newf, 1, newvars);
+			t = new TERM(newf, 1, newvars);
 		}
 	}
 	free(arg1);
@@ -535,7 +530,7 @@ TERM *buildminusterm(
 	FORM *newf = new FORM(SUB1, level);
 	newf->num_safe = 0;
 	connect1(newf, 0, arg1->root_form, arg1->root_ports);
-	TERM *t = allocate_term(newf, 1, arg1->vars);
+	TERM *t = new TERM(newf, 1, arg1->vars);
 	free(arg1);
 	return t;
 }
@@ -578,7 +573,7 @@ TERM *buildrelopterm(
 			break;
 		}
 		connect1(newf, 0, arg2->root_form, arg2->root_ports);
-		t = allocate_term(newf, 1, arg2->vars);
+		t = new TERM(newf, 1, arg2->vars);
 	}
 	else
 	{
@@ -607,7 +602,7 @@ TERM *buildrelopterm(
 				break;
 			}
 			connect1(newf, 0, arg1->root_form, arg1->root_ports);
-			t = allocate_term(newf, 1, arg1->vars);
+			t = new TERM(newf, 1, arg1->vars);
 		}
 		else
 		{
@@ -615,7 +610,7 @@ TERM *buildrelopterm(
 			connect1(newf, 2, arg2->root_form, arg2->root_ports);
 			/* free variables of the application */
 			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-			t = allocate_term(newf, 1, newvars);
+			t = new TERM(newf, 1, newvars);
 		}
 	}
 	free(arg1);
@@ -625,7 +620,7 @@ TERM *buildrelopterm(
 
 TERM *buildnillist(int level)
 {
-	return allocate_term(NULL, NIL, NULL);
+	return new TERM(NULL, NIL, NULL);
 }
 
 TERM *buildlist(
@@ -645,7 +640,7 @@ TERM *buildlist(
 
 		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
-		t = allocate_term(newf1, 0, newvars);
+		t = new TERM(newf1, 0, newvars);
 	}
 	else
 	{
@@ -654,7 +649,7 @@ TERM *buildlist(
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
 
-		t = allocate_term(newf1, 0, arg1->vars);
+		t = new TERM(newf1, 0, arg1->vars);
 	}
 
 	free(arg1);
@@ -680,7 +675,7 @@ TERM *buildlist1(
 
 		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
-		t = allocate_term(newf1, 0, newvars);
+		t = new TERM(newf1, 0, newvars);
 	}
 	else
 	{
@@ -689,7 +684,7 @@ TERM *buildlist1(
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
 
-		t = allocate_term(newf1, 0, arg1->vars);
+		t = new TERM(newf1, 0, arg1->vars);
 	}
 
 	free(arg1);
@@ -705,7 +700,7 @@ TERM *buildcarterm(
 	FORM *newf = new FORM(CAR, level);
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
-	TERM *t = allocate_term(newf, 1, arg->vars);
+	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
@@ -718,7 +713,7 @@ TERM *buildcdrterm(
 	FORM *newf = new FORM(CDR, level);
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
-	TERM *t = allocate_term(newf, 1, arg->vars);
+	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
@@ -731,7 +726,7 @@ TERM *buildtestnil(
 	FORM *newf = new FORM(TESTNIL, level);
 	connect1(newf, 0, arg->root_form, arg->root_ports);
 
-	TERM *t = allocate_term(newf, 1, arg->vars);
+	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
@@ -882,8 +877,8 @@ VARENTRY::VARENTRY(
 	this->next = nextvar;
 }
 
-/* the following function allocate a new term entry */
-TERM *allocate_term(
+/* the following function allocate a new TERM entry */
+TERM::TERM(
 	/* pointer to the root form of the term */
 	FORM *root_form,
 	/* root port of the term */
@@ -892,11 +887,9 @@ TERM *allocate_term(
 	/* of the term */
 	VARENTRY *freevars)
 {
-	TERM *term = (TERM *)malloc_da(sizeof(TERM));
-	term->root_form = root_form;
-	term->root_ports = root_ports;
-	term->vars = freevars;
-	return term;
+	this->root_form = root_form;
+	this->root_ports = root_ports;
+	this->vars = freevars;
 }
 
 /* the following function build a box around a term  */
@@ -1345,7 +1338,7 @@ TERM *buildvoidterm(int level)
 {
 	FORM *newf = new FORM(TRIANGLE, level);
 	newf->nlevel[1] = 0;
-	return allocate_term(newf, 0, NULL);
+	return new TERM(newf, 0, NULL);
 }
 
 void free_pattern(
