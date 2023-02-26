@@ -194,7 +194,7 @@ TERM *TERM::lambda(
 	return t;
 }
 
-TERM *buildplambdaterm(
+TERM *TERM::plambda(
 	int level,
 	PATTERN *pattern,
 	TERM *body)
@@ -513,7 +513,7 @@ TERM *TERM::matterm(
 
 /* The following function creates the graph representation of */
 /* a unary minus-expression */
-TERM *buildminusterm(
+TERM *TERM::minus(
 	int level,
 	TERM *arg1)
 {

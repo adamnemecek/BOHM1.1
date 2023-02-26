@@ -409,7 +409,7 @@ expr            :       expr0
                                 }
 		|	'-' expr %prec NEG
 				{
-		 		  $$ = buildminusterm(app_nesting_depth, $2);
+		 		  $$ = TERM::minus(app_nesting_depth, $2);
 				}
 		 |	expr ANDKW expr
 				{
@@ -517,7 +517,7 @@ expr0           : 	TRUEKW
 				{
                                   pattmp=$3;
                                   $$ = 
-                                    buildplambdaterm(app_nesting_depth,$3,$6);
+                                    TERM::plambda(app_nesting_depth,$3,$6);
                                   pattmp->release();
 				  pop_local_env();
 				}

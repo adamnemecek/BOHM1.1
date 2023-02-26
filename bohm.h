@@ -130,10 +130,10 @@ TERM *buildnillist(int level);
 //     TERM *arg1,
 //     TERM *arg2);
 
-TERM *buildplambdaterm(
-    int level,
-    PATTERN *pattern,
-    TERM *body);
+// TERM *buildplambdaterm(
+//     int level,
+//     PATTERN *pattern,
+//     TERM *body);
 
 TERM *buildrelopterm(
     int level,

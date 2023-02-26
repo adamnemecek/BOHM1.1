@@ -45,6 +45,7 @@ struct FORM
 };
 
 struct BINDINGENTRY;
+struct PATTERN;
 
 /* symbol table bucket type */
 struct STBUCKET
@@ -163,6 +164,7 @@ struct TERM
 
 	static TERM *true_(int level);
 	static TERM *false_(int level);
+
 	static TERM *and_(
 		int level,
 		TERM *arg1,
@@ -171,6 +173,10 @@ struct TERM
 	static TERM *car(
 		int level,
 		TERM *arg);
+
+	static TERM *minus(
+		int level,
+		TERM *arg1);
 
 	static TERM *cdr(
 		int level,
@@ -231,6 +237,11 @@ struct TERM
 		int level,
 		STBUCKET *id,
 		TERM *bod);
+
+	static TERM *plambda(
+		int level,
+		PATTERN *pattern,
+		TERM *body);
 
 	FORM *close(int level);
 

@@ -1873,7 +1873,7 @@ yyreduce:
   case 26:
 #line 411 "parser.y"
     {
-		 		  (yyval.term) = buildminusterm(app_nesting_depth, (yyvsp[(2) - (2)].term));
+		 		  (yyval.term) = TERM::minus(app_nesting_depth, (yyvsp[(2) - (2)].term));
 				}
     break;
 
@@ -2042,7 +2042,7 @@ yyreduce:
     {
                                   pattmp=(yyvsp[(3) - (6)].pattern);
                                   (yyval.term) = 
-                                    buildplambdaterm(app_nesting_depth,(yyvsp[(3) - (6)].pattern),(yyvsp[(6) - (6)].term));
+                                    TERM::plambda(app_nesting_depth,(yyvsp[(3) - (6)].pattern),(yyvsp[(6) - (6)].term));
                                   pattmp->release();
 				  pop_local_env();
 				}
