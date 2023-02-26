@@ -176,7 +176,13 @@ struct TERM
 		int level,
 		TERM *arg);
 
+	static TERM *list1(
+		int level,
+		TERM *arg1,
+		TERM *arg2);
+
 	FORM *close(int level);
+
 	// static TERM *lambda(int level, PATTERN *pattern,
 	// TERM *body);
 };

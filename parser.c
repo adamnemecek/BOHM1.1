@@ -2240,7 +2240,7 @@ yyreduce:
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
-                                    buildlist1(app_nesting_depth,
+                                    TERM::list1(app_nesting_depth,
                                               (yyvsp[(1) - (3)].pattern)->term,(yyvsp[(3) - (3)].pattern)->term);
                                   pattmp->var_list=
                                     (yyvsp[(1) - (3)].pattern)->var_list->merge((yyvsp[(3) - (3)].pattern)->var_list);
@@ -2255,7 +2255,7 @@ yyreduce:
     {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
-                                    buildlist1(app_nesting_depth,
+                                    TERM::list1(app_nesting_depth,
                                               (yyvsp[(3) - (6)].pattern)->term,(yyvsp[(5) - (6)].pattern)->term);
                                   pattmp->var_list=
                                     mergevarlist((yyvsp[(3) - (6)].pattern)->var_list,(yyvsp[(5) - (6)].pattern)->var_list);

@@ -652,7 +652,7 @@ comlistpat      :       pattern
                                 {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
-                                    buildlist1(app_nesting_depth,
+                                    TERM::list1(app_nesting_depth,
                                               $1->term,$3->term);
                                   pattmp->var_list=
                                     $1->var_list->merge($3->var_list);
@@ -665,7 +665,7 @@ pattern         :       CONSKW '(' pattern ',' pattern ')'
                                 {
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
-                                    buildlist1(app_nesting_depth,
+                                    TERM::list1(app_nesting_depth,
                                               $3->term,$5->term);
                                   pattmp->var_list=
                                     mergevarlist($3->var_list,$5->var_list);

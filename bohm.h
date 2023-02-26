@@ -99,10 +99,10 @@ TERM *buildlist(
     TERM *arg1,
     TERM *arg2);
 
-TERM *buildlist1(
-    int level,
-    TERM *arg1,
-    TERM *arg2);
+// TERM *buildlist1(
+//     int level,
+//     TERM *arg1,
+//     TERM *arg2);
 
 TERM *buildmatterm(
     int level,

@@ -654,7 +654,7 @@ TERM *buildlist(
 	return t;
 }
 
-TERM *buildlist1(
+TERM *TERM::list1(
 	int level,
 	TERM *arg1,
 	TERM *arg2)
