@@ -114,10 +114,10 @@ TERM *buildminusterm(
     int level,
     TERM *arg1);
 
-TERM *build_mu_term(
-    int level,
-    STBUCKET *id,
-    TERM *bod);
+// TERM *build_mu_term(
+//     int level,
+//     STBUCKET *id,
+//     TERM *bod);
 
 TERM *buildnillist(int level);
 

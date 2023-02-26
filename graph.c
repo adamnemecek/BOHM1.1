@@ -265,14 +265,14 @@ TERM *buildplambdaterm(
 
 /* The following function creates the graph representation of a */
 /* recursive definition. */
-TERM *build_mu_term(
+TERM *TERM::mu(
 	int level,
 	STBUCKET *id,
 	TERM *body)
 {
-	TERM *t,
-		/* pointer to the new TERM to be created */
-		*temp;
+	TERM *t;
+	/* pointer to the new TERM to be created */
+	TERM *temp;
 	FORM *newf1; /* pointer to the new form to be created */
 
 	FORM *varform;

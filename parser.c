@@ -2085,7 +2085,7 @@ yyreduce:
   case 52:
 #line 547 "parser.y"
     {
-				  (yyval.term) = build_mu_term(--app_nesting_depth,
+				  (yyval.term) = TERM::mu(--app_nesting_depth,
 						     (yyvsp[(2) - (5)].st_bucket),(yyvsp[(5) - (5)].term));
 				  pop_local_env();
 				 }

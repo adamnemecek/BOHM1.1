@@ -545,7 +545,7 @@ expr0           : 	TRUEKW
 				 }
 			expr
 				{
-				  $$ = build_mu_term(--app_nesting_depth,
+				  $$ = TERM::mu(--app_nesting_depth,
 						     $2,$5);
 				  pop_local_env();
 				 }

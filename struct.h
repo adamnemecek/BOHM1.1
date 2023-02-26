@@ -227,6 +227,11 @@ struct TERM
 		TERM *arg1,
 		TERM *arg2);
 
+	static TERM *mu(
+		int level,
+		STBUCKET *id,
+		TERM *bod);
+
 	FORM *close(int level);
 
 	// static TERM *lambda(int level, PATTERN *pattern,
