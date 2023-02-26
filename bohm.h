@@ -62,10 +62,10 @@ FORM *inspect(
 //     TERM *arg1,
 //     TERM *arg2);
 
-TERM *buildappterm(
-    int level,
-    TERM *fun,
-    TERM *arg);
+// TERM *buildappterm(
+//     int level,
+//     TERM *fun,
+//     TERM *arg);
 
 // TERM *buildcarterm(
 //     int level,
@@ -104,11 +104,11 @@ TERM *buildletinterm(
 //     TERM *arg1,
 //     TERM *arg2);
 
-TERM *buildmatterm(
-    int level,
-    TERM *arg1,
-    TERM *arg2,
-    int op);
+// TERM *buildmatterm(
+//     int level,
+//     TERM *arg1,
+//     TERM *arg2,
+//     int op);
 
 TERM *buildminusterm(
     int level,
@@ -121,14 +121,14 @@ TERM *build_mu_term(
 
 TERM *buildnillist(int level);
 
-TERM *buildnotterm(
-    int level,
-    TERM *arg);
+// TERM *buildnotterm(
+//     int level,
+//     TERM *arg);
 
-TERM *buildorterm(
-    int level,
-    TERM *arg1,
-    TERM *arg2);
+// TERM *buildorterm(
+//     int level,
+//     TERM *arg1,
+//     TERM *arg2);
 
 TERM *buildplambdaterm(
     int level,

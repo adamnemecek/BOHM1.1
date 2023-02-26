@@ -1888,7 +1888,7 @@ yyreduce:
   case 28:
 #line 420 "parser.y"
     {
-				  (yyval.term) = buildorterm(app_nesting_depth,
+				  (yyval.term) = TERM::or_(app_nesting_depth,
 						       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
@@ -2109,7 +2109,7 @@ yyreduce:
   case 55:
 #line 563 "parser.y"
     {
-				  (yyval.term) = buildnotterm(app_nesting_depth,
+				  (yyval.term) = TERM::not_(app_nesting_depth,
 		 		  		       (yyvsp[(2) - (2)].term));
 				}
     break;
@@ -2209,7 +2209,7 @@ yyreduce:
   case 69:
 #line 630 "parser.y"
     { app_nesting_depth--;
-				  (yyval.term) = buildappterm(app_nesting_depth,(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
+				  (yyval.term) = TERM::app(app_nesting_depth,(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
 

@@ -192,6 +192,20 @@ struct TERM
 		TERM *arg2,
 		int op);
 
+	static TERM *not_(
+		int level,
+		TERM *arg);
+
+	static TERM *or_(
+		int level,
+		TERM *arg1,
+		TERM *arg2);
+
+	static TERM *app(
+		int level,
+		TERM *fun,
+		TERM *arg);
+
 	FORM *close(int level);
 
 	// static TERM *lambda(int level, PATTERN *pattern,

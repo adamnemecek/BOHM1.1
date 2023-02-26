@@ -315,7 +315,7 @@ TERM *build_mu_term(
 
 /* The following function creates the graph representation of */
 /* an application */
-TERM *buildappterm(
+TERM *TERM::app(
 	int level,
 	TERM *fun,
 	TERM *arg)
@@ -372,7 +372,7 @@ TERM *buildletinterm(
 	TERM *arg2)
 {
 	TERM *temp = buildlambdaterm(level, id, arg2);
-	return buildappterm(level, temp, arg1);
+	return TERM::app(level, temp, arg1);
 }
 
 /* The following function creates the graph representation of */
@@ -400,7 +400,7 @@ TERM *TERM::and_(
 
 /* The following function creates the graph representation of */
 /* a boolean or-expression */
-TERM *buildorterm(
+TERM *TERM::or_(
 	int level,
 	TERM *arg1,
 	TERM *arg2)
@@ -423,7 +423,7 @@ TERM *buildorterm(
 
 /* The following function creates the graph representation of */
 /* a boolean not-expression */
-TERM *buildnotterm(
+TERM *TERM::not_(
 	int level,
 	TERM *arg)
 {

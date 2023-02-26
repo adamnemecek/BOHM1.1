@@ -418,7 +418,7 @@ expr            :       expr0
 				}
 		 |	expr ORKW expr
 				{
-				  $$ = buildorterm(app_nesting_depth,
+				  $$ = TERM::or_(app_nesting_depth,
 						       $1,$3);
 				}
 		 |	expr '<' expr
@@ -561,7 +561,7 @@ expr0           : 	TRUEKW
 
 		 |	NOTKW expr
 		 		{
-				  $$ = buildnotterm(app_nesting_depth,
+				  $$ = TERM::not_(app_nesting_depth,
 		 		  		       $2);
 				}
 		 |	CONSKW '(' expr ',' expr ')'
@@ -628,7 +628,7 @@ applist         :       expr
 				}
 			expr0
 				{ app_nesting_depth--;
-				  $$ = buildappterm(app_nesting_depth,$1,$3);
+				  $$ = TERM::app(app_nesting_depth,$1,$3);
 				}
 		;
 
