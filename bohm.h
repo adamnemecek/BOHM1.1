@@ -94,10 +94,10 @@ TERM *buildletinterm(
     TERM *arg1,
     TERM *arg2);
 
-TERM *buildlist(
-    int level,
-    TERM *arg1,
-    TERM *arg2);
+// TERM *buildlist(
+//     int level,
+//     TERM *arg1,
+//     TERM *arg2);
 
 // TERM *buildlist1(
 //     int level,

@@ -620,7 +620,7 @@ TERM *buildnillist(int level)
 	return new TERM(NULL, NIL, NULL);
 }
 
-TERM *buildlist(
+TERM *TERM::list(
 	int level,
 	TERM *arg1,
 	TERM *arg2)

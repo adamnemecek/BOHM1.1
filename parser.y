@@ -566,7 +566,7 @@ expr0           : 	TRUEKW
 				}
 		 |	CONSKW '(' expr ',' expr ')'
 				{
-		 		  $$ = buildlist(app_nesting_depth,
+		 		  $$ = TERM::list(app_nesting_depth,
 		 		  		       $3,$5);
 		 		}	
 		 |	HEADKW '(' expr ')'
@@ -601,17 +601,17 @@ list		 :	NILKW
 		 ;
 exprlist	:	expr ']'
 				{
-				  $$ = buildlist(app_nesting_depth,
+				  $$ = TERM::list(app_nesting_depth,
 						$1,NULL);
 				}
 		|	expr ',' exprlist
 				{
-				  $$ = buildlist(app_nesting_depth,
+				  $$ = TERM::list(app_nesting_depth,
 						$1,$3);
 				}
 		|       expr '|' expr ']'
 				{
-				  $$ = buildlist(app_nesting_depth,
+				  $$ = TERM::list(app_nesting_depth,
 						 $1,$3);
 				}
 		;
@@ -619,7 +619,7 @@ exprlist	:	expr ']'
 applist         :       expr
                 |       expr ',' comlist
                                 {
-		 		  $$ = buildlist(app_nesting_depth,
+		 		  $$ = TERM::list(app_nesting_depth,
 		 		  		       $1,$3);
                                 }
 		|       applist
@@ -639,7 +639,7 @@ comlist         :       expr
                                 }
                 |       expr ',' comlist
                                 {
-		 		  $$ = buildlist(app_nesting_depth,
+		 		  $$ = TERM::list(app_nesting_depth,
 		 		  		       $1,$3);
                                 }
 

@@ -176,6 +176,11 @@ struct TERM
 		int level,
 		TERM *arg);
 
+	static TERM *list(
+		int level,
+		TERM *arg1,
+		TERM *arg2);
+
 	static TERM *list1(
 		int level,
 		TERM *arg1,

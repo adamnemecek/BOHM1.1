@@ -2117,7 +2117,7 @@ yyreduce:
   case 56:
 #line 568 "parser.y"
     {
-		 		  (yyval.term) = buildlist(app_nesting_depth,
+		 		  (yyval.term) = TERM::list(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (6)].term),(yyvsp[(5) - (6)].term));
 		 		}
     break;
@@ -2170,7 +2170,7 @@ yyreduce:
   case 63:
 #line 603 "parser.y"
     {
-				  (yyval.term) = buildlist(app_nesting_depth,
+				  (yyval.term) = TERM::list(app_nesting_depth,
 						(yyvsp[(1) - (2)].term),NULL);
 				}
     break;
@@ -2178,7 +2178,7 @@ yyreduce:
   case 64:
 #line 608 "parser.y"
     {
-				  (yyval.term) = buildlist(app_nesting_depth,
+				  (yyval.term) = TERM::list(app_nesting_depth,
 						(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
@@ -2186,7 +2186,7 @@ yyreduce:
   case 65:
 #line 613 "parser.y"
     {
-				  (yyval.term) = buildlist(app_nesting_depth,
+				  (yyval.term) = TERM::list(app_nesting_depth,
 						 (yyvsp[(1) - (4)].term),(yyvsp[(3) - (4)].term));
 				}
     break;
@@ -2194,7 +2194,7 @@ yyreduce:
   case 67:
 #line 621 "parser.y"
     {
-		 		  (yyval.term) = buildlist(app_nesting_depth,
+		 		  (yyval.term) = TERM::list(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
                                 }
     break;
@@ -2223,7 +2223,7 @@ yyreduce:
   case 71:
 #line 641 "parser.y"
     {
-		 		  (yyval.term) = buildlist(app_nesting_depth,
+		 		  (yyval.term) = TERM::list(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
                                 }
     break;
