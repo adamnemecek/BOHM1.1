@@ -95,7 +95,7 @@ void clean(void)
 	{
 		del_head->nform[1] = q->nform[1];
 		if (q->index == NOTEXISTENT)
-			myfree(q);
+			q->uninit();
 		else
 			garbage(q);
 	}
@@ -135,7 +135,7 @@ static void garbage(
 
 	FORM *nextform = erase->nform[0];
 	int nextport = erase->nport[0];
-	myfree(erase);
+	erase->uninit();
 	while (!end)
 	{
 		FORM *form = nextform;
@@ -169,7 +169,8 @@ static void garbage(
 								 form->nport[2],
 								 form->nform[0],
 								 form->nport[0]);
-						myfree(form);
+						form->uninit();
+						;
 					}
 					else
 					{
@@ -218,7 +219,8 @@ static void garbage(
 								 form->nport[2],
 								 form->nform[0],
 								 form->nport[0]);
-						myfree(form);
+						form->uninit();
+						;
 					}
 					else
 					{
@@ -267,7 +269,8 @@ static void garbage(
 								 form->nport[2],
 								 form->nform[0],
 								 form->nport[0]);
-						myfree(form);
+						form->uninit();
+						;
 					}
 					else
 					{
@@ -382,7 +385,8 @@ static void garbage(
 				nextform = form->nform[0];
 				nextport = form->nport[0];
 			}
-			myfree(form);
+			form->uninit();
+			;
 			break;
 
 		case APP:

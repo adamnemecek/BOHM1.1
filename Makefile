@@ -1,4 +1,5 @@
 YFLAGS = -dv
+CC=clang++
 
 OBJS = \
 	bohm.a(parser.o) \

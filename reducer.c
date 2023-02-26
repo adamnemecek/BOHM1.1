@@ -234,8 +234,8 @@ static void reduce_redex(
 						 f1->nport[2],
 						 f2->nform[2],
 						 f2->nport[2]);
-				myfree(f1);
-				myfree(f2);
+				f1->uninit();
+				f2->uninit();
 				fan_int++;
 				break;
 
@@ -244,8 +244,8 @@ static void reduce_redex(
 						 f1->nport[1],
 						 f2->nform[1],
 						 f2->nport[1]);
-				myfree(f1);
-				myfree(f2);
+				f1->uninit();
+				f2->uninit();
 				break;
 
 			case UNS_FAN1:
@@ -255,8 +255,8 @@ static void reduce_redex(
 						 f1->nport[1],
 						 f2->nform[1],
 						 f2->nport[1]);
-				myfree(f1);
-				myfree(f2);
+				f1->uninit();
+				f2->uninit();
 				fan_int++;
 				break;
 			}
@@ -279,8 +279,8 @@ static void reduce_redex(
 							 f2->nport[2],
 							 f1->nform[2],
 							 f1->nport[2]);
-					myfree(f1);
-					myfree(f2);
+					f1->uninit();
+					f2->uninit();
 					break;
 				case LAMBDAUNB:
 					eq++;
@@ -293,7 +293,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					myfree(f2);
+					f2->uninit();
 					break;
 				default:
 					printf("--->   type error1\n");
@@ -316,7 +316,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					myfree(f2);
+					f2->uninit();
 					break;
 				default:
 					printf("--->   type error28 %d\n", f2->kind);
@@ -365,7 +365,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					myfree(f2);
+					f2->uninit();
 					break;
 				default:
 					printf("--->   type error\n");
@@ -440,7 +440,7 @@ static void reduce_redex(
 						f2->index += f1->nlevel[2];
 					}
 					else
-						myfree(f1);
+						f1->uninit();
 					break;
 				default:
 					printf("--->   type error\n");
@@ -472,7 +472,7 @@ static void reduce_redex(
 								 f1->nport[2],
 								 f2->nform[2],
 								 f2->nport[2]);
-						myfree(f2);
+						f2->uninit();
 					}
 					else
 					{
@@ -480,7 +480,7 @@ static void reduce_redex(
 						ins_del(f2);
 						connect(f2, 0, f2->nform[1], f2->nport[1]);
 					}
-					myfree(f1);
+					f1->uninit();
 					eq++;
 					break;
 				default:
@@ -503,7 +503,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					myfree(f2);
+					f2->uninit();
 					break;
 
 				case UNS_FAN2:
@@ -536,7 +536,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					myfree(f2);
+					f2->uninit();
 					break;
 
 				case UNS_FAN1:
@@ -569,7 +569,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					myfree(f2);
+					f2->uninit();
 					break;
 
 				case UNS_FAN2:
@@ -581,7 +581,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					myfree(f2);
+					f2->uninit();
 					break;
 
 				default:
@@ -833,7 +833,7 @@ static void reduce_form(
 					 f1->nport[1],
 					 f1->nform[2],
 					 f1->nport[2]);
-			myfree(f1);
+			f1->uninit();
 			break;
 		default:
 			printf("--->   type error3\n");
@@ -861,7 +861,7 @@ static void reduce_form(
 					 f1->nport[1],
 					 f1->nform[2],
 					 f1->nport[2]);
-			myfree(f1);
+			f1->uninit();
 			break;
 		default:
 			printf("--->   type error4\n");
@@ -876,12 +876,12 @@ static void reduce_form(
 		case T:
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], F);
-			myfree(f1);
+			f1->uninit();
 			break;
 		case F:
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], T);
-			myfree(f1);
+			f1->uninit();
 			break;
 		default:
 			printf("--->   type error5\n");
@@ -916,7 +916,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -953,7 +953,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -990,7 +990,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1027,7 +1027,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1064,7 +1064,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1101,7 +1101,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1138,7 +1138,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] + (long int)f1->nform[0]),
 						INT);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1176,7 +1176,7 @@ static void reduce_form(
 						(FORM *)((long int)f1->nform[2] - (long int)f1->nform[0]),
 						INT);
 
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1213,7 +1213,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] * (long int)f1->nform[0]),
 						INT);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1250,7 +1250,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] / (long int)f1->nform[0]),
 						INT);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1287,7 +1287,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] % (long int)f1->nform[0]),
 						INT);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1303,7 +1303,7 @@ static void reduce_form(
 		{
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], NIL);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1320,7 +1320,7 @@ static void reduce_form(
 			eq++;
 			bool_connect(f1->nform[2], f1->nport[2], NIL);
 			bool_connect(f1->nform[1], f1->nport[1], NIL);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1336,7 +1336,7 @@ static void reduce_form(
 		{
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], T);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1353,7 +1353,7 @@ static void reduce_form(
 			eq++;
 			bool_connect(f1->nform[2], f1->nport[2], NIL);
 			bool_connect(f1->nform[1], f1->nport[1], T);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		else
@@ -1373,7 +1373,7 @@ static void reduce_form(
 		case F:
 			bool_connect(f1->nform[1], f1->nport[1], f1->nport[0]);
 			bool_connect(f1->nform[2], f1->nport[2], f1->nport[0]);
-			myfree(f1);
+			f1->uninit();
 			break;
 
 		case INT:
@@ -1385,7 +1385,7 @@ static void reduce_form(
 						f1->nport[2],
 						f1->nform[0],
 						f1->nport[0]);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		break;
@@ -1401,7 +1401,7 @@ static void reduce_form(
 		case T:
 		case F:
 			bool_connect(f1->nform[1], f1->nport[1], f1->nport[0]);
-			myfree(f1);
+			f1->uninit();
 			break;
 
 		case INT:
@@ -1409,7 +1409,7 @@ static void reduce_form(
 						f1->nport[1],
 						f1->nform[0],
 						f1->nport[0]);
-			myfree(f1);
+			f1->uninit();
 			break;
 		}
 		break;
@@ -1437,7 +1437,7 @@ static FORM *lo_redex(
 		{
 			connect1(temp->nform[1], temp->nport[1],
 					 temp->nform[0], temp->nport[0]);
-			myfree(temp);
+			temp->uninit();
 			temp = pop();
 		}
 		if ((temp->kind == TRIANGLE || temp->kind == FAN ||
@@ -1467,8 +1467,8 @@ static FORM *lo_redex(
 								 temp->nport[1],
 								 next->nform[0],
 								 next->nport[0]);
-						myfree(temp);
-						myfree(next);
+						temp->uninit();
+						next->uninit();
 						temp = pop();
 					}
 					else
@@ -1476,7 +1476,7 @@ static FORM *lo_redex(
 						connect(temp->nform[1],
 								temp->nport[1],
 								next, 1);
-						myfree(temp);
+						temp->uninit();
 						temp = pop();
 					}
 					break;
@@ -1486,7 +1486,7 @@ static FORM *lo_redex(
 					connect(temp->nform[1],
 							temp->nport[1],
 							next, p);
-					myfree(temp);
+					temp->uninit();
 					temp = pop();
 					break;
 				}
@@ -1503,7 +1503,7 @@ static FORM *lo_redex(
 					connect1(temp, 0,
 							 next->nform[0],
 							 next->nport[0]);
-					myfree(next);
+					next->uninit();
 					temp = pop();
 					counter++;
 					optim++;

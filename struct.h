@@ -36,6 +36,8 @@ struct FORM
 	FORM *prev;
 
 	FORM(int kind, int index);
+
+	void uninit();
 };
 
 struct BINDINGENTRY;
