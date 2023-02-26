@@ -229,8 +229,8 @@ static void reduce_redex(
 						 f1->nport[2],
 						 f2->nform[2],
 						 f2->nport[2]);
-				f1->uninit();
-				f2->uninit();
+				f1->release();
+				f2->release();
 				fan_int++;
 				break;
 
@@ -239,8 +239,8 @@ static void reduce_redex(
 						 f1->nport[1],
 						 f2->nform[1],
 						 f2->nport[1]);
-				f1->uninit();
-				f2->uninit();
+				f1->release();
+				f2->release();
 				break;
 
 			case UNS_FAN1:
@@ -250,8 +250,8 @@ static void reduce_redex(
 						 f1->nport[1],
 						 f2->nform[1],
 						 f2->nport[1]);
-				f1->uninit();
-				f2->uninit();
+				f1->release();
+				f2->release();
 				fan_int++;
 				break;
 			}
@@ -274,8 +274,8 @@ static void reduce_redex(
 							 f2->nport[2],
 							 f1->nform[2],
 							 f1->nport[2]);
-					f1->uninit();
-					f2->uninit();
+					f1->release();
+					f2->release();
 					break;
 				case LAMBDAUNB:
 					eq++;
@@ -288,7 +288,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					f2->uninit();
+					f2->release();
 					break;
 				default:
 					printf("--->   type error1\n");
@@ -311,7 +311,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					f2->uninit();
+					f2->release();
 					break;
 				default:
 					printf("--->   type error28 %d\n", f2->kind);
@@ -360,7 +360,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					f2->uninit();
+					f2->release();
 					break;
 				default:
 					printf("--->   type error\n");
@@ -435,7 +435,7 @@ static void reduce_redex(
 						f2->index += f1->nlevel[2];
 					}
 					else
-						f1->uninit();
+						f1->release();
 					break;
 				default:
 					printf("--->   type error\n");
@@ -467,7 +467,7 @@ static void reduce_redex(
 								 f1->nport[2],
 								 f2->nform[2],
 								 f2->nport[2]);
-						f2->uninit();
+						f2->release();
 					}
 					else
 					{
@@ -475,7 +475,7 @@ static void reduce_redex(
 						ins_del(f2);
 						connect(f2, 0, f2->nform[1], f2->nport[1]);
 					}
-					f1->uninit();
+					f1->release();
 					eq++;
 					break;
 				default:
@@ -498,7 +498,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					f2->uninit();
+					f2->release();
 					break;
 
 				case UNS_FAN2:
@@ -531,7 +531,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					f2->uninit();
+					f2->release();
 					break;
 
 				case UNS_FAN1:
@@ -564,7 +564,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					f2->uninit();
+					f2->release();
 					break;
 
 				case UNS_FAN2:
@@ -576,7 +576,7 @@ static void reduce_redex(
 					ins_del(f1);
 					if (option == 1)
 						clean();
-					f2->uninit();
+					f2->release();
 					break;
 
 				default:
@@ -828,7 +828,7 @@ static void reduce_form(
 					 f1->nport[1],
 					 f1->nform[2],
 					 f1->nport[2]);
-			f1->uninit();
+			f1->release();
 			break;
 		default:
 			printf("--->   type error3\n");
@@ -856,7 +856,7 @@ static void reduce_form(
 					 f1->nport[1],
 					 f1->nform[2],
 					 f1->nport[2]);
-			f1->uninit();
+			f1->release();
 			break;
 		default:
 			printf("--->   type error4\n");
@@ -871,12 +871,12 @@ static void reduce_form(
 		case T:
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->uninit();
+			f1->release();
 			break;
 		case F:
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], T);
-			f1->uninit();
+			f1->release();
 			break;
 		default:
 			printf("--->   type error5\n");
@@ -911,7 +911,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -948,7 +948,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -985,7 +985,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1022,7 +1022,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1059,7 +1059,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1096,7 +1096,7 @@ static void reduce_form(
 				bool_connect(f1->nform[1], f1->nport[1], T);
 			else
 				bool_connect(f1->nform[1], f1->nport[1], F);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1133,7 +1133,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] + (long int)f1->nform[0]),
 						INT);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1171,7 +1171,7 @@ static void reduce_form(
 						(FORM *)((long int)f1->nform[2] - (long int)f1->nform[0]),
 						INT);
 
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1208,7 +1208,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] * (long int)f1->nform[0]),
 						INT);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1245,7 +1245,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] / (long int)f1->nform[0]),
 						INT);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1282,7 +1282,7 @@ static void reduce_form(
 						f1->nport[1],
 						(FORM *)((long int)f1->nform[2] % (long int)f1->nform[0]),
 						INT);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1298,7 +1298,7 @@ static void reduce_form(
 		{
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], NIL);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1315,7 +1315,7 @@ static void reduce_form(
 			eq++;
 			bool_connect(f1->nform[2], f1->nport[2], NIL);
 			bool_connect(f1->nform[1], f1->nport[1], NIL);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1331,7 +1331,7 @@ static void reduce_form(
 		{
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], T);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1348,7 +1348,7 @@ static void reduce_form(
 			eq++;
 			bool_connect(f1->nform[2], f1->nport[2], NIL);
 			bool_connect(f1->nform[1], f1->nport[1], T);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		else
@@ -1368,7 +1368,7 @@ static void reduce_form(
 		case F:
 			bool_connect(f1->nform[1], f1->nport[1], f1->nport[0]);
 			bool_connect(f1->nform[2], f1->nport[2], f1->nport[0]);
-			f1->uninit();
+			f1->release();
 			break;
 
 		case INT:
@@ -1380,7 +1380,7 @@ static void reduce_form(
 						f1->nport[2],
 						f1->nform[0],
 						f1->nport[0]);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		break;
@@ -1396,7 +1396,7 @@ static void reduce_form(
 		case T:
 		case F:
 			bool_connect(f1->nform[1], f1->nport[1], f1->nport[0]);
-			f1->uninit();
+			f1->release();
 			break;
 
 		case INT:
@@ -1404,7 +1404,7 @@ static void reduce_form(
 						f1->nport[1],
 						f1->nform[0],
 						f1->nport[0]);
-			f1->uninit();
+			f1->release();
 			break;
 		}
 		break;
@@ -1432,7 +1432,7 @@ static FORM *lo_redex(
 		{
 			connect1(temp->nform[1], temp->nport[1],
 					 temp->nform[0], temp->nport[0]);
-			temp->uninit();
+			temp->release();
 			temp = pop();
 		}
 		if ((temp->kind == TRIANGLE || temp->kind == FAN ||
@@ -1462,8 +1462,8 @@ static FORM *lo_redex(
 								 temp->nport[1],
 								 next->nform[0],
 								 next->nport[0]);
-						temp->uninit();
-						next->uninit();
+						temp->release();
+						next->release();
 						temp = pop();
 					}
 					else
@@ -1471,7 +1471,7 @@ static FORM *lo_redex(
 						connect(temp->nform[1],
 								temp->nport[1],
 								next, 1);
-						temp->uninit();
+						temp->release();
 						temp = pop();
 					}
 					break;
@@ -1481,7 +1481,7 @@ static FORM *lo_redex(
 					connect(temp->nform[1],
 							temp->nport[1],
 							next, p);
-					temp->uninit();
+					temp->release();
 					temp = pop();
 					break;
 				}
@@ -1498,7 +1498,7 @@ static FORM *lo_redex(
 					connect1(temp, 0,
 							 next->nform[0],
 							 next->nport[0]);
-					next->uninit();
+					next->release();
 					temp = pop();
 					counter++;
 					optim++;

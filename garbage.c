@@ -91,7 +91,7 @@ void clean(void)
 	{
 		del_head->nform[1] = q->nform[1];
 		if (q->index == NOTEXISTENT)
-			q->uninit();
+			q->release();
 		else
 			garbage(q);
 	}
@@ -131,7 +131,7 @@ static void garbage(
 
 	FORM *nextform = erase->nform[0];
 	int nextport = erase->nport[0];
-	erase->uninit();
+	erase->release();
 	while (!end)
 	{
 		FORM *form = nextform;
@@ -165,7 +165,7 @@ static void garbage(
 								 form->nport[2],
 								 form->nform[0],
 								 form->nport[0]);
-						form->uninit();
+						form->release();
 						;
 					}
 					else
@@ -215,7 +215,7 @@ static void garbage(
 								 form->nport[2],
 								 form->nform[0],
 								 form->nport[0]);
-						form->uninit();
+						form->release();
 						;
 					}
 					else
@@ -265,7 +265,7 @@ static void garbage(
 								 form->nport[2],
 								 form->nform[0],
 								 form->nport[0]);
-						form->uninit();
+						form->release();
 						;
 					}
 					else
@@ -381,7 +381,7 @@ static void garbage(
 				nextform = form->nform[0];
 				nextport = form->nport[0];
 			}
-			form->uninit();
+			form->release();
 			;
 			break;
 

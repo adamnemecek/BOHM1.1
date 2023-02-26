@@ -39,7 +39,7 @@ struct FORM
 
 	FORM(int kind, int index);
 
-	void uninit();
+	void release();
 
 	FORM *copy(int p, int offset);
 };
@@ -133,7 +133,10 @@ struct VARENTRY
 	/* variable in a term */
 	VARENTRY *next;
 
-	VARENTRY(STBUCKET *id, FORM *form, VARENTRY *nextvar);
+	VARENTRY(
+		STBUCKET *id,
+		FORM *form,
+		VARENTRY *nextvar);
 };
 
 /* term descriptor type */

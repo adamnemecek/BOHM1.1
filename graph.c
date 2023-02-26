@@ -177,7 +177,7 @@ static TERM *buildlambdaterm(
 			connect(varform->nform[1],
 					varform->nport[1],
 					newf1, 2);
-			varform->uninit();
+			varform->release();
 		}
 		else
 			connect(varform, 0, newf1, 2);
@@ -238,7 +238,7 @@ TERM *buildplambdaterm(
 							varform->nport[1],
 							vp->id->form->nform[0],
 							vp->id->form->nport[0]);
-					varform->uninit();
+					varform->release();
 				}
 				else
 				{
@@ -247,7 +247,7 @@ TERM *buildplambdaterm(
 							vp->id->form->nport[0]);
 				}
 			}
-			vp->id->form->uninit();
+			vp->id->form->release();
 		} /* for */
 		t = new TERM(newf1, 0, remvp(pattern->var_list, body->vars));
 		connect(newf1, 1, body->root_form, body->root_ports);
@@ -293,7 +293,7 @@ TERM *build_mu_term(
 			connect(varform->nform[1],
 					varform->nport[1],
 					newf1, 2);
-			varform->uninit();
+			varform->release();
 		}
 		else
 			intelligent_connect(newf1, 2, varform);
@@ -789,7 +789,7 @@ FORM::FORM(
 /* the following function adds a graphical form to deallocate */
 /* in a list of free forms (i.e a free-list of forms)         */
 
-void FORM::uninit()
+void FORM::release()
 {
 	this->prev->next = this->next;
 	this->next->prev = this->prev;
@@ -1081,7 +1081,7 @@ static void intelligent_connect(
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
 			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
-			f2->uninit();
+			f2->release();
 			break;
 		case TESTNIL:
 			f1->kind = TESTNIL1;
@@ -1094,7 +1094,7 @@ static void intelligent_connect(
 				inspect_connect(f1, 2, f1->nform[1], f1->nport[1]);
 			}
 			inspect_connect(f1, 1, f2->nform[1], f2->nport[1]);
-			f2->uninit();
+			f2->release();
 			break;
 		case CAR:
 			f1->kind = CAR1;
@@ -1107,7 +1107,7 @@ static void intelligent_connect(
 				inspect_connect(f1, 2, f1->nform[1], f1->nport[1]);
 			}
 			inspect_connect(f1, 1, f2->nform[1], f2->nport[1]);
-			f2->uninit();
+			f2->release();
 			break;
 		case CDR:
 			f1->kind = CDR1;
@@ -1120,7 +1120,7 @@ static void intelligent_connect(
 				inspect_connect(f1, 2, f1->nform[1], f1->nport[1]);
 			}
 			inspect_connect(f1, 1, f2->nform[1], f2->nport[1]);
-			f2->uninit();
+			f2->release();
 			break;
 		default:
 			connect(f1, port, f2, 0);
@@ -1133,7 +1133,7 @@ static void intelligent_connect(
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
 			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
-			f2->uninit();
+			f2->release();
 			break;
 		default:
 			connect(f1, port, f2, 0);
@@ -1146,7 +1146,7 @@ static void intelligent_connect(
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
 			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
-			f2->uninit();
+			f2->release();
 			break;
 		case CDR:
 			if (port == 2)
@@ -1169,7 +1169,7 @@ static void intelligent_connect(
 				else
 				{
 					connect1(f1, 2, f2->nform[1], f2->nport[1]);
-					f2->uninit();
+					f2->release();
 				}
 			}
 			else
@@ -1206,7 +1206,7 @@ static void intelligent_connect(
 		case TRIANGLE:
 			f1->nlevel[port] += f2->nlevel[1];
 			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
-			f2->uninit();
+			f2->release();
 			break;
 		case CAR:
 			if (port == 2)
@@ -1231,7 +1231,7 @@ static void intelligent_connect(
 				else
 				{
 					connect1(f1, 1, f2->nform[1], f2->nport[1]);
-					f2->uninit();
+					f2->release();
 				}
 			}
 			else
