@@ -172,6 +172,10 @@ struct TERM
 		int level,
 		TERM *arg);
 
+	static TERM *cdr(
+		int level,
+		TERM *arg);
+
 	FORM *close(int level);
 	// static TERM *lambda(int level, PATTERN *pattern,
 	// TERM *body);

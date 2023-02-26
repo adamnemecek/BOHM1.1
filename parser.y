@@ -576,7 +576,7 @@ expr0           : 	TRUEKW
 		 		}
 		 |	TAILKW '(' expr ')'
 				{
-				  $$ = buildcdrterm(app_nesting_depth,
+				  $$ = TERM::cdr(app_nesting_depth,
 		 		  		       $3);
 		 		}
 		 |	TESTNILKW '(' expr ')'

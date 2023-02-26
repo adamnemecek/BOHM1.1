@@ -2133,7 +2133,7 @@ yyreduce:
   case 58:
 #line 578 "parser.y"
     {
-				  (yyval.term) = buildcdrterm(app_nesting_depth,
+				  (yyval.term) = TERM::cdr(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
 		 		}
     break;

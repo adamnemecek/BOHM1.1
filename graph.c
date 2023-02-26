@@ -702,7 +702,7 @@ TERM *TERM::car(
 	return t;
 }
 
-TERM *buildcdrterm(
+TERM *TERM::cdr(
 	int level,
 	TERM *arg)
 {
