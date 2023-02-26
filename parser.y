@@ -423,32 +423,32 @@ expr            :       expr0
 				}
 		 |	expr '<' expr
 		 		{
-		 		  $$ = buildrelopterm(app_nesting_depth,
+		 		  $$ = TERM::relop(app_nesting_depth,
 		 		  		       $1,$3,LESS);
 		 		}
 		 |	expr EQUAL expr
 		 		{
-		 		  $$ = buildrelopterm(app_nesting_depth,
+		 		  $$ = TERM::relop(app_nesting_depth,
 		 		  		       $1,$3,EQ);
 		 		}
 		 |	expr NOTEQUAL expr
 		 		{
-				  $$ = buildrelopterm(app_nesting_depth,
+				  $$ = TERM::relop(app_nesting_depth,
 		 		  		       $1,$3,NOTEQ);
 		 		}
 		 |	expr '>' expr
 		 		{
-		 		  $$ = buildrelopterm(app_nesting_depth,
+		 		  $$ = TERM::relop(app_nesting_depth,
 		 		  		       $1,$3,MORE);
 				}
 		 |	expr LEQUAL expr
 		 		{
-		 		  $$ = buildrelopterm(app_nesting_depth,
+		 		  $$ = TERM::relop(app_nesting_depth,
 		 		  		       $1,$3,LEQ);
 		 		}
 		 |	expr MEQUAL expr
 		 		{
-		 		  $$ = buildrelopterm(app_nesting_depth,
+		 		  $$ = TERM::relop(app_nesting_depth,
 		 		  		       $1,$3,MEQ);
 		 		}
 		 |	expr '+' expr

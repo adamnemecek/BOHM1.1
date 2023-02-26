@@ -534,7 +534,7 @@ TERM *TERM::minus(
 
 /* The following function creates the graph representation of */
 /* a relop-expression */
-TERM *buildrelopterm(
+TERM *TERM::relop(
 	int level,
 	TERM *arg1,
 	TERM *arg2,

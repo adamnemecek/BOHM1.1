@@ -247,6 +247,12 @@ struct TERM
 		int level,
 		TERM *arg);
 
+	static TERM *relop(
+		int level,
+		TERM *arg1,
+		TERM *arg2,
+		int relop);
+
 	FORM *close(int level);
 
 	// static TERM *lambda(int level, PATTERN *pattern,

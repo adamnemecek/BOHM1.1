@@ -1896,7 +1896,7 @@ yyreduce:
   case 29:
 #line 425 "parser.y"
     {
-		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
+		 		  (yyval.term) = TERM::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),LESS);
 		 		}
     break;
@@ -1904,7 +1904,7 @@ yyreduce:
   case 30:
 #line 430 "parser.y"
     {
-		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
+		 		  (yyval.term) = TERM::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),EQ);
 		 		}
     break;
@@ -1912,7 +1912,7 @@ yyreduce:
   case 31:
 #line 435 "parser.y"
     {
-				  (yyval.term) = buildrelopterm(app_nesting_depth,
+				  (yyval.term) = TERM::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),NOTEQ);
 		 		}
     break;
@@ -1920,7 +1920,7 @@ yyreduce:
   case 32:
 #line 440 "parser.y"
     {
-		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
+		 		  (yyval.term) = TERM::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MORE);
 				}
     break;
@@ -1928,7 +1928,7 @@ yyreduce:
   case 33:
 #line 445 "parser.y"
     {
-		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
+		 		  (yyval.term) = TERM::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),LEQ);
 		 		}
     break;
@@ -1936,7 +1936,7 @@ yyreduce:
   case 34:
 #line 450 "parser.y"
     {
-		 		  (yyval.term) = buildrelopterm(app_nesting_depth,
+		 		  (yyval.term) = TERM::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MEQ);
 		 		}
     break;

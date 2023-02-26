@@ -135,11 +135,11 @@ TERM *buildnillist(int level);
 //     PATTERN *pattern,
 //     TERM *body);
 
-TERM *buildrelopterm(
-    int level,
-    TERM *arg1,
-    TERM *arg2,
-    int relop);
+// TERM *buildrelopterm(
+//     int level,
+//     TERM *arg1,
+//     TERM *arg2,
+//     int relop);
 
 // TERM *buildtestnil(
 //     int level,
