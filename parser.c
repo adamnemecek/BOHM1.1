@@ -1830,7 +1830,7 @@ yyreduce:
   case 21:
 #line 377 "parser.y"
     {
-				  lastinputterm = closeterm(0,(yyvsp[(1) - (2)].term));
+				  lastinputterm = (yyvsp[(1) - (2)].term)->close(0);
 				  current_pos = lastinputterm;
 				  (yyval.root) = lastinputterm;
 				  reduce_term((yyval.root));
@@ -1857,7 +1857,7 @@ yyreduce:
 #line 398 "parser.y"
     {
 				  app_nesting_depth--;
-				  lastinputterm = closeterm(1,(yyvsp[(5) - (5)].term));
+				  lastinputterm = (yyvsp[(5) - (5)].term)->close(1);
 				  (yyval.root) = lastinputterm;
 				  create_variable_binding((yyvsp[(2) - (5)].st_bucket),(yyval.root));
 				}

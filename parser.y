@@ -375,7 +375,7 @@ optint          :
 
 term            :       expr EXPRDELIM
 				{
-				  lastinputterm = closeterm(0,$1);
+				  lastinputterm = $1->close(0);
 				  current_pos = lastinputterm;
 				  $$ = lastinputterm;
 				  reduce_term($$);
@@ -397,7 +397,7 @@ global_decl	:    DEFKW ID '='
 		     expr
 				{
 				  app_nesting_depth--;
-				  lastinputterm = closeterm(1,$5);
+				  lastinputterm = $5->close(1);
 				  $$ = lastinputterm;
 				  create_variable_binding($2,$$);
 				}

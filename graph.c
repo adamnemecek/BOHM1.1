@@ -729,21 +729,20 @@ TERM *buildtestnil(
 }
 
 /* the following function adds a root node to a term */
-FORM *closeterm(
-	int level,
-	TERM *t)
+FORM *TERM::close(
+	int level)
 {
-	if (t == NULL)
-	{
-		return NULL;
-	}
 	FORM *newroot = new FORM(ROOT, 0);
 
-	connect1(newroot, 0, t->root_form, t->root_ports);
+	connect1(
+		newroot,
+		0,
+		this->root_form,
+		this->root_ports);
 
 	if (level == 1)
-		t->vars = addbrackets(0, t->vars);
-	closeglobalvars(t->vars);
+		this->vars = addbrackets(0, this->vars);
+	closeglobalvars(this->vars);
 	return newroot;
 }
 
