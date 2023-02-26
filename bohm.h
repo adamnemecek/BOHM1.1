@@ -194,7 +194,6 @@ void create_variable_binding(
     FORM *rootform);
 
 void destroy(void);
-void free_pattern(PATTERN *p);
 void info(char *choices);
 void init_destroy(void);
 void init_garbage(void);

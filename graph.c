@@ -1352,14 +1352,13 @@ TERM *buildvoidterm(int level)
 	return new TERM(newf, 0, NULL);
 }
 
-void free_pattern(
-	PATTERN *p)
+void PATTERN::release()
 {
 	VARLIST *vl, *vln;
-	for (vl = p->var_list; vl; vl = vln)
+	for (vl = this->var_list; vl; vl = vln)
 	{
 		vln = vl->next;
 		free(vl);
 	}
-	free(p);
+	free(this);
 }

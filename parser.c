@@ -2043,7 +2043,7 @@ yyreduce:
                                   pattmp=(yyvsp[(3) - (6)].pattern);
                                   (yyval.term) = 
                                     buildplambdaterm(app_nesting_depth,(yyvsp[(3) - (6)].pattern),(yyvsp[(6) - (6)].term));
-                                  free_pattern(pattmp);
+                                  pattmp->release();
 				  pop_local_env();
 				}
     break;

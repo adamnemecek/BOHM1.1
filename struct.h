@@ -185,6 +185,14 @@ struct PATTERN
 {
 	VARLIST *var_list;
 	TERM *term;
+
+	PATTERN(TERM *term, VARLIST *var_list)
+	{
+		this->term = term;
+		this->var_list = var_list;
+	}
+
+	void release();
 };
 
 struct COPY_FORM

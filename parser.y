@@ -518,7 +518,7 @@ expr0           : 	TRUEKW
                                   pattmp=$3;
                                   $$ = 
                                     buildplambdaterm(app_nesting_depth,$3,$6);
-                                  free_pattern(pattmp);
+                                  pattmp->release();
 				  pop_local_env();
 				}
 		|       LETKW ID '='
