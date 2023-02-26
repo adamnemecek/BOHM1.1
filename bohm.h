@@ -154,9 +154,9 @@ VARLIST *mergevarlist(
     VARLIST *l1,
     VARLIST *l2);
 
-FORM *allocate_form(
-    int name,
-    int index);
+// FORM *FORM::allocate(
+//     int name,
+//     int index);
 
 void clean(void);
 

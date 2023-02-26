@@ -188,7 +188,7 @@ static void garbage(
 					else
 					{
 						form->kind = TRIANGLE;
-						newform = allocate_form(TESTNIL, form->index);
+						newform = new FORM(TESTNIL, form->index);
 						connect1(newform, 0, form->nform[0], form->nport[0]);
 						connect(newform, 1, form, 0);
 						form->index -= 1;
@@ -237,7 +237,7 @@ static void garbage(
 					else
 					{
 						form->kind = TRIANGLE;
-						newform = allocate_form(CAR, form->index);
+						newform = new FORM(CAR, form->index);
 						connect1(newform, 0, form->nform[0], form->nport[0]);
 						connect(newform, 1, form, 0);
 						form->index -= 1;
@@ -286,7 +286,7 @@ static void garbage(
 					else
 					{
 						form->kind = TRIANGLE;
-						newform = allocate_form(CDR, form->index);
+						newform = new FORM(CDR, form->index);
 						connect1(newform, 0, form->nform[0], form->nport[0]);
 						connect(newform, 1, form, 0);
 						form->index -= 1;

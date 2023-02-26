@@ -33,13 +33,14 @@
 #define COMPILERCRASH 2
 #define NOTENOUGHMEMORY 0
 
+const char *crash_msgs[] = {
+	"not enough memory",
+	"unable to open this file"};
+
 /* The following function signals errors causing abort. */
 static void signal_crash(int crash_type) /* crash type */
 {
 	/* crash messages */
-	static char *crash_msgs[] = {
-		"not enough memory",
-		"unable to open this file"};
 
 	fprintf(stderr, "%s\n", crash_msgs[crash_type]);
 	exit(COMPILERCRASH);

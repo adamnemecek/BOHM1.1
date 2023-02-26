@@ -337,7 +337,7 @@ static void reduce_redex(
 					connect(f1, 2, f2, 1);
 					if (f1->nlevel[2] != 0)
 					{
-						new1 = allocate_form(TRIANGLE, f1->index);
+						new1 = new FORM(TRIANGLE, f1->index);
 						new1->nlevel[1] = f1->nlevel[2];
 						connect1(new1, 0, f2->nform[2], f2->nport[2]);
 						connect(new1, 1, f2, 2);
@@ -386,7 +386,7 @@ static void reduce_redex(
 					f1->index -= 1;
 					if (f1->nlevel[2] != 0)
 					{
-						new1 = allocate_form(TRIANGLE, f1->index);
+						new1 = new FORM(TRIANGLE, f1->index);
 						new1->nlevel[1] = f1->nlevel[2];
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 						connect(new1, 1, f2, 1);
@@ -428,7 +428,7 @@ static void reduce_redex(
 					bool_connect(f1->nform[1], f1->nport[1], F);
 					if (f1->nlevel[2] != 0)
 					{
-						new1 = allocate_form(TRIANGLE, f1->index - 1);
+						new1 = new FORM(TRIANGLE, f1->index - 1);
 						new1->nlevel[1] = f1->nlevel[2];
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 						connect(new1, 1, f2, 1);
@@ -462,7 +462,7 @@ static void reduce_redex(
 					}
 					else
 					{
-						new1 = allocate_form(ERASE, 0);
+						new1 = new FORM(ERASE, 0);
 						ins_del(f1);
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 					}
@@ -623,9 +623,9 @@ static void reduce_redex(
 			case IFELSE:
 			case APP:
 			case LAMBDA:
-				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
 				f2->index += f1->nlevel[1];
-				new2 = allocate_form(FAN, f1->index);
+				new2 = new FORM(FAN, f1->index);
 				new2->num_safe = f1->num_safe;
 				new2->nlevel[1] = f1->nlevel[1];
 				new2->nlevel[2] = f1->nlevel[2];
@@ -644,12 +644,12 @@ static void reduce_redex(
 			case CAR1:
 			case CDR1:
 			case CONS1:
-				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
 				f2->index += f1->nlevel[1];
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
 				new1->nlevel[2] = f2->nlevel[2];
-				new2 = allocate_form(FAN, f1->index);
+				new2 = new FORM(FAN, f1->index);
 				new2->num_safe = f1->num_safe;
 				new2->nlevel[1] = f1->nlevel[1];
 				new2->nlevel[2] = f1->nlevel[2];
@@ -667,7 +667,7 @@ static void reduce_redex(
 			case UNS_FAN2:
 				unsafe++;
 			case TRIANGLE:
-				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
 				f2->index += f1->nlevel[1];
@@ -694,7 +694,7 @@ static void reduce_redex(
 			case PROD1:
 			case DIV1:
 			case MOD1:
-				new1 = allocate_form(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nform[2] = f2->nform[2];
 				f2->index += f1->nlevel[1];
@@ -739,7 +739,7 @@ static void reduce_redex(
 			case CAR1:
 			case CDR1:
 			case CONS1:
-				new1 = allocate_form(f1->kind, f1->index);
+				new1 = new FORM(f1->kind, f1->index);
 				new1->nlevel[1] = f1->nlevel[1];
 				new1->num_safe = f1->num_safe;
 

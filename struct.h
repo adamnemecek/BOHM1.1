@@ -1,69 +1,7 @@
 #pragma once
 
-/* symbol table bucket type */
-typedef struct st_bucket
-{
-	/* identifier */
-	char *id;
-
-	/* token associated with */
-	/* the identifier (it can */
-	/* be either ID or a keyword */
-	/* token) */
-	int token;
-
-	/* pointer to the current */
-	/* binding entry for the */
-	/* identifier */
-	struct binding_entry *curr_binding;
-
-	/* pointer to the bucket */
-	/* for the next identifier */
-	/* hashing in the same */
-	/* linked list of buckets */
-	struct st_bucket *next_st_bucket;
-} STBUCKET;
-
-/* local environment entry descriptor type */
-typedef struct local_env_entry
-{
-	/* nesting depth associated */
-	/* with the local environment */
-	int nesting_depth;
-
-	/* pointer to the entry for */
-	/* the last binding enforced in */
-	/* this environment */
-	struct binding_entry *last_local_binding;
-
-	/* pointer to the entry for the */
-	/* previous local environment */
-	struct local_env_entry *prev_local_env;
-} LOCALENVENTRY;
-
-/* binding entry descriptor type */
-typedef struct binding_entry
-{
-	struct st_bucket *st_bucket;
-	/* pointer to the bucket */
-	/* for the identifier */
-	/* involved in the binding */
-	struct form *root;
-	/* pointer to the root form */
-	/* (for global identifiers) */
-	struct binding_entry *prev_id_binding,
-		/* pointer to the entry for */
-		/* the binding previously */
-		/* enforced for the same */
-		/* identifier */
-		*prev_local_binding;
-	/* pointer to the entry for the */
-	/* binding previously enforced */
-	/* in the same local environment */
-} BINDINGENTRY;
-
 /* graphical form descriptor type */
-typedef struct form
+struct FORM
 {
 	/* name of the form */
 	/* (FAN, ROOT, CROISSANT */
@@ -90,37 +28,102 @@ typedef struct form
 	/* BRACKET only the first two */
 	/* fields are meaningful; for */
 	/* ROOT only the first one is) */
-	struct form *nform[3];
+	FORM *nform[3];
 
 	int nlevel[3];
 
-	struct form *next;
-	struct form *prev;
+	FORM *next;
+	FORM *prev;
 
-} FORM;
+	FORM(int kind, int index);
+};
+
+struct BINDINGENTRY;
+
+/* symbol table bucket type */
+struct STBUCKET
+{
+	/* identifier */
+	char *id;
+
+	/* token associated with */
+	/* the identifier (it can */
+	/* be either ID or a keyword */
+	/* token) */
+	int token;
+
+	/* pointer to the current */
+	/* binding entry for the */
+	/* identifier */
+	BINDINGENTRY *curr_binding;
+
+	/* pointer to the bucket */
+	/* for the next identifier */
+	/* hashing in the same */
+	/* linked list of buckets */
+	STBUCKET *next_st_bucket;
+};
+
+/* binding entry descriptor type */
+struct BINDINGENTRY
+{
+	STBUCKET *st_bucket;
+	/* pointer to the bucket */
+	/* for the identifier */
+	/* involved in the binding */
+	FORM *root;
+	/* pointer to the root form */
+	/* (for global identifiers) */
+	BINDINGENTRY *prev_id_binding,
+		/* pointer to the entry for */
+		/* the binding previously */
+		/* enforced for the same */
+		/* identifier */
+		*prev_local_binding;
+	/* pointer to the entry for the */
+	/* binding previously enforced */
+	/* in the same local environment */
+};
+
+/* local environment entry descriptor type */
+struct LOCALENVENTRY
+{
+	/* nesting depth associated */
+	/* with the local environment */
+	int nesting_depth;
+
+	/* pointer to the entry for */
+	/* the last binding enforced in */
+	/* this environment */
+	BINDINGENTRY *last_local_binding;
+
+	/* pointer to the entry for the */
+	/* previous local environment */
+	LOCALENVENTRY *prev_local_env;
+};
 
 /* free variable descriptor type */
-typedef struct varentry
+struct VARENTRY
 {
 	/* pointer to the st_bucket */
 	/* for the variable */
-	struct st_bucket *name;
+	STBUCKET *name;
 
 	/* pointer to the form */
 	/* for the variable */
-	struct form *var;
+	FORM *var;
 
 	/* pointer to the next free */
 	/* variable in a term */
-	struct varentry *next;
-} VARENTRY;
+	VARENTRY *next;
+};
 
 /* term descriptor type */
-typedef struct term
+struct TERM
 {
 	/* pointer to the root form */
 	/* of the term */
-	struct form *root_form;
+	FORM *root_form;
 
 	/* number of the root port */
 	/* of the term (0 for variables */
@@ -130,37 +133,37 @@ typedef struct term
 
 	/* pointer to the list of free */
 	/* variables in the term */
-	struct varentry *vars;
-} TERM;
+	VARENTRY *vars;
+};
 
-typedef struct binding_id
+struct BINDINGID
 {
-	struct st_bucket *id;
-	struct form *form;
-} BINDINGID;
+	STBUCKET *id;
+	FORM *form;
+};
 
-typedef struct var_list
+struct VARLIST
 {
-	struct binding_id *id;
-	struct var_list *next;
-} VARLIST;
+	BINDINGID *id;
+	VARLIST *next;
+};
 
-typedef struct pattern
+struct PATTERN
 {
-	struct var_list *var_list;
-	struct term *term;
-} PATTERN;
+	VARLIST *var_list;
+	TERM *term;
+};
 
-typedef struct copy_form
+struct COPY_FORM
 {
 	FORM *src;
 	FORM *dest;
-	struct copy_form *next;
-} COPY_FORM;
+	COPY_FORM *next;
+};
 
-typedef struct elem
+struct ELEM
 {
 	FORM *node;
 	int num;
-	struct elem *next;
-} ELEM;
+	ELEM *next;
+};
