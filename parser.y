@@ -413,7 +413,7 @@ expr            :       expr0
 				}
 		 |	expr ANDKW expr
 				{
-				  $$ = buildandterm(app_nesting_depth,
+				  $$ = TERM::and_(app_nesting_depth,
 						       $1,$3);
 				}
 		 |	expr ORKW expr
@@ -571,7 +571,7 @@ expr0           : 	TRUEKW
 		 		}	
 		 |	HEADKW '(' expr ')'
 				{
-		 		  $$ = buildcarterm(app_nesting_depth,
+		 		  $$ = TERM::car(app_nesting_depth,
 		 		  		       $3);
 		 		}
 		 |	TAILKW '(' expr ')'

@@ -57,19 +57,19 @@ FORM *inspect(
     int p,
     FORM *f);
 
-TERM *buildandterm(
-    int level,
-    TERM *arg1,
-    TERM *arg2);
+// TERM *buildandterm(
+//     int level,
+//     TERM *arg1,
+//     TERM *arg2);
 
 TERM *buildappterm(
     int level,
     TERM *fun,
     TERM *arg);
 
-TERM *buildcarterm(
-    int level,
-    TERM *arg);
+// TERM *buildcarterm(
+//     int level,
+//     TERM *arg);
 
 TERM *buildcdrterm(
     int level,

@@ -377,7 +377,7 @@ TERM *buildletinterm(
 
 /* The following function creates the graph representation of */
 /* a boolean and-expression */
-TERM *buildandterm(
+TERM *TERM::and_(
 	int level,
 	TERM *arg1,
 	TERM *arg2)
@@ -689,7 +689,7 @@ TERM *buildlist1(
 	return t;
 }
 
-TERM *buildcarterm(
+TERM *TERM::car(
 	int level,
 	TERM *arg)
 {

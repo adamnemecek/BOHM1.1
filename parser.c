@@ -1880,7 +1880,7 @@ yyreduce:
   case 27:
 #line 415 "parser.y"
     {
-				  (yyval.term) = buildandterm(app_nesting_depth,
+				  (yyval.term) = TERM::and_(app_nesting_depth,
 						       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
@@ -2125,7 +2125,7 @@ yyreduce:
   case 57:
 #line 573 "parser.y"
     {
-		 		  (yyval.term) = buildcarterm(app_nesting_depth,
+		 		  (yyval.term) = TERM::car(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
 		 		}
     break;

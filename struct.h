@@ -163,6 +163,14 @@ struct TERM
 
 	static TERM *true_(int level);
 	static TERM *false_(int level);
+	static TERM *and_(
+		int level,
+		TERM *arg1,
+		TERM *arg2);
+
+	static TERM *car(
+		int level,
+		TERM *arg);
 
 	FORM *close(int level);
 	// static TERM *lambda(int level, PATTERN *pattern,
