@@ -80,12 +80,12 @@ struct BINDINGENTRY
 	FORM *root;
 	/* pointer to the root form */
 	/* (for global identifiers) */
-	BINDINGENTRY *prev_id_binding,
-		/* pointer to the entry for */
-		/* the binding previously */
-		/* enforced for the same */
-		/* identifier */
-		*prev_local_binding;
+	BINDINGENTRY *prev_id_binding;
+	/* pointer to the entry for */
+	/* the binding previously */
+	/* enforced for the same */
+	/* identifier */
+	BINDINGENTRY *prev_local_binding;
 	/* pointer to the entry for the */
 	/* binding previously enforced */
 	/* in the same local environment */
@@ -156,6 +156,12 @@ struct BINDINGID
 {
 	STBUCKET *id;
 	FORM *form;
+
+	BINDINGID(STBUCKET *id, FORM *form)
+	{
+		this->id = id;
+		this->form = form;
+	}
 };
 
 struct VARLIST
@@ -163,6 +169,14 @@ struct VARLIST
 	BINDINGID *id;
 	VARLIST *next;
 };
+
+// struct VARLIST1
+// {
+// 	BINDINGID *id;
+// 	std::list<VARENTRY *> list;
+
+// 	VARLIST1(BINDINGID *id, TERM *t);
+// };
 
 struct PATTERN
 {

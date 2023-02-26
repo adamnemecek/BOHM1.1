@@ -976,6 +976,8 @@ static VARENTRY *share(
 	return res;
 }
 
+#include <list>
+
 /* The following function searches for a variable inside a list. */
 static VARENTRY *lookfor(
 	/* pointer to the identifier to be found  */
@@ -983,6 +985,7 @@ static VARENTRY *lookfor(
 	/* pointer to the variable list to be scanned */
 	VARENTRY *listvar)
 {
+
 	if (listvar == NULL)
 		return NULL;
 
@@ -1330,6 +1333,13 @@ VARLIST *makevarlist(
 	vl->id = bid;
 	return vl;
 }
+
+// VARLIST1::VARLIST1(BINDINGID *id, TERM *t)
+// {
+// 	this->id = id;
+// 	// this->list =
+// 	// return nullptr;
+// }
 
 TERM *buildvoidterm(int level)
 {

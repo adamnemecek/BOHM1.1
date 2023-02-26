@@ -206,7 +206,8 @@ static FORM *copy_aux(
 
 FORM *FORM::copy(int p, int offset)
 {
-	return copy_aux(this, index, offset);
+
+	return copy_aux(this->nform[p], this->nport[p], offset);
 }
 
 /* The following function inserts a two-form relation in the table. */
