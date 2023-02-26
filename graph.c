@@ -139,7 +139,7 @@ TERM *buildvarterm(
 	newf->nlevel[1] = -1;
 
 	/* pointer to the new free variable entry */
-	VARENTRY *newvar = allocate_var(id, newf, NULL);
+	VARENTRY *newvar = new VARENTRY(id, newf, NULL);
 	return allocate_term(newf, 1, newvar);
 }
 
@@ -796,6 +796,7 @@ FORM::FORM(
 
 /* the following function adds a graphical form to deallocate */
 /* in a list of free forms (i.e a free-list of forms)         */
+
 void FORM::uninit()
 {
 	this->prev->next = this->next;
@@ -868,7 +869,7 @@ void bool_connect(
 /****************************************************************/
 
 /* the following function allocate a new variable entry */
-static VARENTRY *allocate_var(
+VARENTRY::VARENTRY(
 	/* identifier of the variable */
 	STBUCKET *id,
 	/* graphical form for the variable */
@@ -876,13 +877,9 @@ static VARENTRY *allocate_var(
 	/* pointer to the next free variable */
 	VARENTRY *nextvar)
 {
-	/* reference to the pointer of the */
-	/* free variable entry to be created */
-	VARENTRY *newvar = (VARENTRY *)malloc_da(sizeof(VARENTRY));
-	newvar->name = id;
-	newvar->var = form;
-	newvar->next = nextvar;
-	return newvar;
+	this->name = id;
+	this->var = form;
+	this->next = nextvar;
 }
 
 /* the following function allocate a new term entry */
@@ -947,7 +944,7 @@ static VARENTRY *addbrackets(
 	FORM *bracket = new FORM(TRIANGLE, index);
 	bracket->nlevel[1] = 1;
 	connect(bracket, 1, variab, 0);
-	return allocate_var(listvar->name,
+	return new VARENTRY(listvar->name,
 						bracket,
 						addbrackets(index, listvar->next));
 }

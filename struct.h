@@ -118,6 +118,8 @@ struct VARENTRY
 	/* pointer to the next free */
 	/* variable in a term */
 	VARENTRY *next;
+
+	VARENTRY(STBUCKET *id, FORM *form, VARENTRY *nextvar);
 };
 
 /* term descriptor type */
@@ -136,6 +138,14 @@ struct TERM
 	/* pointer to the list of free */
 	/* variables in the term */
 	VARENTRY *vars;
+
+	TERM(
+		FORM *root_form,
+		int root_ports,
+		VARENTRY *freevars);
+
+	// static TERM *lambda(int level, PATTERN *pattern,
+	// TERM *body);
 };
 
 struct BINDINGID
