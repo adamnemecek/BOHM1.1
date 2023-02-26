@@ -44,9 +44,9 @@ extern "C"
 char *malloc_da(unsigned size);
 char *strdup_da(const char *s);
 
-FORM *closeterm(
-    int level,
-    TERM *t);
+// FORM *closeterm(
+//     int level,
+//     TERM *t);
 
 FORM *copy(
     FORM *root,
@@ -71,28 +71,28 @@ FORM *inspect(
 //     int level,
 //     TERM *arg);
 
-TERM *buildcdrterm(
-    int level,
-    TERM *arg);
+// TERM *buildcdrterm(
+//     int level,
+//     TERM *arg);
 
 // TERM *buildfalseterm(
 //     int level);
 
-TERM *buildifelseterm(
-    int level,
-    TERM *arg1,
-    TERM *arg2,
-    TERM *arg3);
+// TERM *buildifelseterm(
+//     int level,
+//     TERM *arg1,
+//     TERM *arg2,
+//     TERM *arg3);
 
-TERM *buildintterm(
-    int level,
-    long int value);
+// TERM *buildintterm(
+//     int level,
+//     long int value);
 
-TERM *buildletinterm(
-    int level,
-    STBUCKET *id,
-    TERM *arg1,
-    TERM *arg2);
+// TERM *buildletinterm(
+//     int level,
+//     STBUCKET *id,
+//     TERM *arg1,
+//     TERM *arg2);
 
 // TERM *buildlist(
 //     int level,

@@ -488,7 +488,7 @@ expr0           : 	TRUEKW
 				}
 		| 	NUMCONST
 				{
-				  $$ = buildintterm(app_nesting_depth,$1);
+				  $$ = TERM::int_(app_nesting_depth,$1);
 				}
 		|       ID
 				{
@@ -533,7 +533,7 @@ expr0           : 	TRUEKW
 				}
 			expr
 				{
-				  $$ = buildletinterm(app_nesting_depth,
+				  $$ = TERM::let_in(app_nesting_depth,
 						      $2,$5,$8);
 				  pop_local_env();
 				}
@@ -551,7 +551,7 @@ expr0           : 	TRUEKW
 				 }
 		 |	IFKW expr THENKW expr ELSEKW expr
 				{
-				  $$ = buildifelseterm(app_nesting_depth,
+				  $$ = TERM::ifelse(app_nesting_depth,
 						       $2,$4,$6);
 				}
 		 |	list

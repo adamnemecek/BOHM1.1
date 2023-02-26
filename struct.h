@@ -206,6 +206,27 @@ struct TERM
 		TERM *fun,
 		TERM *arg);
 
+	static TERM *ifelse(
+		int level,
+		TERM *arg1,
+		TERM *arg2,
+		TERM *arg3);
+
+	static TERM *int_(
+		int level,
+		long int value);
+
+	static TERM *lambda(
+		int level,
+		STBUCKET *id,
+		TERM *body);
+
+	static TERM *let_in(
+		int level,
+		STBUCKET *id,
+		TERM *arg1,
+		TERM *arg2);
+
 	FORM *close(int level);
 
 	// static TERM *lambda(int level, PATTERN *pattern,

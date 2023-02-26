@@ -151,7 +151,7 @@ TERM *TERM::false_(int level)
 
 /* The following function creates the graph representation of */
 /* a numerical constant */
-TERM *buildintterm(
+TERM *TERM::int_(
 	int level,
 	long int value)
 {
@@ -160,7 +160,7 @@ TERM *buildintterm(
 
 /* The following function creates the graph representation of a */
 /* lambda-abstraction */
-static TERM *buildlambdaterm(
+TERM *TERM::lambda(
 	int level,
 	STBUCKET *id,
 	TERM *body)
@@ -336,7 +336,7 @@ TERM *TERM::app(
 
 /* The following function creates the graph representation of */
 /* an if_then_else term */
-TERM *buildifelseterm(
+TERM *TERM::ifelse(
 	int level,
 	TERM *arg1,
 	TERM *arg2,
@@ -365,13 +365,13 @@ TERM *buildifelseterm(
 
 /* The following function creates the graph representation of */
 /* a let_in expression*/
-TERM *buildletinterm(
+TERM *TERM::let_in(
 	int level,
 	STBUCKET *id,
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *temp = buildlambdaterm(level, id, arg2);
+	TERM *temp = TERM::lambda(level, id, arg2);
 	return TERM::app(level, temp, arg1);
 }
 

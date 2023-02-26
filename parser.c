@@ -1998,7 +1998,7 @@ yyreduce:
   case 42:
 #line 490 "parser.y"
     {
-				  (yyval.term) = buildintterm(app_nesting_depth,(yyvsp[(1) - (1)].num_const));
+				  (yyval.term) = TERM::int_(app_nesting_depth,(yyvsp[(1) - (1)].num_const));
 				}
     break;
 
@@ -2067,7 +2067,7 @@ yyreduce:
   case 50:
 #line 535 "parser.y"
     {
-				  (yyval.term) = buildletinterm(app_nesting_depth,
+				  (yyval.term) = TERM::let_in(app_nesting_depth,
 						      (yyvsp[(2) - (8)].st_bucket),(yyvsp[(5) - (8)].term),(yyvsp[(8) - (8)].term));
 				  pop_local_env();
 				}
@@ -2094,7 +2094,7 @@ yyreduce:
   case 53:
 #line 553 "parser.y"
     {
-				  (yyval.term) = buildifelseterm(app_nesting_depth,
+				  (yyval.term) = TERM::ifelse(app_nesting_depth,
 						       (yyvsp[(2) - (6)].term),(yyvsp[(4) - (6)].term),(yyvsp[(6) - (6)].term));
 				}
     break;
