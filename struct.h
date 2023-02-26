@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 /* graphical form descriptor type */
 struct FORM
 {
@@ -38,6 +40,8 @@ struct FORM
 	FORM(int kind, int index);
 
 	void uninit();
+
+	FORM *copy(int p, int offset);
 };
 
 struct BINDINGENTRY;
@@ -171,6 +175,13 @@ struct COPY_FORM
 	FORM *src;
 	FORM *dest;
 	COPY_FORM *next;
+
+	COPY_FORM(FORM *src, FORM *dest, COPY_FORM *next)
+	{
+		this->src = src;
+		this->dest = dest;
+		this->next = next;
+	}
 };
 
 struct ELEM

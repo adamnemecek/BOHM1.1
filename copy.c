@@ -69,9 +69,9 @@ static FORM *copy_aux(
 	int p,
 	int offset)
 {
-	FORM *newf1,
-		*newf2,
-		*newf3;
+	FORM *newf1;
+	FORM *newf2;
+	FORM *newf3;
 	int q;
 
 	FORM *temp = root;
@@ -204,16 +204,19 @@ static FORM *copy_aux(
 	}
 }
 
+FORM *FORM::copy(int p, int offset)
+{
+	return copy_aux(this, index, offset);
+}
+
 /* The following function inserts a two-form relation in the table. */
 static void put_relation(
 	FORM *src,
 	FORM *dest)
 {
-	COPY_FORM *dep = (COPY_FORM *)malloc_da(sizeof(COPY_FORM));
 	int dep1 = entry(src);
-	dep->src = src;
-	dep->dest = dest;
-	dep->next = copy_relation[dep1];
+	COPY_FORM *dep = new COPY_FORM(src, dest, copy_relation[dep1]);
+
 	copy_relation[dep1] = dep;
 }
 
@@ -240,6 +243,45 @@ static int entry(FORM *src)
 	risul = risul / 8 * 13;
 	return risul % DIM_REL;
 }
+
+#include <vector>
+
+struct Copy
+{
+private:
+	std::vector<std::shared_ptr<COPY_FORM>> rel;
+
+	void clear()
+	{
+		rel.clear();
+	}
+
+public:
+	Copy()
+	{
+		rel.reserve(DIM_REL);
+	}
+
+	void start()
+	{
+		clear();
+	}
+
+	void end()
+	{
+		// COPY_FORM *dep;
+		// for (int i = 0; i < DIM_REL; i++)
+		// {
+		// 	while ((dep = copy_relation[i]) != NULL)
+		// 	{
+		// 		copy_relation[i] = dep->next;
+		// 		free(dep);
+		// 	}
+		// }
+	}
+};
+
+auto *cp = new Copy();
 
 /* The following function initialises hash table.	        */
 static void
