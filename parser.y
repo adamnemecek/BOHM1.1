@@ -453,27 +453,27 @@ expr            :       expr0
 		 		}
 		 |	expr '+' expr
 				{
-				  $$ = buildmatterm(app_nesting_depth,
+				  $$ = TERM::matterm(app_nesting_depth,
 		 		  		       $1,$3,ADD);
 				}
 		 |	expr '-' expr
 				{
-		 		  $$ = buildmatterm(app_nesting_depth,
+		 		  $$ = TERM::matterm(app_nesting_depth,
 		 		  		       $1,$3,SUB);
 				}
 		 |	expr '*' expr
 				{
-		 		  $$ = buildmatterm(app_nesting_depth,
+		 		  $$ = TERM::matterm(app_nesting_depth,
 		 		  		       $1,$3,PROD);
 				}
 		 |	expr DIVKW expr
 				{
-		 		  $$ = buildmatterm(app_nesting_depth,
+		 		  $$ = TERM::matterm(app_nesting_depth,
 		 		  		       $1,$3,DIV);
 				}
 		 |	expr MODKW expr
 				{
-				  $$ = buildmatterm(app_nesting_depth,
+				  $$ = TERM::matterm(app_nesting_depth,
 		 		  		       $1,$3,MOD);
 		 		}
                 ;

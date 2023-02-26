@@ -186,6 +186,12 @@ struct TERM
 		TERM *arg1,
 		TERM *arg2);
 
+	static TERM *matterm(
+		int level,
+		TERM *arg1,
+		TERM *arg2,
+		int op);
+
 	FORM *close(int level);
 
 	// static TERM *lambda(int level, PATTERN *pattern,

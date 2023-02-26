@@ -440,7 +440,7 @@ TERM *buildnotterm(
 
 /* The following function creates the graph representation of */
 /* a mat-expression */
-TERM *buildmatterm(
+TERM *TERM::matterm(
 	int level,
 	TERM *arg1,
 	TERM *arg2,
