@@ -243,6 +243,10 @@ struct TERM
 		PATTERN *pattern,
 		TERM *body);
 
+	static TERM *testnil(
+		int level,
+		TERM *arg);
+
 	FORM *close(int level);
 
 	// static TERM *lambda(int level, PATTERN *pattern,

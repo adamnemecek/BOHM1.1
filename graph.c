@@ -715,7 +715,7 @@ TERM *TERM::cdr(
 	return t;
 }
 
-TERM *buildtestnil(
+TERM *TERM::testnil(
 	int level,
 	TERM *arg)
 {

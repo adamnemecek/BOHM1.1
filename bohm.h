@@ -141,9 +141,9 @@ TERM *buildrelopterm(
     TERM *arg2,
     int relop);
 
-TERM *buildtestnil(
-    int level,
-    TERM *arg);
+// TERM *buildtestnil(
+//     int level,
+//     TERM *arg);
 
 // TERM *buildtrueterm(int level);
 

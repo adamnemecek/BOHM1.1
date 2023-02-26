@@ -2141,7 +2141,7 @@ yyreduce:
   case 59:
 #line 583 "parser.y"
     {
-		 		  (yyval.term) = buildtestnil(app_nesting_depth,
+		 		  (yyval.term) = TERM::testnil(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
 				}
     break;

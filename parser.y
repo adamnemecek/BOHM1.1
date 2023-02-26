@@ -581,7 +581,7 @@ expr0           : 	TRUEKW
 		 		}
 		 |	TESTNILKW '(' expr ')'
 				{
-		 		  $$ = buildtestnil(app_nesting_depth,
+		 		  $$ = TERM::testnil(app_nesting_depth,
 		 		  		       $3);
 				}
                  ;
