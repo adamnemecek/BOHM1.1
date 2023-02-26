@@ -1443,12 +1443,12 @@ static FORM *lo_redex(
 		if ((temp->kind == TRIANGLE || temp->kind == FAN ||
 			 temp->kind == UNS_FAN1 || temp->kind == UNS_FAN2) &&
 			(next->kind == TRIANGLE || next->kind == FAN) &&
-			(next->num_safe) &&
-			(((next->nlevel[p] >= 0) && (temp->index >= next->index) &&
-			  (temp->index <= next->index + next->nlevel[p])) ||
-			 ((temp->num_safe) &&
-			  (next->nlevel[p] < 0) && (temp->index <= next->index) &&
-			  (temp->index >= next->index + next->nlevel[p]))))
+			next->num_safe &&
+			((next->nlevel[p] >= 0 && temp->index >= next->index &&
+			  temp->index <= next->index + next->nlevel[p]) ||
+			 (temp->num_safe &&
+			  next->nlevel[p] < 0 && temp->index <= next->index &&
+			  temp->index >= next->index + next->nlevel[p])))
 		{
 			switch (temp->kind)
 			{
