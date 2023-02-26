@@ -529,10 +529,8 @@ char *yytext;
 #include "bohm.h"
 #include "y.tab.h"
 
-#include <stdlib.h>
-#include <string.h>
-#line 534 "<stdout>"
-#line 46 "lexer.l"
+#line 532 "<stdout>"
+#line 44 "lexer.l"
  /***************************************************************/
  /* 2. Inclusion of declarations that are being imported.	*/
  /***************************************************************/
@@ -542,8 +540,8 @@ char *yytext;
 int lines, astringlen;
 
 static int to_nat_s(char *s);
-#line 545 "<stdout>"
-#line 61 "lexer.l"
+#line 543 "<stdout>"
+#line 59 "lexer.l"
  /***************************************************************/
  /* 4. Regular definitions.					*/
  /***************************************************************/
@@ -556,7 +554,7 @@ static int to_nat_s(char *s);
  /***************************************************************/
  /* 6. Rules.							*/
  /***************************************************************/
-#line 559 "<stdout>"
+#line 557 "<stdout>"
 
 #define INITIAL 0
 #define com 1
@@ -773,10 +771,10 @@ YY_DECL
 		}
 
 	{
-#line 89 "lexer.l"
+#line 87 "lexer.l"
 
 
-#line 779 "<stdout>"
+#line 777 "<stdout>"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -836,7 +834,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 91 "lexer.l"
+#line 89 "lexer.l"
 {
                         /* comment */
                         if (loading_mode == 1) ECHO; 
@@ -845,7 +843,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 97 "lexer.l"
+#line 95 "lexer.l"
 {
                         /* comment beginning */
                         if (loading_mode == 1) ECHO; 
@@ -855,7 +853,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 103 "lexer.l"
+#line 101 "lexer.l"
 {
                         if (loading_mode == 1) ECHO;
                         BEGIN 0;
@@ -868,7 +866,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 112 "lexer.l"
+#line 110 "lexer.l"
 {
                         if (loading_mode == 1) ECHO;
                         BEGIN str;
@@ -876,7 +874,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 117 "lexer.l"
+#line 115 "lexer.l"
 {
 			/* sequence of blanks */
                         if (loading_mode == 1) ECHO; 
@@ -884,7 +882,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 122 "lexer.l"
+#line 120 "lexer.l"
 {
 			/* tab */
                         if (loading_mode == 1) ECHO; 
@@ -893,7 +891,7 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 127 "lexer.l"
+#line 125 "lexer.l"
 {
 			/* newline */
                         if (loading_mode == 1) ECHO; 
@@ -902,7 +900,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 133 "lexer.l"
+#line 131 "lexer.l"
 {
 			/* identifier */
                         if (loading_mode == 1) ECHO;
@@ -912,7 +910,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 140 "lexer.l"
+#line 138 "lexer.l"
 {
 			/* integer */
                         if (loading_mode == 1) ECHO; 
@@ -922,7 +920,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 147 "lexer.l"
+#line 145 "lexer.l"
 {
 			/* one-character token */
                         if (loading_mode == 1) ECHO; 
@@ -931,7 +929,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 154 "lexer.l"
+#line 152 "lexer.l"
 {
 			/* end of expression  */
                         if (loading_mode == 1) ECHO; 
@@ -940,7 +938,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 160 "lexer.l"
+#line 158 "lexer.l"
 {
                         if (loading_mode == 1) ECHO; 
 			return EQUAL;
@@ -948,7 +946,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 165 "lexer.l"
+#line 163 "lexer.l"
 {
                         if (loading_mode == 1) ECHO; 
 			return LEQUAL;
@@ -956,7 +954,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 170 "lexer.l"
+#line 168 "lexer.l"
 {
                         if (loading_mode == 1) ECHO; 
 			return MEQUAL;
@@ -964,7 +962,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 174 "lexer.l"
+#line 172 "lexer.l"
 {
                         if (loading_mode == 1) ECHO; 
 			return NOTEQUAL;
@@ -972,7 +970,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 180 "lexer.l"
+#line 178 "lexer.l"
 {
 			/* detection of an illegal character */
                         if (loading_mode == 1) ECHO; 
@@ -981,10 +979,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 186 "lexer.l"
+#line 184 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 987 "<stdout>"
+#line 985 "<stdout>"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(com):
 case YY_STATE_EOF(str):
@@ -1954,7 +1952,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 186 "lexer.l"
+#line 184 "lexer.l"
 
 
 #define MAXINT 2147483647

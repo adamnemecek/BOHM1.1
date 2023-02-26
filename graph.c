@@ -73,9 +73,6 @@
 
 #include "bohm.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 /* constants concerning allocate form */
 #define FORM_NUM 1000
 

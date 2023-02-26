@@ -1,9 +1,15 @@
 #pragma once
 
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/times.h>
+#include <inttypes.h>
+#include <assert.h>
+
 #include "form.h"
 #include "struct.h"
-
-#include <stdbool.h>
 
 extern bool error_detected;
 extern bool loading_mode;

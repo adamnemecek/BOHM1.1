@@ -88,10 +88,6 @@
 #include "bohm.h"
 #include "y.tab.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 /****************************************************************/
 /* 2. Inclusion of declarations that are being imported.        */
 /****************************************************************/

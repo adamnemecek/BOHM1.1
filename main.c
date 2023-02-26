@@ -1,10 +1,6 @@
 #include "bohm.h"
 #include "y.tab.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
 extern FILE *yyin;
 
 struct yy_buffer_state *yy_create_buffer(FILE *file, int size);

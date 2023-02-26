@@ -25,9 +25,6 @@
 
 #include "bohm.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 static bool do_menu1(void);
 static bool do_menu2(void);
 static void do_menu3(void);

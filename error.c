@@ -1,7 +1,5 @@
 #include "bohm.h"
 
-#include <stdio.h>
-
 bool error_detected;
 
 void signal_error(const char *msg)

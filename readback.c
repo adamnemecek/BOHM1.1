@@ -13,10 +13,6 @@
 
 #include "bohm.h"
 
-#include <inttypes.h>
-#include <stdint.h>
-#include <stdio.h>
-
 #define PRINT_MAX 100
 
 static int left_to_print;

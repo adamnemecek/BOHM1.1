@@ -30,9 +30,6 @@
 
 #include "bohm.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #define DIM_REL 256
 
 static COPY_FORM *copy_relation[DIM_REL];
