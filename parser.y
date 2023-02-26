@@ -480,11 +480,11 @@ expr            :       expr0
 
 expr0           : 	TRUEKW
 				{
-				  $$ = buildtrueterm(app_nesting_depth);
+				  $$ = TERM::true_(app_nesting_depth);
 				}
 		| 	FALSEKW
 				{
-				  $$ = buildfalseterm(app_nesting_depth);
+				  $$ = TERM::false_(app_nesting_depth);
 				}
 		| 	NUMCONST
 				{

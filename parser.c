@@ -1984,14 +1984,14 @@ yyreduce:
   case 40:
 #line 482 "parser.y"
     {
-				  (yyval.term) = buildtrueterm(app_nesting_depth);
+				  (yyval.term) = TERM::true_(app_nesting_depth);
 				}
     break;
 
   case 41:
 #line 486 "parser.y"
     {
-				  (yyval.term) = buildfalseterm(app_nesting_depth);
+				  (yyval.term) = TERM::false_(app_nesting_depth);
 				}
     break;
 

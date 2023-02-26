@@ -137,14 +137,14 @@ TERM *buildvarterm(
 
 /* The following function creates the graph representation of */
 /* a true constant */
-TERM *buildtrueterm(int level)
+TERM *TERM::true_(int level)
 {
 	return new TERM(NULL, T, NULL);
 }
 
 /* The following function creates the graph representation of */
 /* a false constant */
-TERM *buildfalseterm(int level)
+TERM *TERM::false_(int level)
 {
 	return new TERM(NULL, F, NULL);
 }

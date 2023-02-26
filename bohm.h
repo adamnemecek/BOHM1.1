@@ -75,8 +75,8 @@ TERM *buildcdrterm(
     int level,
     TERM *arg);
 
-TERM *buildfalseterm(
-    int level);
+// TERM *buildfalseterm(
+//     int level);
 
 TERM *buildifelseterm(
     int level,
@@ -145,7 +145,7 @@ TERM *buildtestnil(
     int level,
     TERM *arg);
 
-TERM *buildtrueterm(int level);
+// TERM *buildtrueterm(int level);
 
 TERM *buildvarterm(
     int level, STBUCKET *id);

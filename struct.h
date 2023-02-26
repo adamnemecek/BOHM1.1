@@ -161,6 +161,9 @@ struct TERM
 		int root_ports,
 		VARENTRY *freevars);
 
+	static TERM *true_(int level);
+	static TERM *false_(int level);
+
 	FORM *close(int level);
 	// static TERM *lambda(int level, PATTERN *pattern,
 	// TERM *body);
