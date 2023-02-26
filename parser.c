@@ -2243,7 +2243,7 @@ yyreduce:
                                     buildlist1(app_nesting_depth,
                                               (yyvsp[(1) - (3)].pattern)->term,(yyvsp[(3) - (3)].pattern)->term);
                                   pattmp->var_list=
-                                    mergevarlist((yyvsp[(1) - (3)].pattern)->var_list,(yyvsp[(3) - (3)].pattern)->var_list);
+                                    (yyvsp[(1) - (3)].pattern)->var_list->merge((yyvsp[(3) - (3)].pattern)->var_list);
                                   free((yyvsp[(1) - (3)].pattern));
                                   free((yyvsp[(3) - (3)].pattern));
                                   (yyval.pattern)=pattmp;

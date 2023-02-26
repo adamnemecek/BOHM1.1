@@ -655,7 +655,7 @@ comlistpat      :       pattern
                                     buildlist1(app_nesting_depth,
                                               $1->term,$3->term);
                                   pattmp->var_list=
-                                    mergevarlist($1->var_list,$3->var_list);
+                                    $1->var_list->merge($3->var_list);
                                   free($1);
                                   free($3);
                                   $$=pattmp;

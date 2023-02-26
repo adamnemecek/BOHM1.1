@@ -1282,21 +1282,6 @@ static void inspect_connect(
 		connect1(f1, p1, f2, p2);
 }
 
-static bool membervarlist(
-	BINDINGID *e,
-	VARLIST *l)
-{
-	while (l)
-	{
-		if (e->id == l->id->id)
-		{
-			return true;
-		}
-		l = l->next;
-	}
-	return false;
-}
-
 VARLIST *mergevarlist(
 	VARLIST *l1,
 	VARLIST *l2)
@@ -1308,17 +1293,36 @@ VARLIST *mergevarlist(
 	VARLIST *p;
 	for (p = l1; p->next; p = p->next)
 	{
-		if (membervarlist(p->id, l2))
+		if (l2->contains(p->id))
 		{
 			fprintf(stderr, "Pattern is not linear - expect garbage out!\n");
 		}
 	}
-	if (membervarlist(p->id, l2))
+	if (l2->contains(p->id))
 	{
 		fprintf(stderr, "Pattern is not linear - expect garbage out!\n");
 	}
 	p->next = l2;
 	return l1;
+}
+
+VARLIST *VARLIST::merge(VARLIST *other)
+{
+	return mergevarlist(this, other);
+}
+
+bool VARLIST::contains(BINDINGID *id)
+{
+	auto l = this;
+	while (l)
+	{
+		if (id->id == l->id->id)
+		{
+			return true;
+		}
+		l = l->next;
+	}
+	return false;
 }
 
 VARLIST *makevarlist(

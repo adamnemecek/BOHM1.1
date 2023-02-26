@@ -168,6 +168,9 @@ struct VARLIST
 {
 	BINDINGID *id;
 	VARLIST *next;
+
+	VARLIST *merge(VARLIST *other);
+	bool contains(BINDINGID *id);
 };
 
 // struct VARLIST1
