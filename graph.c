@@ -80,7 +80,7 @@ unsigned num_nodes, max_nodes;
 
 unsigned length_list = 0;
 
-static TERM *makebox(int level, TERM *arg);
+// static TERM *makebox(int level, TERM *arg);
 
 static VARENTRY *addbrackets(
 	int index,
@@ -103,10 +103,10 @@ static VARENTRY *remvp(
 	VARLIST *vl,
 	VARENTRY *listvar);
 
-static VARENTRY *allocate_var(
-	STBUCKET *id,
-	FORM *form,
-	VARENTRY *nextvar);
+// static VARENTRY *allocate_var(
+// 	STBUCKET *id,
+// 	FORM *form,
+// 	VARENTRY *nextvar);
 
 static void closeglobalvars(VARENTRY *listvar);
 static void intelligent_connect(
@@ -298,7 +298,7 @@ TERM *TERM::mu(
 		else
 			intelligent_connect(newf1, 2, varform);
 		temp = new TERM(newf1, 1, remv(id, body->vars));
-		t = makebox(level, temp);
+		t = temp->makebox(level);
 		connect(newf1, 0, body->root_form, body->root_ports);
 	}
 	else
@@ -307,7 +307,7 @@ TERM *TERM::mu(
 		newf1->nlevel[1] = -1;
 		connect1(newf1, 0, body->root_form, body->root_ports);
 		temp = new TERM(newf1, 1, body->vars);
-		t = makebox(level, temp);
+		t = temp->makebox(level);
 	}
 	free(body);
 	return t;
@@ -320,7 +320,7 @@ TERM *TERM::app(
 	TERM *fun,
 	TERM *arg)
 {
-	TERM *temp = makebox(level, arg);
+	TERM *temp = arg->makebox(level);
 	/* free variables of the application */
 	FORM *newf = new FORM(APP, level);
 
@@ -889,10 +889,10 @@ TERM::TERM(
 }
 
 /* the following function build a box around a term  */
-static TERM *makebox(int level, TERM *arg)
+TERM *TERM::makebox(int level)
 {
-	arg->vars = addbrackets(level, arg->vars);
-	return arg;
+	this->vars = addbrackets(level, this->vars);
+	return this;
 }
 
 /* the following function add a sequence of square brackets of */

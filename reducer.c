@@ -287,7 +287,9 @@ static void reduce_redex(
 					connect1(f1, 0, f1->nform[2], f1->nport[2]);
 					f1->del();
 					if (option == 1)
+					{
 						clean();
+					}
 					f2->release();
 					break;
 				default:

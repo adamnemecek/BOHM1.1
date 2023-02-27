@@ -260,6 +260,8 @@ struct TERM
 
 	static TERM *void_(int level);
 
+	TERM *makebox(int level);
+
 	FORM *close(int level);
 
 	// static TERM *lambda(int level, PATTERN *pattern,
