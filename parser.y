@@ -289,7 +289,7 @@ directive       :      '#' INSPECTKW arg EXPRDELIM
                 |      '#' TRAVELKW arg NUMCONST EXPRDELIM
 				{
 				   if ($3 == NULL) $3=current_pos;
-				   current_pos = inspect($4,$3);
+				   current_pos = $3->inspect($4);
 				   YYACCEPT;
 				}
 		|      '#' QUITKW EXPRDELIM

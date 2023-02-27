@@ -43,15 +43,19 @@ void inspect_driver(FORM *f)
 	while (c != 'q')
 	{
 		while (c == ' ')
+		{
 			c = getchar();
+		}
 		if (c >= '0' && c <= '3')
-			travel = inspect(c - '0', travel);
+		{
+			travel = travel->inspect(c - '0');
+		}
 		c = getchar();
 	}
 	printf("**** end of inspection mode ****\n\n");
 }
 
-FORM *inspect(int p, FORM *f)
+FORM *FORM::inspect(int p)
 {
 	bool ok = true;
 	switch (p)
@@ -59,7 +63,7 @@ FORM *inspect(int p, FORM *f)
 	case 0:
 		break;
 	case 1:
-		switch (f->kind)
+		switch (this->kind)
 		{
 		case ERASE:
 		case ROOT:
@@ -70,7 +74,7 @@ FORM *inspect(int p, FORM *f)
 		}
 		break;
 	case 2:
-		switch (f->kind)
+		switch (this->kind)
 		{
 		case ERASE:
 		case ROOT:
@@ -104,7 +108,7 @@ FORM *inspect(int p, FORM *f)
 		}
 		break;
 	case 3:
-		switch (f->kind)
+		switch (this->kind)
 		{
 		case IFELSE:
 			break;
@@ -121,9 +125,9 @@ FORM *inspect(int p, FORM *f)
 	if (!ok)
 	{
 		printf("there is nothing there\n");
-		return f;
+		return this;
 	}
-	int nextport = f->nport[p];
+	int nextport = this->nport[p];
 
 	if (nextport < 0)
 	{
@@ -136,17 +140,17 @@ FORM *inspect(int p, FORM *f)
 			printf("form = F\n");
 			break;
 		case INT:
-			printf("form = INT value = %" PRIdPTR "\n", (intptr_t)f->nform[0]);
+			printf("form = INT value = %" PRIdPTR "\n", (intptr_t)this->nform[0]);
 			break;
 		case NIL:
 			printf("form = NIL\n");
 			break;
 		}
 		printf("at port = 0\n\n");
-		return f;
+		return this;
 	}
 
-	FORM *nextform = f->nform[p];
+	FORM *nextform = this->nform[p];
 	switch (nextform->kind)
 	{
 	case FAN:

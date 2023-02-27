@@ -1708,7 +1708,7 @@ yyreduce:
 #line 290 "parser.y"
     {
 				   if ((yyvsp[(3) - (5)].root) == NULL) (yyvsp[(3) - (5)].root)=current_pos;
-				   current_pos = inspect((yyvsp[(4) - (5)].num_const),(yyvsp[(3) - (5)].root));
+				   current_pos = (yyvsp[(3) - (5)].root)->inspect((yyvsp[(4) - (5)].num_const));
 				   YYACCEPT;
 				}
     break;

@@ -54,9 +54,9 @@ FORM *copy(
     int p,
     int offset);
 
-FORM *inspect(
-    int p,
-    FORM *f);
+// FORM *inspect(
+//     int p,
+//     FORM *f);
 
 // TERM *buildandterm(
 //     int level,
