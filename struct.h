@@ -296,9 +296,6 @@ struct TERM final
 	TERM *makebox(int level);
 
 	FORM *close(int level);
-
-	// static TERM *lambda(int level, PATTERN *pattern,
-	// TERM *body);
 };
 
 struct BINDINGID final
@@ -363,4 +360,6 @@ struct ELEM final
 	FORM *node;
 	int num;
 	ELEM *next;
+
+	void eindex();
 };

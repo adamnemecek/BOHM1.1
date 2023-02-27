@@ -46,7 +46,6 @@ static void put_int(
 	FORM *f,
 	int p);
 static int num_port(int name);
-static void eindex(ELEM *elem);
 
 /****************************************************************/
 /* 4. Definitions of functions to be exported.			*/
@@ -78,7 +77,7 @@ void FORM::save(
 	fprintf(save_file, "\n\n\nI N D E X :\n\n");
 	while (p != NULL)
 	{
-		eindex(p);
+		p->eindex();
 		ELEM *dep = p;
 		p = p->next;
 		free(dep);
@@ -271,25 +270,25 @@ static int num_port(int name)
 }
 
 /* The following function saves a file index row		*/
-static void eindex(ELEM *elem)
+void ELEM::eindex()
 {
-	fprintf(save_file, "%3d ", elem->num);
-	elem->node->put_form();
-	fprintf(save_file, "index: %2d", elem->node->index);
-	switch (elem->node->kind)
+	fprintf(save_file, "%3d ", this->num);
+	this->node->put_form();
+	fprintf(save_file, "index: %2d", this->node->index);
+	switch (this->node->kind)
 	{
 	case FAN:
 	case CAR1:
 	case CDR1:
 	case TESTNIL1:
-		fprintf(save_file, " nlevel[1]: %2d", elem->node->nlevel[1]);
-		fprintf(save_file, " nlevel[2]: %2d", elem->node->nlevel[2]);
+		fprintf(save_file, " nlevel[1]: %2d", this->node->nlevel[1]);
+		fprintf(save_file, " nlevel[2]: %2d", this->node->nlevel[2]);
 		break;
 
 	case TRIANGLE:
 	case UNS_FAN1:
 	case UNS_FAN2:
-		fprintf(save_file, " nlevel[1]: %2d", elem->node->nlevel[1]);
+		fprintf(save_file, " nlevel[1]: %2d", this->node->nlevel[1]);
 		break;
 
 	case LESS1:
@@ -303,7 +302,7 @@ static void eindex(ELEM *elem)
 	case PROD1:
 	case DIV1:
 	case MOD1:
-		fprintf(save_file, " value %-d", elem->node->num_safe);
+		fprintf(save_file, " value %-d", this->node->num_safe);
 		break;
 	}
 	fprintf(save_file, "\n");

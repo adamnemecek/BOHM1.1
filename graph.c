@@ -80,8 +80,6 @@ unsigned num_nodes, max_nodes;
 
 unsigned length_list = 0;
 
-// static TERM *makebox(int level, TERM *arg);
-
 static VARENTRY *addbrackets(
 	int index,
 	VARENTRY *listvar);
