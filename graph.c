@@ -287,8 +287,8 @@ TERM *TERM::mu(
 		newf1->nlevel[2] = 1;
 		varform = boundvar->var;
 
-		if ((varform->kind == TRIANGLE) &&
-			(varform->nlevel[1] == 0))
+		if (varform->kind == TRIANGLE &&
+			varform->nlevel[1] == 0)
 		{
 			connect(varform->nform[1],
 					varform->nport[1],
