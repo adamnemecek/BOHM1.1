@@ -110,20 +110,31 @@ static int present(FORM *form)
 
 	ELEM *p = head;
 	while (p != NULL && risp)
+	{
 		if (p->node == form)
+		{
 			risp = false;
+		}
 		else
+		{
 			p = p->next;
+		}
+	}
+
 	if (!risp)
+	{
 		return risp;
+	}
+
+	ELEM *alloc = (ELEM *)malloc_da(sizeof(ELEM));
 
 	if (head == NULL)
 	{
-		head = tail = (ELEM *)malloc_da(sizeof(ELEM));
+		head = tail = alloc;
 	}
 	else
 	{
-		tail->next = (ELEM *)malloc_da(sizeof(ELEM));
+		tail->next = alloc;
 		tail = tail->next;
 	}
 	tail->node = form;
@@ -165,11 +176,19 @@ static void save_aux(
 		return;
 	}
 	int n = num_port(root->kind);
+
 	for (int p1 = 0; p1 < n; p1++)
+	{
 		stampa(root, p1, card);
+	}
+
 	for (int p1 = 0; p1 < n; p1++)
+	{
 		if (root->nport[p1] >= 0)
+		{
 			save_aux(root->nform[p1], root->nport[p1]);
+		}
+	}
 }
 
 /* The following function prints form name.			*/
