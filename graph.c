@@ -622,27 +622,22 @@ TERM *TERM::list(
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *t;	 /* pointer to the term to be created */
-	FORM *newf1; /* pointer to the new form to be created */
+	TERM *t; /* pointer to the term to be created */
+	/* pointer to the new form to be created */
+
+	FORM *newf1 = new FORM(CONS, level);
+
+	connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 
 	if (arg2 != NULL)
 	{
-		newf1 = new FORM(CONS, level);
-
-		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
-
 		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-
 		t = new TERM(newf1, 0, newvars);
 	}
 	else
 	{
-		newf1 = new FORM(CONS, level);
-
-		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
-
 		t = new TERM(newf1, 0, arg1->vars);
 	}
 
@@ -656,27 +651,22 @@ TERM *TERM::list1(
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *t;	 /* pointer to the term to be created */
-	FORM *newf1; /* pointer to the new form to be created */
+	TERM *t; /* pointer to the term to be created */
+	/* pointer to the new form to be created */
+
+	FORM *newf1 = new FORM(CONS1, level);
+	connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 
 	if (arg2 != NULL)
 	{
-		newf1 = new FORM(CONS1, level);
-
-		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
 
 		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-
 		t = new TERM(newf1, 0, newvars);
 	}
 	else
 	{
-		newf1 = new FORM(CONS1, level);
-
-		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
 		bool_connect(newf1, 2, NIL);
-
 		t = new TERM(newf1, 0, arg1->vars);
 	}
 

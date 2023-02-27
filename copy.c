@@ -34,6 +34,46 @@
 
 // static COPY_FORM *copy_relation[DIM_REL];
 
+FORM *copy_connect(
+	FORM *temp,
+	int port,
+	FORM *newf1,
+	int offset)
+{
+	FORM *ret;
+	if (temp->nport[port] >= 0)
+	{
+		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
+		connect(newf1, port, ret, temp->nport[port]);
+	}
+	else
+	{
+		int_connect(newf1, port, temp->nform[port], temp->nport[port]);
+	}
+
+	return ret;
+}
+
+FORM *copy_connect1(
+	FORM *temp,
+	int port,
+	FORM *newf1,
+	int offset)
+{
+	FORM *ret;
+	if (temp->nport[port] >= 0)
+	{
+		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
+		connect1(newf1, port, ret, temp->nport[port]);
+	}
+	else
+	{
+		int_connect(newf1, port, temp->nform[port], temp->nport[port]);
+	}
+
+	return ret;
+}
+
 struct Relations
 {
 	COPY_FORM *copy_relation[DIM_REL];
@@ -145,15 +185,7 @@ FORM *FORM::copy_aux(int p, int offset)
 	case TRIANGLE:
 		newf1 = new FORM(temp->kind, temp->index + offset);
 		newf1->nlevel[1] = temp->nlevel[1];
-		if (temp->nport[0] >= 0)
-		{
-			newf2 = temp->nform[0]->copy_aux(temp->nport[0], offset);
-			connect1(newf1, 0, newf2, temp->nport[0]);
-		}
-		else
-		{
-			int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
-		}
+		newf2 = copy_connect1(temp, 0, newf1, offset);
 		return newf1;
 
 	case NOTEQ1:
@@ -183,15 +215,8 @@ FORM *FORM::copy_aux(int p, int offset)
 		newf1 = new FORM(temp->kind, temp->index + offset);
 		newf1->num_safe = temp->num_safe;
 		newf1->nform[2] = temp->nform[2];
-		if (temp->nport[q] >= 0)
-		{
-			newf2 = temp->nform[q]->copy_aux(temp->nport[q], offset);
-			connect(newf1, q, newf2, temp->nport[q]);
-		}
-		else
-		{
-			int_connect(newf1, q, temp->nform[q], temp->nport[q]);
-		}
+		newf2 = copy_connect(temp, q, newf1, offset);
+
 		return newf1;
 
 	case LAMBDA:
@@ -218,15 +243,8 @@ FORM *FORM::copy_aux(int p, int offset)
 		newf1->nlevel[1] = temp->nlevel[1];
 		newf1->nlevel[2] = temp->nlevel[2];
 		rel.store(temp, newf1);
-		if (temp->nport[0] >= 0)
-		{
-			newf2 = temp->nform[0]->copy_aux(temp->nport[0], offset);
-			connect1(newf1, 0, newf2, temp->nport[0]);
-		}
-		else
-		{
-			int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
-		}
+
+		newf2 = copy_connect1(temp, 0, newf1, offset);
 		return newf1;
 
 	case APP:
@@ -245,46 +263,14 @@ FORM *FORM::copy_aux(int p, int offset)
 	case MEQ:
 	case IFELSE:
 		newf1 = new FORM(temp->kind, temp->index + offset);
-		if (temp->nport[0] >= 0)
-		{
-			newf2 = temp->nform[0]->copy_aux(temp->nport[0], offset);
-			connect(newf1, 0, newf2, temp->nport[0]);
-		}
-		else
-		{
-			int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
-		}
-		if (temp->nport[2] >= 0)
-		{
-			newf3 = temp->nform[2]->copy_aux(temp->nport[2], offset);
-			connect(newf1, 2, newf3, temp->nport[2]);
-		}
-		else
-		{
-			int_connect(newf1, 2, temp->nform[2], temp->nport[2]);
-		}
+		newf2 = copy_connect(temp, 0, newf1, offset);
+		newf3 = copy_connect(temp, 2, newf1, offset);
 		return newf1;
 
 	case CONS:
 		newf1 = new FORM(temp->kind, temp->index + offset);
-		if (temp->nport[1] >= 0)
-		{
-			newf2 = temp->nform[1]->copy_aux(temp->nport[1], offset);
-			connect(newf1, 1, newf2, temp->nport[1]);
-		}
-		else
-		{
-			int_connect(newf1, 1, temp->nform[1], temp->nport[1]);
-		}
-		if (temp->nport[2] >= 0)
-		{
-			newf3 = temp->nform[2]->copy_aux(temp->nport[2], offset);
-			connect(newf1, 2, newf3, temp->nport[2]);
-		}
-		else
-		{
-			int_connect(newf1, 2, temp->nform[2], temp->nport[2]);
-		}
+		newf2 = copy_connect(temp, 1, newf1, offset);
+		newf3 = copy_connect(temp, 2, newf1, offset);
 		return newf1;
 	default:
 		return NULL;
