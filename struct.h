@@ -122,6 +122,8 @@ struct STBUCKET final
 		this->curr_binding = NULL;
 		this->next_st_bucket = NULL;
 	}
+
+	void create_variable_binding(FORM *form);
 };
 
 /* binding entry descriptor type */

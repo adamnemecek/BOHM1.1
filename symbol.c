@@ -302,11 +302,11 @@ void pop_local_env()
 }
 
 /* The following function creates entries for a variable binding */
-void create_variable_binding(
+void STBUCKET::create_variable_binding(
 	/* pointer to the bucket for the */
 	/* identifier which is to be bound */
 	/* to a procedure */
-	STBUCKET *st,
+
 	/* pointer to the rootform of the */
 	/* term associated with the identifier */
 	/* (for global declarations only) */
@@ -314,10 +314,10 @@ void create_variable_binding(
 	FORM *rootform)
 {
 	BINDINGENTRY *b = (BINDINGENTRY *)malloc_da(sizeof(BINDINGENTRY));
-	b->st_bucket = st;
+	b->st_bucket = this;
 	b->root = rootform;
-	b->prev_id_binding = st->curr_binding;
-	st->curr_binding = b;
+	b->prev_id_binding = this->curr_binding;
+	this->curr_binding = b;
 	b->prev_local_binding = curr_local_env->last_local_binding;
 	curr_local_env->last_local_binding = b;
 }

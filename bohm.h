@@ -46,11 +46,6 @@ extern "C"
 char *malloc_da(unsigned size);
 char *strdup_da(const char *s);
 
-FORM *copy(
-    FORM *root,
-    int p,
-    int offset);
-
 VARLIST *makevarlist(
     STBUCKET *e,
     TERM *t);
@@ -84,30 +79,17 @@ void int_connect(
     FORM *form2,
     int portf2);
 
-void create_variable_binding(
-    STBUCKET *st,
-    FORM *rootform);
-
 void destroy(void);
 void info(char *choices);
 void init_destroy(void);
 void init_garbage(void);
 void init_symbol_table(void);
-// void ins_del(FORM *d);
-// void inspect_driver(FORM *f);
 
 void menu(int choice);
-// void myfree(FORM *form);
 void no_destroy(void);
 void pop_local_env(void);
 void push_local_env(void);
-// void rdbk(FORM *form);
-// void reduce_term(FORM *root);
 void reset_garbage(void);
-// void save(
-//     char *name,
-//     FORM *root,
-//     char *id);
 STBUCKET *search_bucket(const char *id);
 void show_garb_stat(bool seetime);
 void signal_error(const char *msg);

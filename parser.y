@@ -399,7 +399,7 @@ global_decl	:    DEFKW ID '='
 				  app_nesting_depth--;
 				  lastinputterm = $5->close(1);
 				  $$ = lastinputterm;
-				  create_variable_binding($2,$$);
+				  $2->create_variable_binding($$);
 				}
 		;
 
@@ -529,7 +529,7 @@ expr0           : 	TRUEKW
 				{
 				  app_nesting_depth--;
 				  push_local_env();
-				  create_variable_binding($2, NULL);
+				  $2->create_variable_binding(NULL);
 				}
 			expr
 				{
@@ -540,7 +540,7 @@ expr0           : 	TRUEKW
 		 |	LETRECKW ID '='
 				{
 				  push_local_env();
-				  create_variable_binding($2, NULL);
+				  $2->create_variable_binding(NULL);
 				  app_nesting_depth++;
 				 }
 			expr
@@ -689,7 +689,7 @@ pattern         :       CONSKW '(' pattern ',' pattern ')'
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
                                     TERM::void_(app_nesting_depth);
-                                  create_variable_binding($1, NULL);
+                                  $1->create_variable_binding(NULL);
                                   pattmp->var_list=
                                     makevarlist($1,pattmp->term);
                                   $$=pattmp;

@@ -1859,7 +1859,7 @@ yyreduce:
 				  app_nesting_depth--;
 				  lastinputterm = (yyvsp[(5) - (5)].term)->close(1);
 				  (yyval.root) = lastinputterm;
-				  create_variable_binding((yyvsp[(2) - (5)].st_bucket),(yyval.root));
+				  (yyvsp[(2) - (5)].st_bucket)->create_variable_binding((yyval.root));
 				}
     break;
 
@@ -2060,7 +2060,7 @@ yyreduce:
     {
 				  app_nesting_depth--;
 				  push_local_env();
-				  create_variable_binding((yyvsp[(2) - (6)].st_bucket), NULL);
+				  (yyvsp[(2) - (6)].st_bucket)->create_variable_binding(NULL);
 				}
     break;
 
@@ -2077,7 +2077,7 @@ yyreduce:
 #line 541 "parser.y"
     {
 				  push_local_env();
-				  create_variable_binding((yyvsp[(2) - (3)].st_bucket), NULL);
+				  (yyvsp[(2) - (3)].st_bucket)->create_variable_binding(NULL);
 				  app_nesting_depth++;
 				 }
     break;
@@ -2288,7 +2288,7 @@ yyreduce:
                                   pattmp=(PATTERN *)malloc(sizeof(PATTERN));
                                   pattmp->term=
                                     TERM::void_(app_nesting_depth);
-                                  create_variable_binding((yyvsp[(1) - (1)].st_bucket), NULL);
+                                  (yyvsp[(1) - (1)].st_bucket)->create_variable_binding(NULL);
                                   pattmp->var_list=
                                     makevarlist((yyvsp[(1) - (1)].st_bucket),pattmp->term);
                                   (yyval.pattern)=pattmp;
