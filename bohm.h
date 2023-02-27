@@ -208,7 +208,7 @@ void no_destroy(void);
 void pop_local_env(void);
 void push_local_env(void);
 void rdbk(FORM *form);
-void reduce_term(FORM *root);
+// void reduce_term(FORM *root);
 void reset_garbage(void);
 void save(
     char *name,

@@ -99,8 +99,7 @@ int counter;
 
 /*  The following function reduces a term to its weak 	*/
 /*  head (family) normal form.                          */
-void reduce_term(
-	FORM *root)
+void FORM::reduce()
 {
 	struct tms time;
 
@@ -122,9 +121,9 @@ void reduce_term(
 	clock_t usr_time = time.tms_utime;
 	clock_t sys_time = time.tms_stime;
 	init_stack();
-	FORM *f1 = lo_redex(root);
+	FORM *f1 = lo_redex(this);
 	reset_garbage();
-	while (f1 != root && !type_error)
+	while (f1 != this && !type_error)
 	{
 		if (f1->nport[0] == 0)
 		{
@@ -159,7 +158,7 @@ void reduce_term(
 		int ans = getchar();
 		if (ans == 'i')
 		{
-			root->inspect_driver();
+			this->inspect_driver();
 		}
 		return;
 	}
@@ -167,7 +166,7 @@ void reduce_term(
 	times(&time);
 	usr_time = time.tms_utime - usr_time;
 	sys_time = time.tms_stime - sys_time;
-	rdbk(root);
+	rdbk(this);
 	if (seetime)
 	{
 		printf("*****************************************************\n");
