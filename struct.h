@@ -53,6 +53,7 @@ struct FORM final
 
 	void rdbk();
 	void rdbk_list(int port);
+	void rdbk_1(int port);
 
 	void inspect_driver();
 

@@ -14,17 +14,8 @@
 #include "bohm.h"
 
 #define PRINT_MAX 100
-
-static int left_to_print;
 /* maximum number of characters yet to print */
-
-void rdbk_1(
-    FORM *form,
-    int port);
-
-void rdbk_list(
-    FORM *form,
-    int port);
+static int left_to_print;
 
 /* the following function prints on the standard output the */
 /* standard syntactical representation of the graphical term */
@@ -33,21 +24,19 @@ void FORM::rdbk()
 {
   left_to_print = PRINT_MAX;
   printf("  ");
-  rdbk_1(this, 0);
+  this->rdbk_1(0);
   printf("\n");
 }
 
-void rdbk_1(
-    FORM *form,
-    int port)
+void FORM::rdbk_1(int port)
 {
   if (left_to_print > 0)
-    if (form->nport[port] < 0)
+    if (this->nport[port] < 0)
     {
-      switch (form->nport[port])
+      switch (this->nport[port])
       {
       case INT:
-        left_to_print -= printf("%" PRIdPTR, (intptr_t)form->nform[0]);
+        left_to_print -= printf("%" PRIdPTR, (intptr_t)this->nform[0]);
         break;
       case T:
         left_to_print -= printf("TRUE");
@@ -63,21 +52,21 @@ void rdbk_1(
       }
     }
     else
-      switch (form->nform[port]->kind)
+      switch (this->nform[port]->kind)
       {
       case LAMBDA:
       case LAMBDAUNB:
-        if (form->nport[port] == 0)
+        if (this->nport[port] == 0)
           left_to_print -= printf("#<function>");
         else
           left_to_print -= printf("...");
         break;
       case CONS:
-        if (form->nport[port] == 0)
+        if (this->nport[port] == 0)
         {
           left_to_print -= printf("[");
-          rdbk_1(form->nform[port], 1);
-          form->nform[port]->rdbk_list(2);
+          this->nform[port]->rdbk_1(1);
+          this->nform[port]->rdbk_list(2);
         }
         else
         {
@@ -85,15 +74,15 @@ void rdbk_1(
         }
         break;
       case FAN:
-        if (form->nport[port] != 0)
-          rdbk_1(form->nform[port], 0);
+        if (this->nport[port] != 0)
+          this->nform[port]->rdbk_1(0);
         else
         {
           left_to_print -= printf("...");
         }
         break;
       case TRIANGLE:
-        rdbk_1(form->nform[port], !form->nport[port]);
+        this->nform[port]->rdbk_1(!this->nport[port]);
         break;
       default:
         left_to_print -= printf("...");
@@ -111,7 +100,7 @@ void FORM::rdbk_list(int port)
   else if (this->nport[port] < 0)
   {
     left_to_print -= printf("|");
-    rdbk_1(this, port);
+    this->rdbk_1(port);
     left_to_print -= printf("]");
   }
   else if (this->nform[port]->kind == TRIANGLE ||
@@ -120,13 +109,13 @@ void FORM::rdbk_list(int port)
   else if (this->nform[port]->kind != CONS || this->nport[port] != 0)
   {
     left_to_print -= printf("|");
-    rdbk_1(this, port);
+    this->rdbk_1(port);
     left_to_print -= printf("]");
   }
   else
   {
     left_to_print -= printf(",");
-    rdbk_1(this->nform[port], 1);
+    this->nform[port]->rdbk_1(1);
     this->nform[port]->rdbk_list(2);
   }
 }
