@@ -1049,15 +1049,15 @@ static void closeglobalvars(
 	FORM *formterm = listvar->name->curr_binding->root;
 	if (formvar->kind == TRIANGLE)
 	{
-		FORM *newf = copy(formterm->nform[0],
-						  formterm->nport[0],
-						  formvar->nlevel[1]);
+		FORM *newf = formterm->nform[0]->copy(
+			formterm->nport[0],
+			formvar->nlevel[1]);
 		connect1(formvar->nform[1], formvar->nport[1],
 				 newf, formterm->nport[0]);
 	}
 	else
 	{
-		FORM *newf = copy(formterm->nform[0], formterm->nport[0], 0);
+		FORM *newf = formterm->nform[0]->copy(formterm->nport[0], 0);
 		connect1(formvar, 0,
 				 newf, formterm->nport[0]);
 	}

@@ -42,17 +42,16 @@ static FORM *is_in_relation(FORM *src);
 
 /* The following function initialises the hash table, calls 	*/
 /* function copy_aux and eliminates the table.			*/
-FORM *copy(
-	FORM *root,
+FORM *FORM::copy(
 	int p,
 	int offset)
 {
 	FORM *risul;
 	start_copy();
 	if (p < 0)
-		risul = root;
+		risul = this;
 	else
-		risul = root->copy_aux(p, offset);
+		risul = this->copy_aux(p, offset);
 	end_copy();
 	return risul;
 }
