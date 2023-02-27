@@ -46,8 +46,6 @@ static long unsigned cl_count; /* counter for clean() calls */
 static clock_t usr_garb_time;
 static clock_t sys_garb_time;
 
-static void garbage(FORM *erase);
-
 /*************************************************************************/
 /* 4. Definitions of variables to be exported.                           */
 /*************************************************************************/
@@ -98,7 +96,7 @@ void clean(void)
 		}
 		else
 		{
-			garbage(q);
+			q->garbage();
 		}
 	}
 	if (seegarb)
@@ -128,16 +126,16 @@ void user(void)
 
 /* The following function performs the propagation of a single	*/
 /* erase node by applicating garbage rules. 			*/
-static void garbage(
-	FORM *erase)
+void FORM::garbage()
 {
+
 	bool end = false;
 	FORM *newform;
 	int p1, p2;
 
-	FORM *nextform = erase->nform[0];
-	int nextport = erase->nport[0];
-	erase->release();
+	FORM *nextform = this->nform[0];
+	int nextport = this->nport[0];
+	this->release();
 	while (!end)
 	{
 		FORM *form = nextform;
@@ -456,7 +454,7 @@ static void garbage(
 			break;
 
 		default:
-			printf("Error: form %d\n", (erase->nform[0])->kind);
+			printf("Error: form %d\n", (this->nform[0])->kind);
 			exit(1);
 			break;
 		}

@@ -73,6 +73,8 @@ struct FORM final
 	void save(
 		char *name,
 		char *id);
+
+	void garbage();
 };
 
 struct BINDINGENTRY;
