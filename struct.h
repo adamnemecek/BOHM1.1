@@ -47,7 +47,7 @@ struct FORM final
 	void reduce_form();
 
 	void del();
-	FORM *copy(int p, int offset);
+	FORM *copy_aux(int p, int offset);
 
 	FORM *lo_redex();
 
