@@ -39,11 +39,6 @@ static void put_relation(
 static void start_copy(void);
 static void end_copy(void);
 static FORM *is_in_relation(FORM *src);
-static FORM *copy_aux(
-	FORM *root,
-	int p,
-	int offset);
-// static int entry(FORM *src);
 
 /* The following function initialises the hash table, calls 	*/
 /* function copy_aux and eliminates the table.			*/
@@ -57,24 +52,21 @@ FORM *copy(
 	if (p < 0)
 		risul = root;
 	else
-		risul = copy_aux(root, p, offset);
+		risul = root->copy_aux(p, offset);
 	end_copy();
 	return risul;
 }
 
 /* The following function duplicates the input graph and 	*/
 /* returns it as output.					*/
-static FORM *copy_aux(
-	FORM *root,
-	int p,
-	int offset)
+FORM *FORM::copy_aux(int p, int offset)
 {
 	FORM *newf1;
 	FORM *newf2;
 	FORM *newf3;
 	int q;
 
-	FORM *temp = root;
+	FORM *temp = this;
 	switch (temp->kind)
 	{
 	case TRIANGLE:
@@ -82,7 +74,7 @@ static FORM *copy_aux(
 		newf1->nlevel[1] = temp->nlevel[1];
 		if (temp->nport[0] >= 0)
 		{
-			newf2 = copy_aux(temp->nform[0], temp->nport[0], offset);
+			newf2 = temp->nform[0]->copy_aux(temp->nport[0], offset);
 			connect1(newf1, 0, newf2, temp->nport[0]);
 		}
 		else
@@ -114,7 +106,7 @@ static FORM *copy_aux(
 		newf1->nform[2] = temp->nform[2];
 		if (temp->nport[q] >= 0)
 		{
-			newf2 = copy_aux(temp->nform[q], temp->nport[q], offset);
+			newf2 = temp->nform[q]->copy_aux(temp->nport[q], offset);
 			connect(newf1, q, newf2, temp->nport[q]);
 		}
 		else
@@ -126,7 +118,7 @@ static FORM *copy_aux(
 			return is_in_relation(temp);
 		newf1 = new FORM(temp->kind, temp->index + offset);
 		put_relation(temp, newf1);
-		newf2 = copy_aux(temp->nform[1], temp->nport[1], offset);
+		newf2 = temp->nform[1]->copy_aux(temp->nport[1], offset);
 		connect1(newf1, 1, newf2, temp->nport[1]);
 		return newf1;
 
@@ -143,7 +135,7 @@ static FORM *copy_aux(
 		put_relation(temp, newf1);
 		if (temp->nport[0] >= 0)
 		{
-			newf2 = copy_aux(temp->nform[0], temp->nport[0], offset);
+			newf2 = temp->nform[0]->copy_aux(temp->nport[0], offset);
 			connect1(newf1, 0, newf2, temp->nport[0]);
 		}
 		else
@@ -168,14 +160,14 @@ static FORM *copy_aux(
 		newf1 = new FORM(temp->kind, temp->index + offset);
 		if (temp->nport[0] >= 0)
 		{
-			newf2 = copy_aux(temp->nform[0], temp->nport[0], offset);
+			newf2 = temp->nform[0]->copy_aux(temp->nport[0], offset);
 			connect(newf1, 0, newf2, temp->nport[0]);
 		}
 		else
 			int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
 		if (temp->nport[2] >= 0)
 		{
-			newf3 = copy_aux(temp->nform[2], temp->nport[2], offset);
+			newf3 = temp->nform[2]->copy_aux(temp->nport[2], offset);
 			connect(newf1, 2, newf3, temp->nport[2]);
 		}
 		else
@@ -186,14 +178,14 @@ static FORM *copy_aux(
 		newf1 = new FORM(temp->kind, temp->index + offset);
 		if (temp->nport[1] >= 0)
 		{
-			newf2 = copy_aux(temp->nform[1], temp->nport[1], offset);
+			newf2 = temp->nform[1]->copy_aux(temp->nport[1], offset);
 			connect(newf1, 1, newf2, temp->nport[1]);
 		}
 		else
 			int_connect(newf1, 1, temp->nform[1], temp->nport[1]);
 		if (temp->nport[2] >= 0)
 		{
-			newf3 = copy_aux(temp->nform[2], temp->nport[2], offset);
+			newf3 = temp->nform[2]->copy_aux(temp->nport[2], offset);
 			connect(newf1, 2, newf3, temp->nport[2]);
 		}
 		else
@@ -202,12 +194,6 @@ static FORM *copy_aux(
 	default:
 		return NULL;
 	}
-}
-
-FORM *FORM::copy_aux(int p, int offset)
-{
-
-	return ::copy_aux(this->nform[p], this->nport[p], offset);
 }
 
 /* The following function inserts a two-form relation in the table. */
@@ -244,8 +230,6 @@ int FORM::hash()
 	risul = risul / 8 * 13;
 	return risul % DIM_REL;
 }
-
-#include <vector>
 
 struct Copy final
 {

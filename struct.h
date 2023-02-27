@@ -57,6 +57,11 @@ struct FORM final
 		int p,
 		int offset);
 
+	// FORM *copy(
+	// 	FORM *root,
+	// 	int p,
+	// 	int offset);
+
 	FORM *lo_redex();
 
 	void rdbk();
@@ -207,13 +212,13 @@ struct TERM final
 		int level,
 		TERM *arg);
 
-	static TERM *minus(
-		int level,
-		TERM *arg1);
-
 	static TERM *cdr(
 		int level,
 		TERM *arg);
+
+	static TERM *minus(
+		int level,
+		TERM *arg1);
 
 	static TERM *list(
 		int level,
@@ -277,6 +282,7 @@ struct TERM final
 		TERM *body);
 
 	static TERM *nillist(int level);
+
 	static TERM *testnil(
 		int level,
 		TERM *arg);

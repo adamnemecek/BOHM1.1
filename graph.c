@@ -664,7 +664,6 @@ TERM *TERM::list1(
 
 	if (arg2 != NULL)
 	{
-
 		newf1 = new FORM(CONS1, level);
 
 		connect1(newf1, 1, arg1->root_form, arg1->root_ports);
