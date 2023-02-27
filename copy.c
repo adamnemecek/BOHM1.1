@@ -32,13 +32,78 @@
 
 #define DIM_REL 256
 
-static COPY_FORM *copy_relation[DIM_REL];
-static void put_relation(
-	FORM *src,
-	FORM *dest);
-static void start_copy(void);
-static void end_copy(void);
-static FORM *is_in_relation(FORM *src);
+// static COPY_FORM *copy_relation[DIM_REL];
+
+struct Relations
+{
+	COPY_FORM *copy_relation[DIM_REL];
+
+	Relations()
+	{
+		reset();
+		//
+	}
+
+	void reset()
+	{
+		for (int i = 0; i < DIM_REL; i++)
+		{
+			this->copy_relation[i] = NULL;
+		}
+		//
+	}
+
+	/* The following function initialises hash table.	        */
+	void start()
+	{
+		reset();
+		//
+	}
+
+	/* The following function eliminates hash table.		*/
+	void end()
+	{
+		COPY_FORM *dep;
+		for (int i = 0; i < DIM_REL; i++)
+		{
+			while ((dep = copy_relation[i]) != NULL)
+			{
+				copy_relation[i] = dep->next;
+				free(dep);
+			}
+		}
+	}
+
+	/* The following function inserts a two-form relation in the table. */
+	// put_relation(
+	void store(FORM *src, FORM *dest)
+	{
+		int dep1 = src->hash();
+		COPY_FORM *dep = new COPY_FORM(src, dest, this->copy_relation[dep1]);
+
+		this->copy_relation[dep1] = dep;
+	}
+
+	/* The following function checks whether or not a form has 	*/
+	/* already been copied.						*/
+	// is_in_relation
+	FORM *rel(FORM *src)
+	{
+		COPY_FORM *dep = this->copy_relation[src->hash()];
+		if (dep == NULL)
+			return NULL;
+
+		while (dep->src != src && dep->next != NULL)
+			dep = dep->next;
+
+		if (dep->src == src)
+			return dep->dest;
+		return NULL;
+		//
+	}
+};
+
+inline Relations rel = Relations();
 
 /* The following function initialises the hash table, calls 	*/
 /* function copy_aux and eliminates the table.			*/
@@ -47,12 +112,14 @@ FORM *FORM::copy(
 	int offset)
 {
 	FORM *risul;
-	start_copy();
+	// start_copy();
+	rel.start();
 	if (p < 0)
 		risul = this;
 	else
 		risul = this->copy_aux(p, offset);
-	end_copy();
+	// end_copy();
+	rel.end();
 	return risul;
 }
 
@@ -114,9 +181,9 @@ FORM *FORM::copy_aux(int p, int offset)
 
 	case LAMBDA:
 		if (p != 0)
-			return is_in_relation(temp);
+			return rel.rel(temp);
 		newf1 = new FORM(temp->kind, temp->index + offset);
-		put_relation(temp, newf1);
+		rel.store(temp, newf1);
 		newf2 = temp->nform[1]->copy_aux(temp->nport[1], offset);
 		connect1(newf1, 1, newf2, temp->nport[1]);
 		return newf1;
@@ -126,12 +193,12 @@ FORM *FORM::copy_aux(int p, int offset)
 	case CAR1:
 	case CONS1:
 	case FAN:
-		if ((newf1 = is_in_relation(temp)) != NULL)
+		if ((newf1 = rel.rel(temp)) != NULL)
 			return newf1;
 		newf1 = new FORM(temp->kind, temp->index + offset);
 		newf1->nlevel[1] = temp->nlevel[1];
 		newf1->nlevel[2] = temp->nlevel[2];
-		put_relation(temp, newf1);
+		rel.store(temp, newf1);
 		if (temp->nport[0] >= 0)
 		{
 			newf2 = temp->nform[0]->copy_aux(temp->nport[0], offset);
@@ -196,31 +263,29 @@ FORM *FORM::copy_aux(int p, int offset)
 }
 
 /* The following function inserts a two-form relation in the table. */
-static void put_relation(
-	FORM *src,
-	FORM *dest)
-{
-	int dep1 = src->hash();
-	COPY_FORM *dep = new COPY_FORM(src, dest, copy_relation[dep1]);
+// static void put_relation(
+// 	FORM *src,
+// 	FORM *dest)
+// {
+// 	int dep1 = src->hash();
+// 	COPY_FORM *dep = new COPY_FORM(src, dest, copy_relation[dep1]);
 
-	copy_relation[dep1] = dep;
-}
+// 	copy_relation[dep1] = dep;
+// }
 
-/* The following function checks whether or not a form has 	*/
-/* already been copied.						*/
-static FORM *is_in_relation(FORM *src)
-{
-	COPY_FORM *dep = copy_relation[src->hash()];
-	if (dep == NULL)
-		return NULL;
+// static FORM *is_in_relation(FORM *src)
+// {
+// 	COPY_FORM *dep = copy_relation[src->hash()];
+// 	if (dep == NULL)
+// 		return NULL;
 
-	while (dep->src != src && dep->next != NULL)
-		dep = dep->next;
+// 	while (dep->src != src && dep->next != NULL)
+// 		dep = dep->next;
 
-	if (dep->src == src)
-		return dep->dest;
-	return NULL;
-}
+// 	if (dep->src == src)
+// 		return dep->dest;
+// 	return NULL;
+// }
 
 /* The following function implements hash function.		*/
 int FORM::hash()
@@ -228,65 +293,4 @@ int FORM::hash()
 	unsigned long risul = (unsigned long)this;
 	risul = risul / 8 * 13;
 	return risul % DIM_REL;
-}
-
-struct Copy final
-{
-private:
-	std::vector<std::shared_ptr<COPY_FORM>> rel;
-
-	void clear()
-	{
-		rel.clear();
-	}
-
-public:
-	Copy()
-	{
-		rel.reserve(DIM_REL);
-	}
-
-	void start()
-	{
-		clear();
-	}
-
-	void end()
-	{
-		// COPY_FORM *dep;
-		// for (int i = 0; i < DIM_REL; i++)
-		// {
-		// 	while ((dep = copy_relation[i]) != NULL)
-		// 	{
-		// 		copy_relation[i] = dep->next;
-		// 		free(dep);
-		// 	}
-		// }
-	}
-};
-
-auto *cp = new Copy();
-
-/* The following function initialises hash table.	        */
-static void
-start_copy(void)
-{
-	for (int i = 0; i < DIM_REL; i++)
-		copy_relation[i] = NULL;
-}
-
-/* The following function eliminates hash table.		*/
-static void
-end_copy(void)
-{
-	COPY_FORM *dep;
-
-	for (int i = 0; i < DIM_REL; i++)
-	{
-		while ((dep = copy_relation[i]) != NULL)
-		{
-			copy_relation[i] = dep->next;
-			free(dep);
-		}
-	}
 }

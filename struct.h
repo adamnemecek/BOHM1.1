@@ -354,6 +354,7 @@ struct PATTERN final
 	~PATTERN();
 };
 
+// this is a dependency of sorts
 struct COPY_FORM final
 {
 	FORM *src;
