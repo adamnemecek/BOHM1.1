@@ -99,7 +99,7 @@ int counter;
 
 /*  The following function reduces a term to its weak 	*/
 /*  head (family) normal form.                          */
-void FORM::reduce()
+void FORM::reduce_term()
 {
 	struct tms time;
 

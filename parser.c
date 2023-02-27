@@ -1833,7 +1833,7 @@ yyreduce:
 				  lastinputterm = (yyvsp[(1) - (2)].term)->close(0);
 				  current_pos = lastinputterm;
 				  (yyval.root) = lastinputterm;
-				  (yyval.root)->reduce();
+				  (yyval.root)->reduce_term();
 				  YYACCEPT;
 				}
     break;

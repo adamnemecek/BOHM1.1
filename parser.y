@@ -378,7 +378,7 @@ term            :       expr EXPRDELIM
 				  lastinputterm = $1->close(0);
 				  current_pos = lastinputterm;
 				  $$ = lastinputterm;
-				  $$->reduce();
+				  $$->reduce_term();
 				  YYACCEPT;
 				}
 		|       global_decl EXPRDELIM
