@@ -187,7 +187,9 @@ void FORM::reduce_term()
 		printf("*****************************************************\n");
 	}
 	if (option != 3 && seegarb)
+	{
 		show_garb_stat(seetime);
+	}
 	if (seenode)
 	{
 		printf("Max. number of nodes seen up to this time %u\n", max_nodes);
@@ -211,7 +213,9 @@ static void reduce_redex(
 	FORM *new2;
 
 	if (option == 2 && del_head != NULL && num_nodes > limit)
+	{
 		clean();
+	}
 
 	if (f1->index == f2->index)
 	{

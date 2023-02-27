@@ -1351,13 +1351,13 @@ TERM *TERM::void_(int level)
 	return new TERM(newf, 0, NULL);
 }
 
-void PATTERN::release()
+PATTERN::~PATTERN()
 {
-	VARLIST *vl, *vln;
-	for (vl = this->var_list; vl; vl = vln)
+	VARLIST *vln;
+	for (VARLIST *vl = this->var_list; vl; vl = vln)
 	{
 		vln = vl->next;
 		free(vl);
 	}
-	free(this);
+	// free(this);
 }

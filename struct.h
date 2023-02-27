@@ -3,7 +3,7 @@
 #include <memory>
 
 /* graphical form descriptor type */
-struct FORM
+struct FORM final
 {
 	/* name of the form */
 	/* (FAN, ROOT, CROISSANT */
@@ -151,7 +151,7 @@ struct VARENTRY
 };
 
 /* term descriptor type */
-struct TERM
+struct TERM final
 {
 	/* pointer to the root form */
 	/* of the term */
@@ -265,7 +265,8 @@ struct TERM
 		int relop);
 
 	static TERM *var(
-		int level, STBUCKET *id);
+		int level,
+		STBUCKET *id);
 
 	static TERM *void_(int level);
 
@@ -306,7 +307,7 @@ struct VARLIST
 // 	VARLIST1(BINDINGID *id, TERM *t);
 // };
 
-struct PATTERN
+struct PATTERN final
 {
 	VARLIST *var_list;
 	TERM *term;
@@ -317,7 +318,7 @@ struct PATTERN
 		this->var_list = var_list;
 	}
 
-	void release();
+	~PATTERN();
 };
 
 struct COPY_FORM
