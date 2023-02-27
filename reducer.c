@@ -52,7 +52,7 @@ static void reduce_redex(
 	FORM *f1,
 	FORM *f2);
 static void reduce_form(FORM *f1);
-static FORM *lo_redex(FORM *f);
+// static FORM *lo_redex(FORM *f);
 static int auxnext;
 
 #ifndef STACK_SIZE
@@ -121,7 +121,7 @@ void FORM::reduce()
 	clock_t usr_time = time.tms_utime;
 	clock_t sys_time = time.tms_stime;
 	init_stack();
-	FORM *f1 = lo_redex(this);
+	FORM *f1 = this->lo_redex();
 	reset_garbage();
 	while (f1 != this && !type_error)
 	{
@@ -150,7 +150,7 @@ void FORM::reduce()
 			reduce_form(f1);
 		}
 		counter = counter + 1;
-		f1 = lo_redex(pop());
+		f1 = pop()->lo_redex();
 	}
 	if (type_error)
 	{
@@ -1422,10 +1422,9 @@ static void reduce_form(
 /*  The following function looks for the leftmost outemost  	*/
 /*  redex, saving on the m_stack pointers to the form along	*/
 /*  the main spine of the term.             			*/
-static FORM *lo_redex(
-	FORM *f)
+FORM *FORM::lo_redex()
 {
-	FORM *temp = f;
+	FORM *temp = this;
 	FORM *next = temp->nform[0];
 	int p = temp->nport[0];
 

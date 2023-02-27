@@ -48,6 +48,8 @@ struct FORM
 	void del();
 	FORM *copy(int p, int offset);
 
+	FORM *lo_redex();
+
 	void inspect_driver();
 };
 
