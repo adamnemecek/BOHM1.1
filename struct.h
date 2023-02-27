@@ -44,6 +44,7 @@ struct FORM
 	FORM *inspect(int p);
 
 	void reduce_term();
+	void reduce_form();
 
 	void del();
 	FORM *copy(int p, int offset);

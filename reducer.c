@@ -147,7 +147,7 @@ void FORM::reduce_term()
 		}
 		else
 		{
-			reduce_form(f1);
+			f1->reduce_form();
 		}
 		counter = counter + 1;
 		f1 = pop()->lo_redex();
@@ -784,10 +784,10 @@ static void reduce_redex(
 /*  The following function reduces the redex whose 	*/
 /*  interacting forms are passed as a parameter and the */
 /*  second form is a INT, NIL, True or False; */
-static void reduce_form(
-	FORM *f1)
+void FORM::reduce_form()
 {
 	FORM *tmp;
+	FORM *f1 = this;
 	switch (f1->kind)
 	{
 	case IFELSE:
