@@ -79,7 +79,7 @@ struct BINDINGENTRY;
 struct PATTERN;
 
 /* symbol table bucket type */
-struct STBUCKET
+struct STBUCKET final
 {
 	/* identifier */
 	char *id;
@@ -113,7 +113,7 @@ struct STBUCKET
 };
 
 /* binding entry descriptor type */
-struct BINDINGENTRY
+struct BINDINGENTRY final
 {
 	STBUCKET *st_bucket;
 	/* pointer to the bucket */
@@ -134,7 +134,7 @@ struct BINDINGENTRY
 };
 
 /* local environment entry descriptor type */
-struct LOCALENVENTRY
+struct LOCALENVENTRY final
 {
 	/* nesting depth associated */
 	/* with the local environment */
@@ -151,7 +151,7 @@ struct LOCALENVENTRY
 };
 
 /* free variable descriptor type */
-struct VARENTRY
+struct VARENTRY final
 {
 	/* pointer to the st_bucket */
 	/* for the variable */
@@ -299,7 +299,7 @@ struct TERM final
 	// TERM *body);
 };
 
-struct BINDINGID
+struct BINDINGID final
 {
 	STBUCKET *id;
 	FORM *form;
@@ -311,7 +311,7 @@ struct BINDINGID
 	}
 };
 
-struct VARLIST
+struct VARLIST final
 {
 	BINDINGID *id;
 	VARLIST *next;
@@ -342,7 +342,7 @@ struct PATTERN final
 	~PATTERN();
 };
 
-struct COPY_FORM
+struct COPY_FORM final
 {
 	FORM *src;
 	FORM *dest;
@@ -356,7 +356,7 @@ struct COPY_FORM
 	}
 };
 
-struct ELEM
+struct ELEM final
 {
 	FORM *node;
 	int num;

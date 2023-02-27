@@ -38,7 +38,7 @@
 FILE *save_file;
 ELEM *head, *tail;
 int max;
-// static int present(FORM *form);
+
 static void save_aux(
 	FORM *root,
 	int p);
