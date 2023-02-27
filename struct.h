@@ -41,6 +41,7 @@ struct FORM
 
 	void release();
 
+	void del();
 	FORM *copy(int p, int offset);
 };
 

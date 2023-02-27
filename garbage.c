@@ -68,11 +68,11 @@ void init_garbage(void)
 
 /* The following function insert a new erase operator at the 	*/
 /* head of a list to be scanned when the G.C. is activated.  	*/
-void ins_del(FORM *d)
+void FORM::del()
 {
-	d->index = EXISTENT;
-	d->nform[1] = del_head->nform[1];
-	del_head->nform[1] = d;
+	this->index = EXISTENT;
+	this->nform[1] = del_head->nform[1];
+	del_head->nform[1] = this;
 }
 
 /* The following function activates the G.C. by scanning the   */
@@ -153,7 +153,7 @@ static void garbage(
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				connect1(form, 0, form->nform[1], form->nport[1]);
-				ins_del(form);
+				form->del();
 			}
 			else
 			{
@@ -166,7 +166,6 @@ static void garbage(
 								 form->nform[0],
 								 form->nport[0]);
 						form->release();
-						;
 					}
 					else
 					{
@@ -203,7 +202,7 @@ static void garbage(
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				connect1(form, 0, form->nform[1], form->nport[1]);
-				ins_del(form);
+				form->del();
 			}
 			else
 			{
@@ -216,7 +215,6 @@ static void garbage(
 								 form->nform[0],
 								 form->nport[0]);
 						form->release();
-						;
 					}
 					else
 					{
@@ -253,7 +251,7 @@ static void garbage(
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				connect1(form, 0, form->nform[1], form->nport[1]);
-				ins_del(form);
+				form->del();
 			}
 			else
 			{
@@ -266,7 +264,6 @@ static void garbage(
 								 form->nform[0],
 								 form->nport[0]);
 						form->release();
-						;
 					}
 					else
 					{
@@ -303,7 +300,7 @@ static void garbage(
 				nextport = form->nport[2];
 				form->kind = ERASE;
 				connect1(form, 0, form->nform[1], form->nport[1]);
-				ins_del(form);
+				form->del();
 			}
 			else
 			{
@@ -326,7 +323,7 @@ static void garbage(
 				nextport = form->nport[2];
 				form->kind = ERASE;
 				connect1(form, 0, form->nform[1], form->nport[1]);
-				ins_del(form);
+				form->del();
 			}
 			else
 			{
@@ -382,7 +379,6 @@ static void garbage(
 				nextport = form->nport[0];
 			}
 			form->release();
-			;
 			break;
 
 		case APP:
@@ -421,7 +417,7 @@ static void garbage(
 			nextport = form->nport[p2];
 			form->kind = ERASE;
 			connect1(form, 0, form->nform[p1], form->nport[p1]);
-			ins_del(form);
+			form->del();
 			break;
 
 		case LAMBDA:
@@ -432,7 +428,7 @@ static void garbage(
 				nextport = form->nport[!port];
 				form->kind = ERASE;
 				connect1(form, 0, form->nform[2], form->nport[2]);
-				ins_del(form);
+				form->del();
 			}
 			else
 			{

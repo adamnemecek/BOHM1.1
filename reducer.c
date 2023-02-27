@@ -285,7 +285,7 @@ static void reduce_redex(
 							 f2->nport[1]);
 					f1->kind = ERASE;
 					connect1(f1, 0, f1->nform[2], f1->nport[2]);
-					ins_del(f1);
+					f1->del();
 					if (option == 1)
 						clean();
 					f2->release();
@@ -308,7 +308,7 @@ static void reduce_redex(
 							 f2->nport[1]);
 					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[2], f2->nport[2]);
-					ins_del(f1);
+					f1->del();
 					if (option == 1)
 						clean();
 					f2->release();
@@ -357,7 +357,7 @@ static void reduce_redex(
 							 f2->nport[2]);
 					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[1], f2->nport[1]);
-					ins_del(f1);
+					f1->del();
 					if (option == 1)
 						clean();
 					f2->release();
@@ -402,7 +402,7 @@ static void reduce_redex(
 					eq++;
 					bool_connect(f1->nform[1], f1->nport[1], F);
 					f1->kind = ERASE;
-					ins_del(f1);
+					f1->del();
 					connect(f1, 0, f2, 0);
 					if (option == 1)
 						clean();
@@ -458,7 +458,7 @@ static void reduce_redex(
 					else
 					{
 						new1 = new FORM(ERASE, 0);
-						ins_del(f1);
+						f1->del();
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 					}
 					if (f1->nport[2] >= 0)
@@ -472,7 +472,7 @@ static void reduce_redex(
 					else
 					{
 						f2->kind = ERASE;
-						ins_del(f2);
+						f2->del();
 						connect(f2, 0, f2->nform[1], f2->nport[1]);
 					}
 					f1->release();
@@ -495,7 +495,7 @@ static void reduce_redex(
 							 f2->nform[2], f2->nport[2]);
 					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[1], f2->nport[1]);
-					ins_del(f1);
+					f1->del();
 					if (option == 1)
 						clean();
 					f2->release();
@@ -506,8 +506,8 @@ static void reduce_redex(
 					f2->kind = ERASE;
 					connect1(f1, 0, f1->nform[1], f1->nport[1]);
 					connect1(f2, 0, f2->nform[1], f2->nport[1]);
-					ins_del(f1);
-					ins_del(f2);
+					f1->del();
+					f2->del();
 					if (option == 1)
 						;
 					clean();
@@ -528,7 +528,7 @@ static void reduce_redex(
 							 f2->nform[1], f2->nport[1]);
 					f1->kind = ERASE;
 					connect1(f1, 0, f2->nform[2], f2->nport[2]);
-					ins_del(f1);
+					f1->del();
 					if (option == 1)
 						clean();
 					f2->release();
@@ -539,8 +539,8 @@ static void reduce_redex(
 					f2->kind = ERASE;
 					connect1(f1, 0, f1->nform[1], f1->nport[1]);
 					connect1(f2, 0, f2->nform[1], f2->nport[1]);
-					ins_del(new1);
-					ins_del(new2);
+					new1->del();
+					new2->del();
 					if (option == 1)
 						;
 					clean();
@@ -561,7 +561,7 @@ static void reduce_redex(
 							 f2->nform[1], f2->nport[1]);
 					f1->kind = ERASE;
 					connect1(f1, 0, f1->nform[1], f1->nport[1]);
-					ins_del(f1);
+					f1->del();
 					if (option == 1)
 						clean();
 					f2->release();
@@ -573,7 +573,7 @@ static void reduce_redex(
 							 f2->nform[1], f2->nport[1]);
 					f1->kind = ERASE;
 					connect1(f1, 0, f1->nform[2], f1->nport[2]);
-					ins_del(f1);
+					f1->del();
 					if (option == 1)
 						clean();
 					f2->release();
@@ -817,7 +817,7 @@ static void reduce_form(
 			bool_connect(f1->nform[1], f1->nport[1], F);
 			f1->kind = ERASE;
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
-			ins_del(f1);
+			f1->del();
 			if (option == 1)
 				clean();
 			break;
@@ -845,7 +845,7 @@ static void reduce_form(
 			bool_connect(f1->nform[1], f1->nport[1], T);
 			f1->kind = ERASE;
 			connect1(f1, 0, f1->nform[2], f1->nport[2]);
-			ins_del(f1);
+			f1->del();
 			if (option == 1)
 				clean();
 			break;
