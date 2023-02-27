@@ -748,6 +748,28 @@ FORM *TERM::close(
 	return newroot;
 }
 
+void alloc_forms()
+{
+	if (headfree->next != NULL)
+	{
+		return;
+	}
+	FORM *dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
+	// auto *dep = new FORM[FORM_NUM];
+	headfree->next = dep;
+	dep->next = dep + 1;
+	dep->prev = headfree;
+	dep = dep->next;
+	for (int i = 2; i < FORM_NUM; i++)
+	{
+		dep->next = dep + 1;
+		dep->prev = dep - 1;
+		dep = dep->next;
+	}
+	dep->next = NULL;
+	dep->prev = dep - 1;
+}
+
 /* the following function allocate a new graphical form */
 /* and initialize the name and index fields */
 FORM::FORM(
@@ -756,23 +778,7 @@ FORM::FORM(
 	/* index of the form */
 	int index)
 {
-	if (headfree->next == NULL)
-	{
-		FORM *dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
-		// auto *dep = new FORM[FORM_NUM];
-		headfree->next = dep;
-		dep->next = dep + 1;
-		dep->prev = headfree;
-		dep = dep->next;
-		for (int i = 2; i < FORM_NUM; i++)
-		{
-			dep->next = dep + 1;
-			dep->prev = dep - 1;
-			dep = dep->next;
-		}
-		dep->next = NULL;
-		dep->prev = dep - 1;
-	}
+	alloc_forms();
 	*this = *headfree;
 	headfree = headfree->next;
 	num_nodes++;
