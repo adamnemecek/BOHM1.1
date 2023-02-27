@@ -119,12 +119,12 @@ static LOCALENVENTRY *curr_local_env;
 
 static STBUCKET *dictionary[DICTSIZE] = {0};
 
-struct Dictionary
+struct SymbolTable
 {
 	STBUCKET *dictionary[DICTSIZE];
 	int curr_nesting_depth;
 
-	Dictionary()
+	SymbolTable()
 	{
 		// dictionary = {0};
 		//
@@ -267,7 +267,7 @@ STBUCKET *search_bucket(
 	return st;
 }
 
-STBUCKET *Dictionary::find(const char *id)
+STBUCKET *SymbolTable::find(const char *id)
 {
 	return nullptr;
 }
@@ -302,10 +302,11 @@ void pop_local_env()
 }
 
 /* The following function creates entries for a variable binding */
+/* pointer to the bucket for the */
+/* identifier which is to be bound */
+/* to a procedure */
+
 void STBUCKET::create_variable_binding(
-	/* pointer to the bucket for the */
-	/* identifier which is to be bound */
-	/* to a procedure */
 
 	/* pointer to the rootform of the */
 	/* term associated with the identifier */
