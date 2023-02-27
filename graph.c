@@ -73,9 +73,6 @@
 
 #include "bohm.h"
 
-/* constants concerning allocate form */
-#define FORM_NUM 1000
-
 unsigned num_nodes, max_nodes;
 
 unsigned length_list = 0;
@@ -745,28 +742,6 @@ FORM *TERM::close(
 	return newroot;
 }
 
-void alloc_forms()
-{
-	if (headfree->next != NULL)
-	{
-		return;
-	}
-	FORM *dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
-	// auto *dep = new FORM[FORM_NUM];
-	headfree->next = dep;
-	dep->next = dep + 1;
-	dep->prev = headfree;
-	dep = dep->next;
-	for (int i = 2; i < FORM_NUM; i++)
-	{
-		dep->next = dep + 1;
-		dep->prev = dep - 1;
-		dep = dep->next;
-	}
-	dep->next = NULL;
-	dep->prev = dep - 1;
-}
-
 /* the following function allocate a new graphical form */
 /* and initialize the name and index fields */
 FORM::FORM(
@@ -775,9 +750,8 @@ FORM::FORM(
 	/* index of the form */
 	int index)
 {
-	alloc_forms();
-	*this = *headfree;
-	headfree = headfree->next;
+
+	*this = *destroyer.alloc();
 	num_nodes++;
 	if (num_nodes > max_nodes)
 		max_nodes = num_nodes;
@@ -798,11 +772,7 @@ void FORM::release()
 	this->prev->next = this->next;
 	this->next->prev = this->prev;
 	num_nodes--;
-	this->next = headfree->next;
-	this->prev = headfree;
-	if (headfree->next != NULL)
-		headfree->next->prev = this;
-	headfree->next = this;
+	destroyer.release(this);
 }
 
 /* the following function connects together the port portf1 of */

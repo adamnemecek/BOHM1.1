@@ -1673,7 +1673,7 @@ yyreduce:
 #line 265 "parser.y"
     {
 				   app_nesting_depth = 0;
-				   destroy();
+				   destroyer.destroy();
 				   lastinputterm=NULL;
 				}
     break;
@@ -1841,7 +1841,7 @@ yyreduce:
   case 22:
 #line 385 "parser.y"
     {
-				  no_destroy();
+				  destroyer.no_destroy();
 				  YYACCEPT;
 				}
     break;

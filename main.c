@@ -93,7 +93,6 @@ int main(
 	printf("***          Dipartimento di Matematica, Bologna        ***\n");
 	printf("***********************************************************\n\n");
 	init_symbol_table();
-	init_destroy();
 	init_garbage();
 	lines = 0;
 	setbuf(stdout, NULL);

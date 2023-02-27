@@ -35,27 +35,15 @@
 /* 2. Definitions of variables to be exported.			*/
 /****************************************************************/
 
-FORM *headfree;
-
-/****************************************************************/
 /* 3. Declaration of names strictly local to the module.	*/
 /****************************************************************/
 
-FORM *headfull;
-unsigned start_nodes;
-
-/****************************************************************/
-/* 4. Declaration of functions strictly local to the module.	*/
-/****************************************************************/
-
-/****************************************************************/
-/* 5. Definitions of functions to be exported.			*/
-/****************************************************************/
-
+/* constants concerning allocate form */
+#define FORM_NUM 1000
 /* The following function initialises the destroyer by 	*/
 /* allocating two nodes (headfree and headfull) and 	*/
 /* linking them together.                               */
-void init_destroy(void)
+Destroyer::Destroyer()
 {
   headfull = (FORM *)malloc_da(sizeof(FORM));
   headfree = (FORM *)malloc_da(sizeof(FORM));
@@ -64,13 +52,27 @@ void init_destroy(void)
   headfree->next = NULL;
   headfree->prev = headfull;
   start_nodes = 0;
-}
 
+  FORM *dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
+  // auto *dep = new FORM[FORM_NUM];
+  headfree->next = dep;
+  dep->next = dep + 1;
+  dep->prev = headfree;
+  dep = dep->next;
+  for (int i = 2; i < FORM_NUM; i++)
+  {
+    dep->next = dep + 1;
+    dep->prev = dep - 1;
+    dep = dep->next;
+  }
+  dep->next = NULL;
+  dep->prev = dep - 1;
+}
 /* The following function eliminates the preceding 	*/
 /* term, moving back headfree to the node following 	*/
 /* headfull, and doing so makes all the nodes available */
 /* for any furure usage					*/
-void destroy(void)
+void Destroyer::destroy()
 {
   if (headfree != headfull->next)
   {
@@ -84,7 +86,31 @@ void destroy(void)
 /* The following function makes a graph associated to a	*/
 /* global definition permanent, by moving headfull to 	*/
 /* the node preceding headfree.				*/
-void no_destroy(void)
+void Destroyer::no_destroy(void)
 {
   headfull = headfree->prev;
 }
+
+FORM *Destroyer::alloc()
+{
+  FORM *ret = headfree;
+  headfree = headfree->next;
+  return ret;
+}
+
+void Destroyer::release(FORM *form)
+{
+  form->next = headfree->next;
+  form->prev = headfree;
+  if (headfree->next != NULL)
+    headfree->next->prev = form;
+  headfree->next = form;
+}
+
+/****************************************************************/
+/* 4. Declaration of functions strictly local to the module.	*/
+/****************************************************************/
+
+/****************************************************************/
+/* 5. Definitions of functions to be exported.			*/
+/****************************************************************/

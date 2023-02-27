@@ -79,14 +79,28 @@ void int_connect(
     FORM *form2,
     int portf2);
 
-void destroy(void);
+struct Destroyer
+{
+    FORM *headfree;
+    FORM *headfull;
+    unsigned start_nodes;
+
+    Destroyer();
+    void destroy();
+    void no_destroy();
+
+    FORM *alloc();
+    void release(FORM *form);
+};
+// void destroy(void);
 void info(char *choices);
-void init_destroy(void);
+inline Destroyer destroyer = Destroyer();
+// void init_destroy(void);
 void init_garbage(void);
 void init_symbol_table(void);
 
 void menu(int choice);
-void no_destroy(void);
+// void nDestroyer
 void pop_local_env(void);
 void push_local_env(void);
 void reset_garbage(void);

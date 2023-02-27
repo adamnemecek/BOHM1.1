@@ -137,4 +137,5 @@ inline const char *kind_desc(char kind)
     case CONS1:
         return "CONS1     ";
     }
+    assert(false);
 }

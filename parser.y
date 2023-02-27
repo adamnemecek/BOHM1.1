@@ -264,7 +264,7 @@ static bool defined(STBUCKET	*st);
 input           :      directive
 		|               {
 				   app_nesting_depth = 0;
-				   destroy();
+				   destroyer.destroy();
 				   lastinputterm=NULL;
 				}
 		       term
@@ -383,7 +383,7 @@ term            :       expr EXPRDELIM
 				}
 		|       global_decl EXPRDELIM
 				{
-				  no_destroy();
+				  destroyer.no_destroy();
 				  YYACCEPT;
 				}
 		;
