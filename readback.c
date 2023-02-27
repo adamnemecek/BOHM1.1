@@ -29,11 +29,11 @@ void rdbk_list(
 /* the following function prints on the standard output the */
 /* standard syntactical representation of the graphical term */
 /* whose root is passed in input */
-void rdbk(FORM *form)
+void FORM::rdbk()
 {
   left_to_print = PRINT_MAX;
   printf("  ");
-  rdbk_1(form, 0);
+  rdbk_1(this, 0);
   printf("\n");
 }
 

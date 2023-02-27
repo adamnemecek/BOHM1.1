@@ -51,6 +51,8 @@ struct FORM final
 
 	FORM *lo_redex();
 
+	void rdbk();
+
 	void inspect_driver();
 };
 

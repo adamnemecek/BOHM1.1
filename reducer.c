@@ -166,7 +166,7 @@ void FORM::reduce_term()
 	times(&time);
 	usr_time = time.tms_utime - usr_time;
 	sys_time = time.tms_stime - sys_time;
-	rdbk(this);
+	this->rdbk();
 	if (seetime)
 	{
 		printf("*****************************************************\n");

@@ -45,113 +45,10 @@ extern "C"
 char *malloc_da(unsigned size);
 char *strdup_da(const char *s);
 
-// FORM *closeterm(
-//     int level,
-//     TERM *t);
-
 FORM *copy(
     FORM *root,
     int p,
     int offset);
-
-// FORM *inspect(
-//     int p,
-//     FORM *f);
-
-// TERM *buildandterm(
-//     int level,
-//     TERM *arg1,
-//     TERM *arg2);
-
-// TERM *buildappterm(
-//     int level,
-//     TERM *fun,
-//     TERM *arg);
-
-// TERM *buildcarterm(
-//     int level,
-//     TERM *arg);
-
-// TERM *buildcdrterm(
-//     int level,
-//     TERM *arg);
-
-// TERM *buildfalseterm(
-//     int level);
-
-// TERM *buildifelseterm(
-//     int level,
-//     TERM *arg1,
-//     TERM *arg2,
-//     TERM *arg3);
-
-// TERM *buildintterm(
-//     int level,
-//     long int value);
-
-// TERM *buildletinterm(
-//     int level,
-//     STBUCKET *id,
-//     TERM *arg1,
-//     TERM *arg2);
-
-// TERM *buildlist(
-//     int level,
-//     TERM *arg1,
-//     TERM *arg2);
-
-// TERM *buildlist1(
-//     int level,
-//     TERM *arg1,
-//     TERM *arg2);
-
-// TERM *buildmatterm(
-//     int level,
-//     TERM *arg1,
-//     TERM *arg2,
-//     int op);
-
-// TERM *buildminusterm(
-//     int level,
-//     TERM *arg1);
-
-// TERM *build_mu_term(
-//     int level,
-//     STBUCKET *id,
-//     TERM *bod);
-
-// TERM *buildnillist(int level);
-
-// TERM *buildnotterm(
-//     int level,
-//     TERM *arg);
-
-// TERM *buildorterm(
-//     int level,
-//     TERM *arg1,
-//     TERM *arg2);
-
-// TERM *buildplambdaterm(
-//     int level,
-//     PATTERN *pattern,
-//     TERM *body);
-
-// TERM *buildrelopterm(
-//     int level,
-//     TERM *arg1,
-//     TERM *arg2,
-//     int relop);
-
-// TERM *buildtestnil(
-//     int level,
-//     TERM *arg);
-
-// TERM *buildtrueterm(int level);
-
-// TERM *buildvarterm(
-//     int level, STBUCKET *id);
-
-// TERM *buildvoidterm(int level);
 
 VARLIST *makevarlist(
     STBUCKET *e,
@@ -203,11 +100,11 @@ void init_symbol_table(void);
 // void inspect_driver(FORM *f);
 
 void menu(int choice);
-void myfree(FORM *form);
+// void myfree(FORM *form);
 void no_destroy(void);
 void pop_local_env(void);
 void push_local_env(void);
-void rdbk(FORM *form);
+// void rdbk(FORM *form);
 // void reduce_term(FORM *root);
 void reset_garbage(void);
 void save(
