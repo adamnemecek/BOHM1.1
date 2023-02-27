@@ -68,6 +68,7 @@ struct FORM final
 	int hash();
 
 	int present();
+	void put_form();
 
 	void save(
 		char *name,

@@ -47,3 +47,94 @@
 #define CDR1 48
 #define CAR1 49
 #define CONS1 50
+
+inline const char *kind_desc(char kind)
+{
+    switch (kind)
+    {
+    case FAN:
+        return "FAN       ";
+    case TRIANGLE:
+        return "TRIANGLE  ";
+    case ROOT:
+        return "ROOT      ";
+    case APP:
+        return "APP       ";
+    case LAMBDA:
+        return "LAMBDA    ";
+    case IFELSE:
+        return "IFELSE    ";
+    case AND:
+        return "AND       ";
+    case OR:
+        return "OR        ";
+    case NOT:
+        return "NOT       ";
+    case LESS:
+        return "LESS      ";
+    case LESS1:
+        return "LESS1     ";
+    case EQ:
+        return "EQ        ";
+    case EQ1:
+        return "EQ1       ";
+    case NOTEQ:
+        return "NOTEQ     ";
+    case NOTEQ1:
+        return "NOTEQ1    ";
+    case MORE:
+        return "MORE      ";
+    case MORE1:
+        return "MORE1     ";
+    case LEQ:
+        return "LEQ       ";
+    case LEQ1:
+        return "LEQ1      ";
+    case MEQ:
+        return "MEQ       ";
+    case MEQ1:
+        return "MEQ1      ";
+    case ADD:
+        return "ADD       ";
+    case ADD1:
+        return "ADD1      ";
+    case SUB:
+        return "SUB       ";
+    case SUB1:
+        return "SUB1      ";
+    case PROD:
+        return "PROD      ";
+    case PROD1:
+        return "PROD1     ";
+    case DIV:
+        return "DIV       ";
+    case DIV1:
+        return "DIV1      ";
+    case MOD:
+        return "MOD       ";
+    case MOD1:
+        return "MOD1      ";
+    case CONS:
+        return "CONS      ";
+    case CAR:
+        return "CAR       ";
+    case CDR:
+        return "CDR       ";
+    case TESTNIL:
+        return "TESTNIL   ";
+    case LAMBDAUNB:
+        return "LAMBDAUNB ";
+    case UNS_FAN1:
+        return "UNS_FAN1  ";
+    case UNS_FAN2:
+        return "UNS_FAN2  ";
+    case CAR1:
+        return "CAR1      ";
+    case CDR1:
+        return "CDR1      ";
+    case TESTNIL1:
+        return "TESTNIL1  ";
+    case CONS1:
+        return "CONS1     ";
+    }
+}

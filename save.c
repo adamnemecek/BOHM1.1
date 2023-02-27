@@ -45,7 +45,6 @@ static void save_aux(
 static void put_int(
 	FORM *f,
 	int p);
-static void put_form(FORM *f);
 static int num_port(int name);
 static void eindex(ELEM *elem);
 
@@ -147,7 +146,7 @@ void FORM::stampa(
 {
 	const int p1 = this->nport[p];
 	fprintf(save_file, "%4d ", card);
-	put_form(this);
+	this->put_form();
 	if (p1 < 0)
 	{
 		fprintf(save_file, "%d -> 0 ", p);
@@ -156,7 +155,7 @@ void FORM::stampa(
 	else
 	{
 		fprintf(save_file, "%d -> %d ", p, p1);
-		put_form(this->nform[p]);
+		this->nform[p]->put_form();
 	}
 	fprintf(save_file, "\n");
 }
@@ -188,138 +187,9 @@ static void save_aux(
 }
 
 /* The following function prints form name.			*/
-static void put_form(
-	FORM *f)
+void FORM::put_form()
 {
-	switch (f->kind)
-	{
-	case FAN:
-		fprintf(save_file, "FAN       ");
-		break;
-	case TRIANGLE:
-		fprintf(save_file, "TRIANGLE  ");
-		break;
-	case ROOT:
-		fprintf(save_file, "ROOT      ");
-		break;
-	case APP:
-		fprintf(save_file, "APP       ");
-		break;
-	case LAMBDA:
-		fprintf(save_file, "LAMBDA    ");
-		break;
-	case IFELSE:
-		fprintf(save_file, "IFELSE    ");
-		break;
-	case AND:
-		fprintf(save_file, "AND       ");
-		break;
-	case OR:
-		fprintf(save_file, "OR        ");
-		break;
-	case NOT:
-		fprintf(save_file, "NOT       ");
-		break;
-	case LESS:
-		fprintf(save_file, "LESS      ");
-		break;
-	case LESS1:
-		fprintf(save_file, "LESS1     ");
-		break;
-	case EQ:
-		fprintf(save_file, "EQ        ");
-		break;
-	case EQ1:
-		fprintf(save_file, "EQ1       ");
-		break;
-	case NOTEQ:
-		fprintf(save_file, "NOTEQ     ");
-		break;
-	case NOTEQ1:
-		fprintf(save_file, "NOTEQ1    ");
-		break;
-	case MORE:
-		fprintf(save_file, "MORE      ");
-		break;
-	case MORE1:
-		fprintf(save_file, "MORE1     ");
-		break;
-	case LEQ:
-		fprintf(save_file, "LEQ       ");
-		break;
-	case LEQ1:
-		fprintf(save_file, "LEQ1      ");
-		break;
-	case MEQ:
-		fprintf(save_file, "MEQ       ");
-		break;
-	case MEQ1:
-		fprintf(save_file, "MEQ1      ");
-		break;
-	case ADD:
-		fprintf(save_file, "ADD       ");
-		break;
-	case ADD1:
-		fprintf(save_file, "ADD1      ");
-		break;
-	case SUB:
-		fprintf(save_file, "SUB       ");
-		break;
-	case SUB1:
-		fprintf(save_file, "SUB1      ");
-		break;
-	case PROD:
-		fprintf(save_file, "PROD      ");
-		break;
-	case PROD1:
-		fprintf(save_file, "PROD1     ");
-		break;
-	case DIV:
-		fprintf(save_file, "DIV       ");
-		break;
-	case DIV1:
-		fprintf(save_file, "DIV1      ");
-		break;
-	case MOD:
-		fprintf(save_file, "MOD       ");
-		break;
-	case MOD1:
-		fprintf(save_file, "MOD1      ");
-		break;
-	case CONS:
-		fprintf(save_file, "CONS      ");
-		break;
-	case CAR:
-		fprintf(save_file, "CAR       ");
-		break;
-	case CDR:
-		fprintf(save_file, "CDR       ");
-		break;
-	case TESTNIL:
-		fprintf(save_file, "TESTNIL   ");
-		break;
-	case LAMBDAUNB:
-		fprintf(save_file, "LAMBDAUNB ");
-		break;
-	case UNS_FAN1:
-		fprintf(save_file, "UNS_FAN1  ");
-		break;
-	case UNS_FAN2:
-		fprintf(save_file, "UNS_FAN2  ");
-		break;
-	case CAR1:
-		fprintf(save_file, "CAR1      ");
-		break;
-	case CDR1:
-		fprintf(save_file, "CDR1      ");
-		break;
-	case TESTNIL1:
-		fprintf(save_file, "TESTNIL1  ");
-		break;
-	case CONS1:
-		fprintf(save_file, "CONS1     ");
-		break;
-	}
+	fprintf(save_file, kind_desc(this->kind));
 }
 
 /* The following function prints NIL, INT and BOOL forms names.	*/
@@ -404,7 +274,7 @@ static int num_port(int name)
 static void eindex(ELEM *elem)
 {
 	fprintf(save_file, "%3d ", elem->num);
-	put_form(elem->node);
+	elem->node->put_form();
 	fprintf(save_file, "index: %2d", elem->node->index);
 	switch (elem->node->kind)
 	{
