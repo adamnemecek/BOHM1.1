@@ -77,7 +77,7 @@ void rdbk_1(
         {
           left_to_print -= printf("[");
           rdbk_1(form->nform[port], 1);
-          rdbk_list(form->nform[port], 2);
+          form->nform[port]->rdbk_list(2);
         }
         else
         {
@@ -102,33 +102,31 @@ void rdbk_1(
     left_to_print -= printf("...");
 }
 
-void rdbk_list(
-    FORM *form,
-    int port)
+void FORM::rdbk_list(int port)
 {
-  if ((int)form->nport[port] == NIL)
+  if ((int)this->nport[port] == NIL)
     left_to_print -= printf("]");
   else if (left_to_print <= 0)
     left_to_print -= printf("...]");
-  else if (form->nport[port] < 0)
+  else if (this->nport[port] < 0)
   {
     left_to_print -= printf("|");
-    rdbk_1(form, port);
+    rdbk_1(this, port);
     left_to_print -= printf("]");
   }
-  else if (form->nform[port]->kind == TRIANGLE ||
-           (form->nform[port]->kind == FAN && form->nport[port] != 0))
-    rdbk_list(form->nform[port], !form->nport[port]);
-  else if (form->nform[port]->kind != CONS || form->nport[port] != 0)
+  else if (this->nform[port]->kind == TRIANGLE ||
+           (this->nform[port]->kind == FAN && this->nport[port] != 0))
+    this->nform[port]->rdbk_list(!this->nport[port]);
+  else if (this->nform[port]->kind != CONS || this->nport[port] != 0)
   {
     left_to_print -= printf("|");
-    rdbk_1(form, port);
+    rdbk_1(this, port);
     left_to_print -= printf("]");
   }
   else
   {
     left_to_print -= printf(",");
-    rdbk_1(form->nform[port], 1);
-    rdbk_list(form->nform[port], 2);
+    rdbk_1(this->nform[port], 1);
+    this->nform[port]->rdbk_list(2);
   }
 }
