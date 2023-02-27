@@ -296,7 +296,9 @@ TERM *TERM::mu(
 			varform->release();
 		}
 		else
+		{
 			intelligent_connect(newf1, 2, varform);
+		}
 		temp = new TERM(newf1, 1, remv(id, body->vars));
 		t = temp->makebox(level);
 		connect(newf1, 0, body->root_form, body->root_ports);
@@ -974,8 +976,6 @@ static VARENTRY *share(
 	res->next = share(index, l1->next, remv(l1->name, l2));
 	return res;
 }
-
-#include <list>
 
 /* The following function searches for a variable inside a list. */
 static VARENTRY *lookfor(

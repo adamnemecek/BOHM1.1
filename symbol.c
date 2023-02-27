@@ -184,8 +184,12 @@ const char *keywords[] =
 static void to_lower_s(char *s)
 {
 	for (; *s != '\0'; s++)
+	{
 		if ('A' <= *s && *s <= 'Z')
+		{
 			*s += 'a' - 'A';
+		}
+	}
 }
 
 /****************************************************************/
@@ -199,7 +203,9 @@ void init_symbol_table(void)
 {
 	/* initialize the dictionary */
 	for (int i = 0; i < DICTSIZE; i++)
+	{
 		dictionary[i] = NULL;
+	}
 
 	/* insert P keywords into the appropriate bucket lists */
 	for (int i = 0; i < KEYWORDNUM; i++)
@@ -356,7 +362,9 @@ static int hash_pjw(const char *id)
 		h = (h << HASH1) + (*id);
 		unsigned g = h & HASH2;
 		if (g)
+		{
 			h = h ^ (g >> HASH3) ^ g;
+		}
 	}
 	return h % DICTSIZE;
 }

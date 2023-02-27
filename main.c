@@ -49,9 +49,13 @@ int main(
 	{
 		if (argc == 2)
 			if (strcmp(argv[1], "-s") == 0)
+			{
 				menu(atoi(argv[2]));
+			}
 			else if (strcmp(argv[1], "-i") == 0)
+			{
 				info(argv[2]);
+			}
 			else
 			{
 				printf("Execution failed:Illegal option . . .\n");

@@ -7,6 +7,7 @@
 #include <sys/times.h>
 #include <inttypes.h>
 #include <assert.h>
+#include <list>
 
 #include "form.h"
 #include "struct.h"

@@ -85,15 +85,21 @@ void clean(void)
 	FORM *q;
 	struct tms partial_time, final_time;
 	if (seegarb)
+	{
 		times(&partial_time);
+	}
 	cl_count++;
 	while ((q = del_head->nform[1]) != NULL)
 	{
 		del_head->nform[1] = q->nform[1];
 		if (q->index == NOTEXISTENT)
+		{
 			q->release();
+		}
 		else
+		{
 			garbage(q);
+		}
 	}
 	if (seegarb)
 	{
@@ -310,7 +316,9 @@ static void garbage(
 					connect1(form->nform[2], form->nport[2], form, 1);
 				}
 				else
+				{
 					form->kind = CAR;
+				}
 				end = true;
 			}
 			break;
@@ -335,7 +343,9 @@ static void garbage(
 						form->nlevel[1] = form->nlevel[2];
 					}
 					else
+					{
 						form->kind = TRIANGLE;
+					}
 				else if (port == 1)
 				{
 					form->kind = UNS_FAN1;
@@ -343,7 +353,9 @@ static void garbage(
 					form->nlevel[1] = form->nlevel[2];
 				}
 				else
+				{
 					form->kind = UNS_FAN2;
+				}
 				end = true;
 			}
 			break;
