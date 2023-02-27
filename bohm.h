@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include <assert.h>
 #include <list>
+#include <vector>
 
 #include "form.h"
 #include "struct.h"
@@ -58,10 +59,6 @@ VARLIST *mergevarlist(
     VARLIST *l1,
     VARLIST *l2);
 
-// FORM *FORM::allocate(
-//     int name,
-//     int index);
-
 void clean(void);
 
 void bool_connect(
@@ -107,10 +104,10 @@ void push_local_env(void);
 // void rdbk(FORM *form);
 // void reduce_term(FORM *root);
 void reset_garbage(void);
-void save(
-    char *name,
-    FORM *root,
-    char *id);
+// void save(
+//     char *name,
+//     FORM *root,
+//     char *id);
 STBUCKET *search_bucket(const char *id);
 void show_garb_stat(bool seetime);
 void signal_error(const char *msg);

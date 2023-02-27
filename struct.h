@@ -58,6 +58,10 @@ struct FORM final
 	void inspect_driver();
 
 	int hash();
+
+	void save(
+		char *name,
+		char *id);
 };
 
 struct BINDINGENTRY;

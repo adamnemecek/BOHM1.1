@@ -58,26 +58,25 @@ static void eindex(ELEM *elem);
 /****************************************************************/
 
 /* The following function saves a graph on a file.		*/
-void save(
+void FORM::save(
 	char *name,
-	FORM *root,
 	char *id)
 {
-	if (root == NULL)
-	{
-		printf("******************************************\n");
-		printf("* No terms inserted yet . . .            *\n");
-		printf("******************************************\n");
-		return;
-	}
+	// if (this == NULL)
+	// {
+	// 	printf("******************************************\n");
+	// 	printf("* No terms inserted yet . . .            *\n");
+	// 	printf("******************************************\n");
+	// 	return;
+	// }
 	save_file = fopen(name, "w");
 	if (save_file == NULL)
 		exit(0);
 	head = tail = NULL;
 	max = 1;
-	stampa(root, 0, present(root));
-	if (root->nport[0] >= 0)
-		save_aux(root->nform[0], root->nport[0]);
+	stampa(this, 0, present(this));
+	if (this->nport[0] >= 0)
+		save_aux(this->nform[0], this->nport[0]);
 	ELEM *p = head;
 	fprintf(save_file, "\n\n\nI N D E X :\n\n");
 	while (p != NULL)

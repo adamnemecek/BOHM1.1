@@ -321,14 +321,14 @@ directive       :      '#' INSPECTKW arg EXPRDELIM
 				}
 		|       '#' SAVEKW ASTRING EXPRDELIM
 				{
-				   save($3,lastinputterm,NULL);
+				   lastinputterm->save($3,NULL);
                                    free($3);
 				   YYACCEPT;
 				}
 		|       '#' SAVEKW ASTRING ID EXPRDELIM
 				{
 				   if (defined($4))
-				      save($3,$4->curr_binding->root,$4->id);
+				      $4->curr_binding->root->save($3,$4->id);
 				   else
 				      {
 					 signal_error(UNBOUND_VARIABLE);
@@ -518,7 +518,7 @@ expr0           : 	TRUEKW
                                   pattmp=$3;
                                   $$ = 
                                     TERM::plambda(app_nesting_depth,$3,$6);
-                                  pattmp->release();
+                                  delete pattmp;
 				  pop_local_env();
 				}
 		|       LETKW ID '='
