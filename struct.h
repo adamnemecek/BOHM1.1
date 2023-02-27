@@ -54,6 +54,8 @@ struct FORM final
 	void rdbk();
 
 	void inspect_driver();
+
+	int hash();
 };
 
 struct BINDINGENTRY;

@@ -43,7 +43,7 @@ static FORM *copy_aux(
 	FORM *root,
 	int p,
 	int offset);
-static int entry(FORM *src);
+// static int entry(FORM *src);
 
 /* The following function initialises the hash table, calls 	*/
 /* function copy_aux and eliminates the table.			*/
@@ -215,7 +215,7 @@ static void put_relation(
 	FORM *src,
 	FORM *dest)
 {
-	int dep1 = entry(src);
+	int dep1 = src->hash();
 	COPY_FORM *dep = new COPY_FORM(src, dest, copy_relation[dep1]);
 
 	copy_relation[dep1] = dep;
@@ -225,7 +225,7 @@ static void put_relation(
 /* already been copied.						*/
 static FORM *is_in_relation(FORM *src)
 {
-	COPY_FORM *dep = copy_relation[entry(src)];
+	COPY_FORM *dep = copy_relation[src->hash()];
 	if (dep == NULL)
 		return NULL;
 
@@ -238,16 +238,16 @@ static FORM *is_in_relation(FORM *src)
 }
 
 /* The following function implements hash function.		*/
-static int entry(FORM *src)
+int FORM::hash()
 {
-	unsigned long risul = (unsigned long)src;
+	unsigned long risul = (unsigned long)this;
 	risul = risul / 8 * 13;
 	return risul % DIM_REL;
 }
 
 #include <vector>
 
-struct Copy
+struct Copy final
 {
 private:
 	std::vector<std::shared_ptr<COPY_FORM>> rel;
