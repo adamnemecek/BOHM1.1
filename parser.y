@@ -283,7 +283,7 @@ directive       :      '#' INSPECTKW arg EXPRDELIM
 				{
 				   if ($3 == NULL) $3=lastinputterm;
 				   $$ = $3;
-				   inspect_driver($3);
+				   $3->inspect_driver();
 				   YYACCEPT;
 				}
                 |      '#' TRAVELKW arg NUMCONST EXPRDELIM

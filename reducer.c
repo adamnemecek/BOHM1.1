@@ -158,7 +158,9 @@ void reduce_term(
 		printf("--->   bad definition, sorry . . .\n");
 		int ans = getchar();
 		if (ans == 'i')
-			inspect_driver(root);
+		{
+			root->inspect_driver();
+		}
 		return;
 	}
 

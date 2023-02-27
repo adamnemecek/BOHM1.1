@@ -1699,7 +1699,7 @@ yyreduce:
     {
 				   if ((yyvsp[(3) - (4)].root) == NULL) (yyvsp[(3) - (4)].root)=lastinputterm;
 				   (yyval.root) = (yyvsp[(3) - (4)].root);
-				   inspect_driver((yyvsp[(3) - (4)].root));
+				   (yyvsp[(3) - (4)].root)->inspect_driver();
 				   YYACCEPT;
 				}
     break;

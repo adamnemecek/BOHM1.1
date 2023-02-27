@@ -45,6 +45,8 @@ struct FORM
 
 	void del();
 	FORM *copy(int p, int offset);
+
+	void inspect_driver();
 };
 
 struct BINDINGENTRY;

@@ -200,7 +200,7 @@ void init_destroy(void);
 void init_garbage(void);
 void init_symbol_table(void);
 // void ins_del(FORM *d);
-void inspect_driver(FORM *f);
+// void inspect_driver(FORM *f);
 
 void menu(int choice);
 void myfree(FORM *form);

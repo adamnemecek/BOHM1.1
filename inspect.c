@@ -23,22 +23,22 @@
 /* Definitions of functions to be exported.			*/
 /****************************************************************/
 
-void inspect_driver(FORM *f)
+void FORM::inspect_driver()
 {
-	if (f == NULL)
-	{
-		printf("******************************************\n");
-		printf("* No terms inserted yet . . .            *\n");
-		printf("******************************************\n");
-		return;
-	}
+	// if (f == NULL)
+	// {
+	// 	printf("******************************************\n");
+	// 	printf("* No terms inserted yet . . .            *\n");
+	// 	printf("******************************************\n");
+	// 	return;
+	// }
 
 	printf("**** inspection mode ****\n\n");
 	printf("you are at ROOT node\n");
 	printf("input next port to visit (0, 1, 2 or 3)\n");
 	printf("input  q  to exit\n");
 
-	FORM *travel = f;
+	FORM *travel = this;
 	int c = getchar();
 	while (c != 'q')
 	{
