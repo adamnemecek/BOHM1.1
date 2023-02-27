@@ -37,9 +37,15 @@ struct FORM final
 	FORM *next;
 	FORM *prev;
 
-	FORM(int kind, int index);
+	FORM(
+		int kind,
+		int index);
 
 	void release();
+
+	void stampa(
+		int p,
+		int card);
 
 	FORM *inspect(int p);
 
@@ -47,7 +53,9 @@ struct FORM final
 	void reduce_form();
 
 	void del();
-	FORM *copy_aux(int p, int offset);
+	FORM *copy_aux(
+		int p,
+		int offset);
 
 	FORM *lo_redex();
 
@@ -58,6 +66,8 @@ struct FORM final
 	void inspect_driver();
 
 	int hash();
+
+	int present();
 
 	void save(
 		char *name,

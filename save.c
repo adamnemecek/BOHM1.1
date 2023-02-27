@@ -38,14 +38,10 @@
 FILE *save_file;
 ELEM *head, *tail;
 int max;
-static int present(FORM *form);
+// static int present(FORM *form);
 static void save_aux(
 	FORM *root,
 	int p);
-static void stampa(
-	FORM *form,
-	int p,
-	int card);
 static void put_int(
 	FORM *f,
 	int p);
@@ -71,10 +67,12 @@ void FORM::save(
 	// }
 	save_file = fopen(name, "w");
 	if (save_file == NULL)
+	{
 		exit(0);
+	}
 	head = tail = NULL;
 	max = 1;
-	stampa(this, 0, present(this));
+	this->stampa(0, this->present());
 	if (this->nport[0] >= 0)
 		save_aux(this->nform[0], this->nport[0]);
 	ELEM *p = head;
@@ -103,14 +101,14 @@ void FORM::save(
 
 /* The following function checks whether a form has already 	*/
 /* been copied once.						*/
-static int present(FORM *form)
+int FORM::present()
 {
 	int risp = true;
 
 	ELEM *p = head;
 	while (p != NULL && risp)
 	{
-		if (p->node == form)
+		if (p->node == this)
 		{
 			risp = false;
 		}
@@ -136,30 +134,29 @@ static int present(FORM *form)
 		tail->next = alloc;
 		tail = tail->next;
 	}
-	tail->node = form;
+	tail->node = this;
 	tail->next = NULL;
 	tail->num = risp = max++;
 	return risp;
 }
 
 /* The following function saves on file a link			*/
-static void stampa(
-	FORM *form,
+void FORM::stampa(
 	int p,
 	int card)
 {
-	const int p1 = form->nport[p];
+	const int p1 = this->nport[p];
 	fprintf(save_file, "%4d ", card);
-	put_form(form);
+	put_form(this);
 	if (p1 < 0)
 	{
 		fprintf(save_file, "%d -> 0 ", p);
-		put_int(form->nform[p], p1);
+		put_int(this->nform[p], p1);
 	}
 	else
 	{
 		fprintf(save_file, "%d -> %d ", p, p1);
-		put_form(form->nform[p]);
+		put_form(this->nform[p]);
 	}
 	fprintf(save_file, "\n");
 }
@@ -169,7 +166,7 @@ static void save_aux(
 	FORM *root,
 	int p)
 {
-	int card = present(root);
+	int card = root->present();
 	if (!card)
 	{
 		return;
@@ -178,7 +175,7 @@ static void save_aux(
 
 	for (int p1 = 0; p1 < n; p1++)
 	{
-		stampa(root, p1, card);
+		root->stampa(p1, card);
 	}
 
 	for (int p1 = 0; p1 < n; p1++)
