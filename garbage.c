@@ -254,7 +254,7 @@ void FORM::garbage()
 				form->kind = ERASE;
 				nextform = form->nform[2];
 				nextport = form->nport[2];
-				::connect1(form, 0, form->nform[1], form->nport[1]);
+				form->connect1(0, form->port(1));
 				form->del();
 			}
 			else
@@ -272,7 +272,7 @@ void FORM::garbage()
 					else
 					{
 						form->kind = TRIANGLE;
-						::connect1(form, 1, form->nform[2], form->nport[2]);
+						form->connect1(1, form->port(2));
 						form->nlevel[1] = form->nlevel[2];
 						form->index -= 1;
 					}
@@ -287,7 +287,7 @@ void FORM::garbage()
 					{
 						form->kind = TRIANGLE;
 						newform = new FORM(CDR, form->index);
-						::connect1(newform, 0, form->nform[0], form->nport[0]);
+						newform->connect1(0, form->port(0));
 						connect(newform, 1, form, 0);
 						form->index -= 1;
 					}
@@ -303,7 +303,7 @@ void FORM::garbage()
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				form->kind = ERASE;
-				::connect1(form, 0, form->nform[1], form->nport[1]);
+				form->connect1(0, form->port(1));
 				form->del();
 			}
 			else
@@ -328,7 +328,7 @@ void FORM::garbage()
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				form->kind = ERASE;
-				::connect1(form, 0, form->nform[1], form->nport[1]);
+				form->connect1(0, form->port(1));
 				form->del();
 			}
 			else
@@ -337,7 +337,7 @@ void FORM::garbage()
 					if (port == 1)
 					{
 						form->kind = TRIANGLE;
-						::connect1(form, 1, form->nform[2], form->nport[2]);
+						form->connect1(1, form->port(2));
 						form->nlevel[1] = form->nlevel[2];
 					}
 					else
@@ -437,7 +437,7 @@ void FORM::garbage()
 				nextform = form->nform[!port];
 				nextport = form->nport[!port];
 				form->kind = ERASE;
-				::connect1(form, 0, form->nform[2], form->nport[2]);
+				form->connect1(0, form->port(2));
 				form->del();
 			}
 			else

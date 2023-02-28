@@ -1501,9 +1501,8 @@ FORM *FORM::lo_redex()
 					temp->index = next->index;
 					temp->nlevel[1] += next->nlevel[1];
 					temp->nlevel[2] += next->nlevel[1];
-					::connect1(temp, 0,
-							   next->nform[0],
-							   next->nport[0]);
+
+					temp->connect1(0, form->port(0));
 					next->release();
 					temp = pop();
 					counter++;

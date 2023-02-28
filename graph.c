@@ -175,7 +175,9 @@ TERM *TERM::lambda(
 			varform->release();
 		}
 		else
+		{
 			connect(varform, 0, newf1, 2);
+		}
 		connect(newf1, 1, body->root_form, body->root_ports);
 		// newf1->connect1(1, body);
 		t = new TERM(newf1, 0, remv(id, body->vars));
