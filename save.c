@@ -120,7 +120,7 @@ int FORM::present()
 		return risp;
 	}
 
-	ELEM *alloc = (ELEM *)malloc_da(sizeof(ELEM));
+	ELEM *alloc = new ELEM(NULL, 0, NULL);
 
 	if (head == NULL)
 	{

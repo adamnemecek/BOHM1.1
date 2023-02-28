@@ -379,5 +379,15 @@ struct ELEM final
 	int num;
 	ELEM *next;
 
+	ELEM(
+		FORM *node,
+		int num,
+		ELEM *next)
+	{
+		this->node = node;
+		this->num = num;
+		this->next = next;
+	}
+
 	void eindex();
 };
