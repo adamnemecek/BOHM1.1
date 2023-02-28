@@ -8,6 +8,8 @@ struct PORT
 {
 	FORM *form;
 	int port;
+
+	void connect1(PORT other);
 };
 
 /* graphical form descriptor type */
@@ -71,6 +73,8 @@ struct FORM final
 		return PORT{nform[i], nport[i]};
 	}
 
+	// void selfconnect1(int from, int to);
+
 	FORM *copy(
 		int p,
 		int offset);
@@ -101,8 +105,10 @@ struct FORM final
 		char *name,
 		char *id);
 
+	void connect(int port, TERM *term);
 	void connect1(int port, TERM *term);
 
+	void connect(int port, PORT p);
 	void connect1(int port, PORT p);
 	void garbage();
 };

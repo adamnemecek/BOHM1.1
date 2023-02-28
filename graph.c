@@ -178,7 +178,7 @@ TERM *TERM::lambda(
 		{
 			connect(varform, 0, newf1, 2);
 		}
-		connect(newf1, 1, body->root_form, body->root_ports);
+		newf1->connect(1, body);
 		// newf1->connect1(1, body);
 		t = new TERM(newf1, 0, remv(id, body->vars));
 	}
@@ -299,7 +299,7 @@ TERM *TERM::mu(
 		}
 		temp = new TERM(newf1, 1, remv(id, body->vars));
 		t = temp->makebox(level);
-		connect(newf1, 0, body->root_form, body->root_ports);
+		newf1->connect(0, body);
 	}
 	else
 	{
@@ -475,7 +475,7 @@ TERM *TERM::matterm(
 			newf->kind = MOD1;
 			break;
 		}
-		connect1(newf, 0, arg2->root_form, arg2->root_ports);
+		newf->connect1(0, arg2);
 		t = new TERM(newf, 1, arg2->vars);
 	}
 	else
@@ -573,7 +573,7 @@ TERM *TERM::relop(
 			newf->kind = NOTEQ1;
 			break;
 		}
-		connect1(newf, 0, arg2->root_form, arg2->root_ports);
+		newf->connect1(0, arg2);
 		t = new TERM(newf, 1, arg2->vars);
 	}
 	else
@@ -797,6 +797,11 @@ void connect1(
 	}
 }
 
+void PORT::connect1(PORT other)
+{
+	::connect1(form, port, other.form, other.port);
+}
+
 void FORM::connect1(
 	int portf1,
 	TERM *term)
@@ -805,6 +810,16 @@ void FORM::connect1(
 		this,
 		portf1,
 		term->root_form, term->root_ports);
+}
+
+void FORM::connect(int port, TERM *term)
+{
+	::connect(this, port, term->root_form, term->root_ports);
+}
+
+void FORM::connect(int port, PORT p)
+{
+	::connect(this, port, p.form, p.port);
 }
 
 void FORM::connect1(int port, PORT p)

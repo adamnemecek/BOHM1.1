@@ -132,9 +132,7 @@ void FORM::garbage()
 	bool end = false;
 	FORM *newform;
 	int p1, p2;
-
-	FORM *nextform = this->nform[0];
-	int nextport = this->nport[0];
+	auto [nextform, nextport] = this->port(0);
 	this->release();
 	while (!end)
 	{
@@ -190,7 +188,7 @@ void FORM::garbage()
 						form->kind = TRIANGLE;
 						newform = new FORM(TESTNIL, form->index);
 						newform->connect1(0, form->port(0));
-						connect(newform, 1, form, 0);
+						::connect(newform, 1, form, 0);
 						form->index -= 1;
 					}
 				}
@@ -239,7 +237,7 @@ void FORM::garbage()
 						form->kind = TRIANGLE;
 						newform = new FORM(CAR, form->index);
 						newform->connect1(0, form->port(0));
-						connect(newform, 1, form, 0);
+						::connect(newform, 1, form, 0);
 						form->index -= 1;
 					}
 				}
@@ -288,7 +286,7 @@ void FORM::garbage()
 						form->kind = TRIANGLE;
 						newform = new FORM(CDR, form->index);
 						newform->connect1(0, form->port(0));
-						connect(newform, 1, form, 0);
+						::connect(newform, 1, form, 0);
 						form->index -= 1;
 					}
 				}

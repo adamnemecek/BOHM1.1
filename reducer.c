@@ -800,13 +800,13 @@ void FORM::reduce_form()
 		case T:
 			eq++;
 			f1->kind = CAR;
-			connect(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect(0, f1->port(2));
 			break;
 
 		case F:
 			eq++;
 			f1->kind = CDR;
-			connect(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect(0, f1->port(2));
 			break;
 
 		default:
@@ -1474,9 +1474,9 @@ FORM *FORM::lo_redex()
 					}
 					else
 					{
-						connect(temp->nform[1],
-								temp->nport[1],
-								next, 1);
+						::connect(temp->nform[1],
+								  temp->nport[1],
+								  next, 1);
 						temp->release();
 						temp = pop();
 					}
@@ -1484,9 +1484,9 @@ FORM *FORM::lo_redex()
 
 				case FAN:
 					next->nlevel[p] += temp->nlevel[1];
-					connect(temp->nform[1],
-							temp->nport[1],
-							next, p);
+					::connect(temp->nform[1],
+							  temp->nport[1],
+							  next, p);
 					temp->release();
 					temp = pop();
 					break;
