@@ -823,7 +823,7 @@ void FORM::reduce_form()
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], F);
 			f1->kind = ERASE;
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->del();
 			if (option == 1)
 				clean();
@@ -831,10 +831,10 @@ void FORM::reduce_form()
 
 		case T:
 			eq++;
-			connect1(f1->nform[1],
-					 f1->nport[1],
-					 f1->nform[2],
-					 f1->nport[2]);
+			::connect1(f1->nform[1],
+					   f1->nport[1],
+					   f1->nform[2],
+					   f1->nport[2]);
 			f1->release();
 			break;
 		default:
@@ -851,7 +851,7 @@ void FORM::reduce_form()
 			eq++;
 			bool_connect(f1->nform[1], f1->nport[1], T);
 			f1->kind = ERASE;
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->del();
 			if (option == 1)
 				clean();
@@ -859,10 +859,10 @@ void FORM::reduce_form()
 
 		case F:
 			eq++;
-			connect1(f1->nform[1],
-					 f1->nport[1],
-					 f1->nform[2],
-					 f1->nport[2]);
+			::connect1(f1->nform[1],
+					   f1->nport[1],
+					   f1->nform[2],
+					   f1->nport[2]);
 			f1->release();
 			break;
 		default:
@@ -898,7 +898,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = LESS1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -935,7 +935,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = EQ1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -972,7 +972,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = NOTEQ1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1009,7 +1009,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = LEQ1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1046,7 +1046,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = MEQ1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1083,7 +1083,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = MORE1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1120,7 +1120,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = ADD1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1157,7 +1157,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = SUB1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1195,7 +1195,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = PROD1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1232,7 +1232,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = DIV1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1269,7 +1269,7 @@ void FORM::reduce_form()
 			eq++;
 			f1->kind = MOD1;
 			tmp = f1->nform[0];
-			connect1(f1, 0, f1->nform[2], f1->nport[2]);
+			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
 			break;
 		}
@@ -1436,8 +1436,8 @@ FORM *FORM::lo_redex()
 	{
 		while (temp->kind == TRIANGLE && temp->nlevel[1] == 0 && temp->num_safe)
 		{
-			connect1(temp->nform[1], temp->nport[1],
-					 temp->nform[0], temp->nport[0]);
+			::connect1(temp->nform[1], temp->nport[1],
+					   temp->nform[0], temp->nport[0]);
 			temp->release();
 			temp = pop();
 		}
@@ -1464,10 +1464,10 @@ FORM *FORM::lo_redex()
 					next->nlevel[1] += temp->nlevel[1];
 					if (next->nlevel[1] == 0)
 					{
-						connect1(temp->nform[1],
-								 temp->nport[1],
-								 next->nform[0],
-								 next->nport[0]);
+						::connect1(temp->nform[1],
+								   temp->nport[1],
+								   next->nform[0],
+								   next->nport[0]);
 						temp->release();
 						next->release();
 						temp = pop();
@@ -1501,9 +1501,9 @@ FORM *FORM::lo_redex()
 					temp->index = next->index;
 					temp->nlevel[1] += next->nlevel[1];
 					temp->nlevel[2] += next->nlevel[1];
-					connect1(temp, 0,
-							 next->nform[0],
-							 next->nport[0]);
+					::connect1(temp, 0,
+							   next->nform[0],
+							   next->nport[0]);
 					next->release();
 					temp = pop();
 					counter++;

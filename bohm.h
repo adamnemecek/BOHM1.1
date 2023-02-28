@@ -81,10 +81,12 @@ void int_connect(
 
 struct Destroyer
 {
+private:
     FORM *headfree;
     FORM *headfull;
     unsigned start_nodes;
 
+public:
     Destroyer();
     void destroy();
     void no_destroy();
@@ -100,7 +102,6 @@ void init_garbage(void);
 void init_symbol_table(void);
 
 void menu(int choice);
-// void nDestroyer
 void pop_local_env(void);
 void push_local_env(void);
 void reset_garbage(void);

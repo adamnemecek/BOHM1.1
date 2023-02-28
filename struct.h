@@ -1,6 +1,14 @@
 #pragma once
 
 #include <memory>
+struct TERM;
+struct FORM;
+
+struct PORT
+{
+	FORM *form;
+	int port;
+};
 
 /* graphical form descriptor type */
 struct FORM final
@@ -58,6 +66,11 @@ struct FORM final
 
 	void put_int(const int p);
 
+	PORT port(int i)
+	{
+		return PORT{nform[i], nport[i]};
+	}
+
 	FORM *copy(
 		int p,
 		int offset);
@@ -88,6 +101,9 @@ struct FORM final
 		char *name,
 		char *id);
 
+	void connect1(int port, TERM *term);
+
+	void connect1(int port, PORT p);
 	void garbage();
 };
 

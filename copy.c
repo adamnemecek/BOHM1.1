@@ -74,7 +74,7 @@ FORM *copy_connect1(
 	return ret;
 }
 
-struct Relations
+struct Relations final
 {
 	COPY_FORM *copy_relation[DIM_REL];
 
@@ -227,7 +227,7 @@ FORM *FORM::copy_aux(int p, int offset)
 		newf1 = new FORM(temp->kind, temp->index + offset);
 		rel.store(temp, newf1);
 		newf2 = temp->nform[1]->copy_aux(temp->nport[1], offset);
-		connect1(newf1, 1, newf2, temp->nport[1]);
+		::connect1(newf1, 1, newf2, temp->nport[1]);
 		return newf1;
 
 	case TESTNIL1:

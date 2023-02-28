@@ -177,13 +177,14 @@ TERM *TERM::lambda(
 		else
 			connect(varform, 0, newf1, 2);
 		connect(newf1, 1, body->root_form, body->root_ports);
+		// newf1->connect1(1, body);
 		t = new TERM(newf1, 0, remv(id, body->vars));
 	}
 	else
 	{
 		FORM *newf1 = new FORM(LAMBDAUNB, level);
 		t = new TERM(newf1, 0, body->vars);
-		connect1(newf1, 1, body->root_form, body->root_ports);
+		newf1->connect1(1, body);
 	}
 	free(body);
 	return t;
@@ -252,7 +253,7 @@ TERM *TERM::plambda(
 		/* apparent memory leak, but there's the destroyer */
 		newf1 = new FORM(LAMBDAUNB, level);
 		t = new TERM(newf1, 0, body->vars);
-		connect1(newf1, 1, body->root_form, body->root_ports);
+		newf1->connect1(1, body);
 	}
 	free(body);
 	return t;
@@ -302,7 +303,8 @@ TERM *TERM::mu(
 	{
 		newf1 = new FORM(TRIANGLE, level);
 		newf1->nlevel[1] = -1;
-		connect1(newf1, 0, body->root_form, body->root_ports);
+		newf1->connect1(0, body);
+
 		temp = new TERM(newf1, 1, body->vars);
 		t = temp->makebox(level);
 	}
@@ -321,8 +323,9 @@ TERM *TERM::app(
 	/* free variables of the application */
 	FORM *newf = new FORM(APP, level);
 
-	connect1(newf, 0, fun->root_form, fun->root_ports);
-	connect1(newf, 2, temp->root_form, temp->root_ports);
+	newf->connect1(0, fun);
+	newf->connect1(2, temp);
+
 	VARENTRY *newvars = share(level, fun->vars, temp->vars);
 
 	TERM *t = new TERM(newf, 1, newvars);
@@ -344,10 +347,11 @@ TERM *TERM::ifelse(
 	FORM *newf1 = new FORM(CONS, level);
 	/* pointers to the new forms */
 
-	connect1(newf, 0, arg1->root_form, arg1->root_ports);
+	newf->connect1(0, arg1);
 	connect(newf, 2, newf1, 0);
-	connect1(newf1, 1, arg2->root_form, arg2->root_ports);
-	connect1(newf1, 2, arg3->root_form, arg3->root_ports);
+
+	newf1->connect1(1, arg2);
+	newf1->connect1(2, arg3);
 
 	VARENTRY *tempvars = share(level, arg2->vars, arg3->vars);
 	VARENTRY *newvars = share(level, tempvars, arg1->vars);
@@ -382,8 +386,8 @@ TERM *TERM::and_(
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(AND, level);
 
-	connect1(newf, 0, arg1->root_form, arg1->root_ports);
-	connect1(newf, 2, arg2->root_form, arg2->root_ports);
+	newf->connect1(0, arg1);
+	newf->connect1(2, arg2);
 
 	/* free variables of the application */
 	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
@@ -405,8 +409,8 @@ TERM *TERM::or_(
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(OR, level);
 
-	connect1(newf, 0, arg1->root_form, arg1->root_ports);
-	connect1(newf, 2, arg2->root_form, arg2->root_ports);
+	newf->connect1(0, arg1);
+	newf->connect1(2, arg2);
 
 	/* free variables of the application */
 	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
@@ -427,7 +431,7 @@ TERM *TERM::not_(
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(NOT, level);
 
-	connect1(newf, 0, arg->root_form, arg->root_ports);
+	newf->connect1(0, arg);
 
 	/* pointer to the term to be created */
 	TERM *t = new TERM(newf, 1, arg->vars);
@@ -490,13 +494,14 @@ TERM *TERM::matterm(
 				newf->kind = PROD1;
 				break;
 			}
-			connect1(newf, 0, arg1->root_form, arg1->root_ports);
+			newf->connect1(0, arg1);
+
 			t = new TERM(newf, 1, arg1->vars);
 		}
 		else
 		{
-			connect1(newf, 0, arg1->root_form, arg1->root_ports);
-			connect1(newf, 2, arg2->root_form, arg2->root_ports);
+			newf->connect1(0, arg1);
+			newf->connect1(2, arg2);
 			/* free variables of the application */
 
 			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
@@ -523,7 +528,7 @@ TERM *TERM::minus(
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(SUB1, level);
 	newf->num_safe = 0;
-	connect1(newf, 0, arg1->root_form, arg1->root_ports);
+	newf->connect1(0, arg1);
 	TERM *t = new TERM(newf, 1, arg1->vars);
 	free(arg1);
 	return t;
@@ -595,13 +600,13 @@ TERM *TERM::relop(
 				newf->kind = NOTEQ1;
 				break;
 			}
-			connect1(newf, 0, arg1->root_form, arg1->root_ports);
+			newf->connect1(0, arg1);
 			t = new TERM(newf, 1, arg1->vars);
 		}
 		else
 		{
-			connect1(newf, 0, arg1->root_form, arg1->root_ports);
-			connect1(newf, 2, arg2->root_form, arg2->root_ports);
+			newf->connect1(0, arg1);
+			newf->connect1(2, arg2);
 			/* free variables of the application */
 			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 			t = new TERM(newf, 1, newvars);
@@ -627,11 +632,11 @@ TERM *TERM::list(
 
 	FORM *newf1 = new FORM(CONS, level);
 
-	connect1(newf1, 1, arg1->root_form, arg1->root_ports);
+	newf1->connect1(1, arg1);
 
 	if (arg2 != NULL)
 	{
-		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
+		newf1->connect1(2, arg2);
 		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 		t = new TERM(newf1, 0, newvars);
 	}
@@ -655,11 +660,11 @@ TERM *TERM::list1(
 	/* pointer to the new form to be created */
 
 	FORM *newf1 = new FORM(CONS1, level);
-	connect1(newf1, 1, arg1->root_form, arg1->root_ports);
+	newf1->connect1(1, arg1);
 
 	if (arg2 != NULL)
 	{
-		connect1(newf1, 2, arg2->root_form, arg2->root_ports);
+		newf1->connect1(2, arg2);
 
 		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 		t = new TERM(newf1, 0, newvars);
@@ -681,8 +686,7 @@ TERM *TERM::car(
 {
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(CAR, level);
-	connect1(newf, 0, arg->root_form, arg->root_ports);
-
+	newf->connect1(0, arg);
 	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
@@ -694,8 +698,7 @@ TERM *TERM::cdr(
 {
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(CDR, level);
-	connect1(newf, 0, arg->root_form, arg->root_ports);
-
+	newf->connect1(0, arg);
 	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
@@ -707,8 +710,7 @@ TERM *TERM::testnil(
 {
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(TESTNIL, level);
-	connect1(newf, 0, arg->root_form, arg->root_ports);
-
+	newf->connect1(0, arg);
 	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
@@ -720,11 +722,7 @@ FORM *TERM::close(
 {
 	FORM *newroot = new FORM(ROOT, 0);
 
-	connect1(
-		newroot,
-		0,
-		this->root_form,
-		this->root_ports);
+	newroot->connect1(0, this);
 
 	if (level == 1)
 		this->vars = addbrackets(0, this->vars);
@@ -795,6 +793,21 @@ void connect1(
 		form2->nport[portf2] = portf1;
 		form2->nform[portf2] = form1;
 	}
+}
+
+void FORM::connect1(
+	int portf1,
+	TERM *term)
+{
+	::connect1(
+		this,
+		portf1,
+		term->root_form, term->root_ports);
+}
+
+void FORM::connect1(int port, PORT p)
+{
+	::connect1(this, port, p.form, p.port);
 }
 
 /* the following function connects only the port portf1 of 	*/
