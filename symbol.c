@@ -331,7 +331,7 @@ void STBUCKET::create_variable_binding(
 static STBUCKET *allocate_bucket(const char *id)
 {
 	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
-	st->id = strdup_da(id);
+	st->id = strdup(id);
 	st->token = ID;
 	st->curr_binding = NULL;
 	st->next_st_bucket = NULL;

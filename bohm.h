@@ -44,7 +44,6 @@ extern "C"
 #endif
 
 char *malloc_da(unsigned size);
-char *strdup_da(const char *s);
 
 VARLIST *makevarlist(
     STBUCKET *e,
