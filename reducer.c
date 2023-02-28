@@ -989,9 +989,13 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] != f1->nform[0])
+			{
 				bool_connect(f1->nform[1], f1->nport[1], T);
+			}
 			else
+			{
 				bool_connect(f1->nform[1], f1->nport[1], F);
+			}
 			f1->release();
 			break;
 		}
@@ -1026,9 +1030,13 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] <= f1->nform[0])
+			{
 				bool_connect(f1->nform[1], f1->nport[1], T);
+			}
 			else
+			{
 				bool_connect(f1->nform[1], f1->nport[1], F);
+			}
 			f1->release();
 			break;
 		}
@@ -1063,9 +1071,13 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] >= f1->nform[0])
+			{
 				bool_connect(f1->nform[1], f1->nport[1], T);
+			}
 			else
+			{
 				bool_connect(f1->nform[1], f1->nport[1], F);
+			}
 			f1->release();
 			break;
 		}
@@ -1100,9 +1112,13 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] > f1->nform[0])
+			{
 				bool_connect(f1->nform[1], f1->nport[1], T);
+			}
 			else
+			{
 				bool_connect(f1->nform[1], f1->nport[1], F);
+			}
 			f1->release();
 			break;
 		}
