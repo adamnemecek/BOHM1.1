@@ -39,12 +39,9 @@ FILE *save_file;
 ELEM *head, *tail;
 int max;
 
-static void save_aux(
-	FORM *root,
-	int p);
-static void put_int(
-	FORM *f,
-	int p);
+// static void put_int(
+// 	FORM *f,
+// 	int p);
 static int num_port(int name);
 
 /****************************************************************/
@@ -72,7 +69,9 @@ void FORM::save(
 	max = 1;
 	this->stampa(0, this->present());
 	if (this->nport[0] >= 0)
-		save_aux(this->nform[0], this->nport[0]);
+	{
+		this->nform[0]->save_aux(this->nport[0]);
+	}
 	ELEM *p = head;
 	fprintf(save_file, "\n\n\nI N D E X :\n\n");
 	while (p != NULL)
@@ -149,7 +148,7 @@ void FORM::stampa(
 	if (p1 < 0)
 	{
 		fprintf(save_file, "%d -> 0 ", p);
-		put_int(this->nform[p], p1);
+		this->nform[p]->put_int(p1);
 	}
 	else
 	{
@@ -160,27 +159,26 @@ void FORM::stampa(
 }
 
 /* The following function saves any graph part.			*/
-static void save_aux(
-	FORM *root,
+void FORM::save_aux(
 	int p)
 {
-	int card = root->present();
+	int card = this->present();
 	if (!card)
 	{
 		return;
 	}
-	int n = num_port(root->kind);
+	int n = num_port(this->kind);
 
 	for (int p1 = 0; p1 < n; p1++)
 	{
-		root->stampa(p1, card);
+		this->stampa(p1, card);
 	}
 
 	for (int p1 = 0; p1 < n; p1++)
 	{
-		if (root->nport[p1] >= 0)
+		if (this->nport[p1] >= 0)
 		{
-			save_aux(root->nform[p1], root->nport[p1]);
+			this->nform[p1]->save_aux(this->nport[p1]);
 		}
 	}
 }
@@ -192,7 +190,7 @@ void FORM::put_form()
 }
 
 /* The following function prints NIL, INT and BOOL forms names.	*/
-static void put_int(FORM *f, const int p)
+void FORM::put_int(const int p)
 {
 	switch (p)
 	{
@@ -203,7 +201,7 @@ static void put_int(FORM *f, const int p)
 		fprintf(save_file, "False         ");
 		break;
 	case INT:
-		fprintf(save_file, "Int: %" PRIdPTR " ", (intptr_t)f);
+		fprintf(save_file, "Int: %" PRIdPTR " ", (intptr_t)this);
 		break;
 	case NIL:
 		fprintf(save_file, "Nil          ");

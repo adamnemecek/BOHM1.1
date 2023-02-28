@@ -54,6 +54,10 @@ struct FORM final
 
 	void del();
 
+	void save_aux(int p);
+
+	void put_int(const int p);
+
 	FORM *copy(
 		int p,
 		int offset);
