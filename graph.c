@@ -644,7 +644,7 @@ TERM *TERM::list(
 	}
 	else
 	{
-		bool_connect(newf1, 2, NIL);
+		newf1->bool_connect(2, NIL);
 		t = new TERM(newf1, 0, arg1->vars);
 	}
 
@@ -814,14 +814,6 @@ void FORM::connect1(
 		this,
 		portf1,
 		term->root_form, term->root_ports);
-}
-
-void FORM::bool_connect(int port, int val)
-{
-	::bool_connect(
-		this->nform[port],
-		this->nport[port],
-		val);
 }
 
 void FORM::connect(int port, TERM *term)
