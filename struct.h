@@ -135,6 +135,10 @@ struct FORM final
 	void connect(int port, PORT p);
 	void connect1(int port, PORT p);
 	void garbage();
+
+	void inspect_connect(
+		int p1,
+		PORT p);
 };
 
 struct BINDINGENTRY;

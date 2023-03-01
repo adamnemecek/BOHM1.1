@@ -104,16 +104,6 @@ static VARENTRY *remvp(
 // 	VARENTRY *nextvar);
 
 static void closeglobalvars(VARENTRY *listvar);
-static void intelligent_connect(
-	FORM *f1,
-	int port,
-	FORM *f2);
-
-static void inspect_connect(
-	FORM *f1,
-	int p1,
-	FORM *f2,
-	int p2);
 
 /* The following function creates the graph representation of */
 /* a variable */
@@ -1076,7 +1066,7 @@ void FORM::intelligent_connect(
 		{
 		case TRIANGLE:
 			this->nlevel[port] += f2->nlevel[1];
-			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
+			this->inspect_connect(port, f2->port(1));
 			f2->release();
 			break;
 		case TESTNIL:
@@ -1089,9 +1079,9 @@ void FORM::intelligent_connect(
 				dep = this->nlevel[1];
 				this->nlevel[1] = this->nlevel[2];
 				this->nlevel[2] = dep;
-				inspect_connect(this, 2, this->nform[1], this->nport[1]);
+				this->inspect_connect(2, this->port(1));
 			}
-			inspect_connect(this, 1, f2->nform[1], f2->nport[1]);
+			this->inspect_connect(1, f2->port(1));
 			f2->release();
 			break;
 		default:
@@ -1104,7 +1094,7 @@ void FORM::intelligent_connect(
 		{
 		case TRIANGLE:
 			this->nlevel[port] += f2->nlevel[1];
-			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
+			this->inspect_connect(port, f2->port(1));
 			f2->release();
 			break;
 		default:
@@ -1117,7 +1107,7 @@ void FORM::intelligent_connect(
 		{
 		case TRIANGLE:
 			this->nlevel[port] += f2->nlevel[1];
-			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
+			this->inspect_connect(port, f2->port(1));
 			f2->release();
 			break;
 		case CDR:
@@ -1181,7 +1171,7 @@ void FORM::intelligent_connect(
 		{
 		case TRIANGLE:
 			this->nlevel[port] += f2->nlevel[1];
-			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
+			this->inspect_connect(port, f2->port(1));
 			f2->release();
 			break;
 		case CAR:
@@ -1252,19 +1242,17 @@ void FORM::intelligent_connect(
 
 /* The following function checks whether it's possible to apply      */
 /* function intelligent_connect. Otherwise applies a normal connect. */
-static void inspect_connect(
-	FORM *f1,
+void FORM::inspect_connect(
 	int p1,
-	FORM *f2,
-	int p2)
+	PORT p)
 {
 	if (p2 == 0)
 	{
-		f1->intelligent_connect(p1, f2);
+		this->intelligent_connect(p1, p.form);
 	}
 	else
 	{
-		connect1(f1, p1, f2, p2);
+		connect1(this, p1, p.form, p.port);
 	}
 }
 
