@@ -115,12 +115,8 @@ private:
 
 struct Garbage final
 {
-
-    FORM *del_head; // head of erases list
-    long unsigned er_count;
-    long unsigned cl_count;
-    clock_t usr_garb_time;
-    clock_t sys_garb_time;
+public:
+    FORM *del_head;
 
     Garbage();
 
@@ -128,10 +124,15 @@ struct Garbage final
 
     void clean();
 
-    // void::garbage()
-    void garbage(FORM *form);
     void reset(void);
     void show_garb_stat(bool seetime);
+
+private:
+    long unsigned er_count;
+    long unsigned cl_count;
+    clock_t usr_garb_time;
+    clock_t sys_garb_time;
+    void garbage(FORM *form);
 };
 
 inline SymbolTable st = SymbolTable();
