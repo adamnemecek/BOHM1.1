@@ -148,103 +148,7 @@ void FORM::garbage()
 		{
 
 		case TESTNIL1:
-			if (port == 0)
-			{
-				er_count++;
-				form->kind = ERASE;
-				nextform = form->nform[2];
-				nextport = form->nport[2];
-				form->connect1(0, form->port(1));
-				form->del();
-			}
-			else
-			{
-				if (port == 1)
-				{
-					if (form->nlevel[2] == 0)
-					{
-						::connect1(form->nform[2],
-								   form->nport[2],
-								   form->nform[0],
-								   form->nport[0]);
-						form->release();
-					}
-					else
-					{
-						form->kind = TRIANGLE;
-						form->connect1(1, form->port(2));
-						form->nlevel[1] = form->nlevel[2];
-						form->index -= 1;
-					}
-				}
-				else
-				{
-					if (form->nlevel[1] == 0)
-					{
-						form->kind = TESTNIL;
-					}
-					else
-					{
-						form->kind = TRIANGLE;
-						newform = new FORM(TESTNIL, form->index);
-						newform->connect1(0, form->port(0));
-						::connect(newform, 1, form, 0);
-						form->index -= 1;
-					}
-				}
-				end = true;
-			}
-			break;
-
 		case CAR1:
-			if (port == 0)
-			{
-				er_count++;
-				form->kind = ERASE;
-				nextform = form->nform[2];
-				nextport = form->nport[2];
-				form->connect1(0, form->port(1));
-				form->del();
-			}
-			else
-			{
-				if (port == 1)
-				{
-					if (form->nlevel[2] == 0)
-					{
-						::connect1(form->nform[2],
-								   form->nport[2],
-								   form->nform[0],
-								   form->nport[0]);
-						form->release();
-					}
-					else
-					{
-						form->kind = TRIANGLE;
-						form->connect1(1, form->port(2));
-						form->nlevel[1] = form->nlevel[2];
-						form->index -= 1;
-					}
-				}
-				else
-				{
-					if (form->nlevel[1] == 0)
-					{
-						form->kind = CAR;
-					}
-					else
-					{
-						form->kind = TRIANGLE;
-						newform = new FORM(CAR, form->index);
-						newform->connect1(0, form->port(0));
-						::connect(newform, 1, form, 0);
-						form->index -= 1;
-					}
-				}
-				end = true;
-			}
-			break;
-
 		case CDR1:
 			if (port == 0)
 			{
@@ -279,12 +183,12 @@ void FORM::garbage()
 				{
 					if (form->nlevel[1] == 0)
 					{
-						form->kind = CDR;
+						form->kind = incr_kind(form->kind);
 					}
 					else
 					{
 						form->kind = TRIANGLE;
-						newform = new FORM(CDR, form->index);
+						newform = new FORM(incr_kind(form->kind), form->index);
 						newform->connect1(0, form->port(0));
 						::connect(newform, 1, form, 0);
 						form->index -= 1;

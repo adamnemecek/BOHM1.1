@@ -48,6 +48,23 @@
 #define CAR1 49
 #define CONS1 50
 
+inline int incr_kind(int kind)
+{
+    switch (kind)
+    {
+    // case CAR1: return CAR;
+    case CAR1:
+        return CAR;
+    case CDR1:
+        return CDR;
+    case TESTNIL1:
+        return TESTNIL;
+    default:
+        assert(false);
+    }
+    // return CAR1;
+}
+
 inline const char *kind_desc(char kind)
 {
     switch (kind)
