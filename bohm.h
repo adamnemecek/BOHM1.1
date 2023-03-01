@@ -53,7 +53,7 @@ VARLIST *mergevarlist(
     VARLIST *l1,
     VARLIST *l2);
 
-void clean(void);
+// void clean(void);
 
 void connect(
     FORM *form1,
@@ -75,11 +75,6 @@ void int_connect(
 
 struct Destroyer final
 {
-private:
-    FORM *headfree;
-    FORM *headfull;
-    unsigned start_nodes;
-
 public:
     Destroyer();
     void destroy();
@@ -87,6 +82,11 @@ public:
 
     FORM *alloc();
     void release(FORM *form);
+
+private:
+    FORM *headfree;
+    FORM *headfull;
+    unsigned start_nodes;
 };
 
 #define DICTSIZE 211
@@ -140,7 +140,6 @@ inline Destroyer destroyer = Destroyer();
 inline Garbage gc = Garbage();
 
 void info(char *choices);
-
 void menu(int choice);
 void signal_error(const char *msg);
 void user(void);
