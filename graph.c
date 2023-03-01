@@ -843,7 +843,7 @@ void int_connect(
 	form1->nform[portf1] = form2;
 }
 
-void FORM::binop(int (&op)(int, int))
+void FORM::binop(long int (&op)(long int, long int))
 {
 	int_connect(
 		this->nform[1],

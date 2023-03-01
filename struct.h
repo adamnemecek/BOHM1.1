@@ -127,7 +127,7 @@ struct FORM final
 		this->nport[port] = val;
 	}
 
-	void binop(int (&op)(int, int));
+	void binop(long int (&op)(long int, long int));
 
 	// void selfconnect1(int from, int to);
 
