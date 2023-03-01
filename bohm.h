@@ -93,7 +93,6 @@ public:
 
 struct SymbolTable final
 {
-
     LOCALENVENTRY *curr_local_env;
     SymbolTable();
 
@@ -115,19 +114,14 @@ private:
 };
 
 inline SymbolTable st = SymbolTable();
-
-// void destroy(void);
-void info(char *choices);
 inline Destroyer destroyer = Destroyer();
-// void init_destroy(void);
+
+void info(char *choices);
+
 void init_garbage(void);
-// void init_symbol_table(void);
 
 void menu(int choice);
-// void pop_local_env(void);
-// void push_local_env(void);
 void reset_garbage(void);
-// STBUCKET *search_bucket(const char *id);
 void show_garb_stat(bool seetime);
 void signal_error(const char *msg);
 void user(void);
