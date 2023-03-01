@@ -113,11 +113,11 @@
 // constants concerning scope analysis
 #define NONESTING -2
 
-// static LOCALENVENTRY *curr_local_env;
+// static LocalEnvEntry *curr_local_env;
 // pointer to the entry for the
 // current local environment
 
-// static STBUCKET *dictionary[DICTSIZE] = {0};
+// static StBucket *dictionary[DICTSIZE] = {0};
 // keywords
 const char *keywords[] =
 	{
@@ -177,7 +177,7 @@ SymbolTable::SymbolTable()
 
 	for (int i = 0; i < KEYWORDNUM; i++)
 	{
-		STBUCKET *st = search_bucket(keywords[i]);
+		StBucket *st = search_bucket(keywords[i]);
 		st->token = FIRSTKEYWORD + i;
 	}
 
@@ -190,7 +190,7 @@ void SymbolTable::allocate_local_env_entry()
 {
 	// pointer to the entry to
 	// be allocated
-	LOCALENVENTRY *le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
+	LocalEnvEntry *le = (LocalEnvEntry *)malloc_da(sizeof(LocalEnvEntry));
 	le->nesting_depth = curr_nesting_depth;
 	le->last_local_binding = NULL;
 	le->prev_local_env = curr_local_env;
@@ -198,9 +198,9 @@ void SymbolTable::allocate_local_env_entry()
 }
 
 // The following function allocates a bucket for an identifier.
-STBUCKET *SymbolTable::allocate_bucket(const char *id)
+StBucket *SymbolTable::allocate_bucket(const char *id)
 {
-	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
+	StBucket *st = (StBucket *)malloc_da(sizeof(StBucket));
 	st->id = strdup(id);
 	st->token = ID;
 	st->curr_binding = NULL;
@@ -213,7 +213,7 @@ STBUCKET *SymbolTable::allocate_bucket(const char *id)
 void SymbolTable::move_bucket(
 	// pointer to the bucket to
 	// be moved
-	STBUCKET *st,
+	StBucket *st,
 	// index corresponding to
 	// the list in which the
 	// bucket lies
@@ -227,13 +227,13 @@ void SymbolTable::move_bucket(
 // the scope stack.
 void SymbolTable::pop_local_env()
 {
-	LOCALENVENTRY *le = curr_local_env;
+	LocalEnvEntry *le = curr_local_env;
 
 	// remove all the entries for bindings created in the
 	// local environment
 	while (le->last_local_binding != NULL)
 	{
-		BINDINGENTRY *b = le->last_local_binding;
+		BindingEntry *b = le->last_local_binding;
 		b->st_bucket->curr_binding = b->prev_id_binding;
 		le->last_local_binding = b->prev_local_binding;
 		free(b);
@@ -260,10 +260,10 @@ void SymbolTable::reset()
 	}
 }
 
-STBUCKET *SymbolTable::search_bucket(const char *id)
+StBucket *SymbolTable::search_bucket(const char *id)
 {
-	STBUCKET *curr;
-	STBUCKET *st;
+	StBucket *curr;
+	StBucket *st;
 
 	// turn the identifier into lower case
 	// to_lower_s(id);
@@ -272,7 +272,7 @@ STBUCKET *SymbolTable::search_bucket(const char *id)
 	int dict_index = hash_pjw(id);
 
 	// scan the bucket list indicated by the hash function
-	STBUCKET *prev = curr = dictionary[dict_index];
+	StBucket *prev = curr = dictionary[dict_index];
 	while (curr != NULL && strcmp(id, curr->id) != 0)
 	{
 		prev = curr;
@@ -282,7 +282,7 @@ STBUCKET *SymbolTable::search_bucket(const char *id)
 	// the identifier is not in the list
 	if (curr == NULL)
 	{
-		st = new STBUCKET(id, ID);
+		st = new StBucket(id, ID);
 		move_bucket(st, dict_index);
 		return st;
 	}
@@ -306,10 +306,10 @@ STBUCKET *SymbolTable::search_bucket(const char *id)
 // static void allocate_local_env_entry(void);
 
 // static void move_bucket(
-// 	STBUCKET *st,
+// 	StBucket *st,
 // 	int dict_index);
 
-// static STBUCKET *allocate_bucket(const char *id);
+// static StBucket *allocate_bucket(const char *id);
 
 // The following function turns a given string into a lower case one.
 static void to_lower_s(char *s)
@@ -341,7 +341,7 @@ static void to_lower_s(char *s)
 // 	// insert P keywords into the appropriate bucket lists
 // 	for (int i = 0; i < KEYWORDNUM; i++)
 // 	{
-// 		STBUCKET *st = search_bucket(keywords[i]);
+// 		StBucket *st = search_bucket(keywords[i]);
 // 		st->token = FIRSTKEYWORD + i;
 // 	}
 
@@ -359,12 +359,12 @@ static void to_lower_s(char *s)
 // given identifier. The bucket associated with the given identifier
 // becomes the first one in its list.
 
-// STBUCKET *search_bucket(
+// StBucket *search_bucket(
 // 	// identifier
 // 	const char *id)
 // {
-// 	STBUCKET *curr;
-// 	STBUCKET *st;
+// 	StBucket *curr;
+// 	StBucket *st;
 
 // 	// turn the identifier into lower case
 // 	// to_lower_s(id);
@@ -373,7 +373,7 @@ static void to_lower_s(char *s)
 // 	int dict_index = hash_pjw(id);
 
 // 	// scan the bucket list indicated by the hash function
-// 	STBUCKET *prev = curr = dictionary[dict_index];
+// 	StBucket *prev = curr = dictionary[dict_index];
 // 	while (curr != NULL && strcmp(id, curr->id) != 0)
 // 	{
 // 		prev = curr;
@@ -383,7 +383,7 @@ static void to_lower_s(char *s)
 // 	// the identifier is not in the list
 // 	if (curr == NULL)
 // 	{
-// 		st = new STBUCKET(id, ID);
+// 		st = new StBucket(id, ID);
 // 		move_bucket(st, dict_index);
 // 		return st;
 // 	}
@@ -398,7 +398,7 @@ static void to_lower_s(char *s)
 // 	return st;
 // }
 
-// STBUCKET *SymbolTable::find(const char *id)
+// StBucket *SymbolTable::find(const char *id)
 // {
 // 	return nullptr;
 // }
@@ -415,13 +415,13 @@ static void to_lower_s(char *s)
 // the scope stack.
 // void pop_local_env()
 // {
-// 	LOCALENVENTRY *le = curr_local_env;
+// 	LocalEnvEntry *le = curr_local_env;
 
 // 	// remove all the entries for bindings created in the
 // 	// local environment
 // 	while (le->last_local_binding != NULL)
 // 	{
-// 		BINDINGENTRY *b = le->last_local_binding;
+// 		BindingEntry *b = le->last_local_binding;
 // 		b->st_bucket->curr_binding = b->prev_id_binding;
 // 		le->last_local_binding = b->prev_local_binding;
 // 		free(b);
@@ -437,15 +437,15 @@ static void to_lower_s(char *s)
 // identifier which is to be bound
 // to a procedure
 
-void STBUCKET::create_variable_binding(
+void StBucket::create_variable_binding(
 
 	// pointer to the rootform of the
 	// term associated with the identifier
 	// (for global declarations only)
 
-	FORM *rootform)
+	Form *rootform)
 {
-	BINDINGENTRY *b = (BINDINGENTRY *)malloc_da(sizeof(BINDINGENTRY));
+	BindingEntry *b = (BindingEntry *)malloc_da(sizeof(BindingEntry));
 	b->st_bucket = this;
 	b->root = rootform;
 	b->prev_id_binding = this->curr_binding;
@@ -459,9 +459,9 @@ void STBUCKET::create_variable_binding(
 //**************************************************************
 
 // The following function allocates a bucket for an identifier.
-// static STBUCKET *allocate_bucket(const char *id)
+// static StBucket *allocate_bucket(const char *id)
 // {
-// 	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
+// 	StBucket *st = (StBucket *)malloc_da(sizeof(StBucket));
 // 	st->id = strdup(id);
 // 	st->token = ID;
 // 	st->curr_binding = NULL;
@@ -474,7 +474,7 @@ void STBUCKET::create_variable_binding(
 // static void move_bucket(
 // 	// pointer to the bucket to
 // 	// be moved
-// 	STBUCKET *st,
+// 	StBucket *st,
 // 	// index corresponding to
 // 	// the list in which the
 // 	// bucket lies
@@ -488,7 +488,7 @@ void STBUCKET::create_variable_binding(
 // {
 // 	// pointer to the entry to
 // 	// be allocated
-// 	LOCALENVENTRY *le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
+// 	LocalEnvEntry *le = (LocalEnvEntry *)malloc_da(sizeof(LocalEnvEntry));
 // 	le->nesting_depth = curr_nesting_depth;
 // 	le->last_local_binding = NULL;
 // 	le->prev_local_env = curr_local_env;

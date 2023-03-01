@@ -20,7 +20,7 @@ static int left_to_print;
 // the following function prints on the standard output the
 // standard syntactical representation of the graphical term
 // whose root is passed in input
-void FORM::rdbk()
+void Form::rdbk()
 {
   left_to_print = PRINT_MAX;
   printf("  ");
@@ -28,7 +28,7 @@ void FORM::rdbk()
   printf("\n");
 }
 
-void FORM::rdbk_1(int port)
+void Form::rdbk_1(int port)
 {
   if (left_to_print > 0)
   {
@@ -101,7 +101,7 @@ void FORM::rdbk_1(int port)
   }
 }
 
-void FORM::rdbk_list(int port)
+void Form::rdbk_list(int port)
 {
   if ((int)this->nport[port] == NIL)
   {

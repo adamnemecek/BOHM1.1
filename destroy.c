@@ -45,16 +45,16 @@
 /* linking them together.                               */
 Destroyer::Destroyer()
 {
-  headfull = (FORM *)malloc_da(sizeof(FORM));
-  headfree = (FORM *)malloc_da(sizeof(FORM));
+  headfull = (Form *)malloc_da(sizeof(Form));
+  headfree = (Form *)malloc_da(sizeof(Form));
   headfull->next = headfree;
   headfull->prev = NULL;
   headfree->next = NULL;
   headfree->prev = headfull;
   start_nodes = 0;
 
-  FORM *dep = (FORM *)malloc_da(sizeof(FORM) * FORM_NUM);
-  // auto *dep = new FORM[FORM_NUM];
+  Form *dep = (Form *)malloc_da(sizeof(Form) * FORM_NUM);
+  // auto *dep = new Form[FORM_NUM];
   headfree->next = dep;
   dep->next = dep + 1;
   dep->prev = headfree;
@@ -91,14 +91,14 @@ void Destroyer::no_destroy(void)
   headfull = headfree->prev;
 }
 
-FORM *Destroyer::alloc()
+Form *Destroyer::alloc()
 {
-  FORM *ret = headfree;
+  Form *ret = headfree;
   headfree = headfree->next;
   return ret;
 }
 
-void Destroyer::release(FORM *form)
+void Destroyer::release(Form *form)
 {
   form->next = headfree->next;
   form->prev = headfree;

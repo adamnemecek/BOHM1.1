@@ -1,12 +1,12 @@
 #pragma once
 
 #include <memory>
-struct TERM;
-struct FORM;
+struct Term;
+struct Form;
 
 struct PORT
 {
-	FORM *form;
+	Form *form;
 	int port;
 
 	void connect1(PORT other);
@@ -26,7 +26,7 @@ BINOP(div, /);
 BINOP(rem, %);
 
 // graphical form descriptor type
-struct FORM final
+struct Form final
 {
 	// name of the form
 	// (FAN, ROOT, CROISSANT
@@ -53,15 +53,15 @@ struct FORM final
 	//  BRACKET only the first two
 	//  fields are meaningful; for
 	//  ROOT only the first one is)
-	FORM *nform[3];
+	Form *nform[3];
 
 	// these are some sort of offset
 	int nlevel[3];
 
-	FORM *next;
-	FORM *prev;
+	Form *next;
+	Form *prev;
 
-	FORM(
+	Form(
 		int kind,
 		int index);
 
@@ -71,7 +71,7 @@ struct FORM final
 		int p,
 		int card);
 
-	FORM *inspect(int p);
+	Form *inspect(int p);
 
 	void reduce_term();
 	void reduce_form();
@@ -87,20 +87,20 @@ struct FORM final
 		return PORT{nform[i], nport[i]};
 	}
 
-	FORM *copy(
+	Form *copy(
 		int p,
 		int offset);
 
-	FORM *copy_aux(
+	Form *copy_aux(
 		int p,
 		int offset);
 
-	// FORM *copy(
-	// 	FORM *root,
+	// Form *copy(
+	// 	Form *root,
 	// 	int p,
 	// 	int offset);
 
-	FORM *lo_redex();
+	Form *lo_redex();
 
 	void rdbk();
 	void rdbk_list(int port);
@@ -117,8 +117,8 @@ struct FORM final
 		char *name,
 		char *id);
 
-	void connect(int port, TERM *term);
-	void connect1(int port, TERM *term);
+	void connect(int port, Term *term);
+	void connect1(int port, Term *term);
 
 	// the following function connects only the port portf1 of
 	// form1 to the port portf2 of form2, because form2 is a INT,
@@ -128,7 +128,7 @@ struct FORM final
 		this->nport[port] = val;
 	}
 
-	void intelligent_connect(int port, FORM *f2);
+	void intelligent_connect(int port, Form *f2);
 	void binop(long int (&op)(long int, long int));
 
 	// void selfconnect1(int from, int to);
@@ -142,11 +142,11 @@ struct FORM final
 		PORT p);
 };
 
-struct BINDINGENTRY;
-struct PATTERN;
+struct BindingEntry;
+struct Pattern;
 
 // symbol table bucket type
-struct STBUCKET final
+struct StBucket final
 {
 	// identifier
 	char *id;
@@ -160,15 +160,15 @@ struct STBUCKET final
 	// pointer to the current
 	// binding entry for the
 	// identifier
-	BINDINGENTRY *curr_binding;
+	BindingEntry *curr_binding;
 
 	// pointer to the bucket
 	// for the next identifier
 	// hashing in the same
 	// linked list of buckets
-	STBUCKET *next_st_bucket;
+	StBucket *next_st_bucket;
 
-	STBUCKET(
+	StBucket(
 		const char *id,
 		int token)
 	{
@@ -178,32 +178,32 @@ struct STBUCKET final
 		this->next_st_bucket = NULL;
 	}
 
-	void create_variable_binding(FORM *form);
+	void create_variable_binding(Form *form);
 };
 
 // binding entry descriptor type
-struct BINDINGENTRY final
+struct BindingEntry final
 {
-	STBUCKET *st_bucket;
+	StBucket *st_bucket;
 	// pointer to the bucket
 	// for the identifier
 	// involved in the binding
-	FORM *root;
+	Form *root;
 	// pointer to the root form
 	// (for global identifiers)
-	BINDINGENTRY *prev_id_binding;
+	BindingEntry *prev_id_binding;
 	// pointer to the entry for
 	// the binding previously
 	// enforced for the same
 	// identifier
-	BINDINGENTRY *prev_local_binding;
+	BindingEntry *prev_local_binding;
 	// pointer to the entry for the
 	// binding previously enforced
 	// in the same local environment
 };
 
 // local environment entry descriptor type
-struct LOCALENVENTRY final
+struct LocalEnvEntry final
 {
 	// nesting depth associated
 	// with the local environment
@@ -212,40 +212,40 @@ struct LOCALENVENTRY final
 	// pointer to the entry for
 	// the last binding enforced in
 	// this environment
-	BINDINGENTRY *last_local_binding;
+	BindingEntry *last_local_binding;
 
 	// pointer to the entry for the
 	// previous local environment
-	LOCALENVENTRY *prev_local_env;
+	LocalEnvEntry *prev_local_env;
 };
 
 // free variable descriptor type
-struct VARENTRY final
+struct VarEntry final
 {
 	// pointer to the st_bucket
 	// for the variable
-	STBUCKET *name;
+	StBucket *name;
 
 	// pointer to the form
 	// for the variable
-	FORM *var;
+	Form *var;
 
 	// pointer to the next free
 	// variable in a term
-	VARENTRY *next;
+	VarEntry *next;
 
-	VARENTRY(
-		STBUCKET *id,
-		FORM *form,
-		VARENTRY *nextvar);
+	VarEntry(
+		StBucket *id,
+		Form *form,
+		VarEntry *nextvar);
 };
 
 // term descriptor type
-struct TERM final
+struct Term final
 {
 	// pointer to the root form
 	// of the term
-	FORM *root_form;
+	Form *root_form;
 
 	// number of the root port
 	// of the term (0 for variables
@@ -255,168 +255,168 @@ struct TERM final
 
 	// pointer to the list of free
 	// variables in the term
-	VARENTRY *vars;
+	VarEntry *vars;
 
-	TERM(
-		FORM *root_form,
+	Term(
+		Form *root_form,
 		int root_ports,
-		VARENTRY *freevars);
+		VarEntry *freevars);
 
-	static TERM *true_(int level);
-	static TERM *false_(int level);
+	static Term *true_(int level);
+	static Term *false_(int level);
 
-	static TERM *and_(
+	static Term *and_(
 		int level,
-		TERM *arg1,
-		TERM *arg2);
+		Term *arg1,
+		Term *arg2);
 
-	static TERM *car(
+	static Term *car(
 		int level,
-		TERM *arg);
+		Term *arg);
 
-	static TERM *cdr(
+	static Term *cdr(
 		int level,
-		TERM *arg);
+		Term *arg);
 
-	static TERM *minus(
+	static Term *minus(
 		int level,
-		TERM *arg1);
+		Term *arg1);
 
-	static TERM *list(
+	static Term *list(
 		int level,
-		TERM *arg1,
-		TERM *arg2);
+		Term *arg1,
+		Term *arg2);
 
-	static TERM *list1(
+	static Term *list1(
 		int level,
-		TERM *arg1,
-		TERM *arg2);
+		Term *arg1,
+		Term *arg2);
 
-	static TERM *matterm(
+	static Term *matterm(
 		int level,
-		TERM *arg1,
-		TERM *arg2,
+		Term *arg1,
+		Term *arg2,
 		int op);
 
-	static TERM *not_(
+	static Term *not_(
 		int level,
-		TERM *arg);
+		Term *arg);
 
-	static TERM *or_(
+	static Term *or_(
 		int level,
-		TERM *arg1,
-		TERM *arg2);
+		Term *arg1,
+		Term *arg2);
 
-	static TERM *app(
+	static Term *app(
 		int level,
-		TERM *fun,
-		TERM *arg);
+		Term *fun,
+		Term *arg);
 
-	static TERM *ifelse(
+	static Term *ifelse(
 		int level,
-		TERM *arg1,
-		TERM *arg2,
-		TERM *arg3);
+		Term *arg1,
+		Term *arg2,
+		Term *arg3);
 
-	static TERM *int_(
+	static Term *int_(
 		int level,
 		long int value);
 
-	static TERM *lambda(
+	static Term *lambda(
 		int level,
-		STBUCKET *id,
-		TERM *body);
+		StBucket *id,
+		Term *body);
 
-	static TERM *let_in(
+	static Term *let_in(
 		int level,
-		STBUCKET *id,
-		TERM *arg1,
-		TERM *arg2);
+		StBucket *id,
+		Term *arg1,
+		Term *arg2);
 
-	static TERM *mu(
+	static Term *mu(
 		int level,
-		STBUCKET *id,
-		TERM *bod);
+		StBucket *id,
+		Term *bod);
 
-	static TERM *plambda(
+	static Term *plambda(
 		int level,
-		PATTERN *pattern,
-		TERM *body);
+		Pattern *pattern,
+		Term *body);
 
-	static TERM *nillist(int level);
+	static Term *nillist(int level);
 
-	static TERM *testnil(
+	static Term *testnil(
 		int level,
-		TERM *arg);
+		Term *arg);
 
-	static TERM *relop(
+	static Term *relop(
 		int level,
-		TERM *arg1,
-		TERM *arg2,
+		Term *arg1,
+		Term *arg2,
 		int relop);
 
-	static TERM *var(
+	static Term *var(
 		int level,
-		STBUCKET *id);
+		StBucket *id);
 
-	static TERM *void_(int level);
+	static Term *void_(int level);
 
-	TERM *makebox(int level);
+	Term *makebox(int level);
 
-	FORM *close(int level);
+	Form *close(int level);
 };
 
-struct BINDINGID final
+struct BindingID final
 {
-	STBUCKET *id;
-	FORM *form;
+	StBucket *id;
+	Form *form;
 
-	BINDINGID(STBUCKET *id, FORM *form)
+	BindingID(StBucket *id, Form *form)
 	{
 		this->id = id;
 		this->form = form;
 	}
 };
 
-struct VARLIST final
+struct VarList final
 {
-	BINDINGID *id;
-	VARLIST *next;
+	BindingID *id;
+	VarList *next;
 
-	VARLIST *merge(VARLIST *other);
-	bool contains(BINDINGID *id);
+	VarList *merge(VarList *other);
+	bool contains(BindingID *id);
 };
 
 // struct VARLIST1
 // {
-// 	BINDINGID *id;
-// 	std::list<VARENTRY *> list;
+// 	BindingID *id;
+// 	std::list<VarEntry *> list;
 
-// 	VARLIST1(BINDINGID *id, TERM *t);
+// 	VARLIST1(BindingID *id, Term *t);
 // };
 
-struct PATTERN final
+struct Pattern final
 {
-	VARLIST *var_list;
-	TERM *term;
+	VarList *var_list;
+	Term *term;
 
-	PATTERN(TERM *term, VARLIST *var_list)
+	Pattern(Term *term, VarList *var_list)
 	{
 		this->term = term;
 		this->var_list = var_list;
 	}
 
-	~PATTERN();
+	~Pattern();
 };
 
 // this is a dependency of sorts
-struct COPY_FORM final
+struct CopyForm final
 {
-	FORM *src;
-	FORM *dest;
-	COPY_FORM *next;
+	Form *src;
+	Form *dest;
+	CopyForm *next;
 
-	COPY_FORM(FORM *src, FORM *dest, COPY_FORM *next)
+	CopyForm(Form *src, Form *dest, CopyForm *next)
 	{
 		this->src = src;
 		this->dest = dest;
@@ -424,16 +424,16 @@ struct COPY_FORM final
 	}
 };
 
-struct ELEM final
+struct Elem final
 {
-	FORM *node;
+	Form *node;
 	int num;
-	ELEM *next;
+	Elem *next;
 
-	ELEM(
-		FORM *node,
+	Elem(
+		Form *node,
 		int num,
-		ELEM *next)
+		Elem *next)
 	{
 		this->node = node;
 		this->num = num;

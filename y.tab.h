@@ -125,19 +125,19 @@ typedef union YYSTYPE
 		/* pointer to a symbol */
 		/* table bucket */
 		/* numerical constant */
-		STBUCKET	*st_bucket;
+		StBucket	*st_bucket;
 		
 		int		num_const;
 
 		/* graph representation */
 		/* of the term */
-		TERM		*term;
+		Term		*term;
 	
 		/* root_form  */
-		FORM		*root;
+		Form		*root;
 
 		char            *astring;
-		PATTERN         *pattern;
+		Pattern         *pattern;
 	}
 /* Line 1529 of yacc.c.  */
 #line 144 "y.tab.h"

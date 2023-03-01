@@ -49,21 +49,21 @@ static int max_index;
 static int eq = 0;
 static int type_error;
 static void reduce_redex(
-	FORM *f1,
-	FORM *f2);
-static void reduce_form(FORM *f1);
-// static FORM *lo_redex(FORM *f);
+	Form *f1,
+	Form *f2);
+// static void reduce_form(Form *f1);
+// static Form *lo_redex(Form *f);
 static int auxnext;
 
 #ifndef STACK_SIZE
 #define STACK_SIZE 10000000
 #endif
 
-static FORM *auxstack[STACK_SIZE];
+static Form *auxstack[STACK_SIZE];
 
-static FORM *pop()
+static Form *pop()
 {
-	FORM *res;
+	Form *res;
 
 	assert(auxnext > 0);
 	--auxnext;
@@ -72,7 +72,7 @@ static FORM *pop()
 	return res;
 }
 
-static void push(FORM *f)
+static void push(Form *f)
 {
 	auxstack[auxnext] = f;
 
@@ -99,7 +99,7 @@ int counter;
 
 //  The following function reduces a term to its weak
 //  head (family) normal form.
-void FORM::reduce_term()
+void Form::reduce_term()
 {
 	struct tms time;
 
@@ -121,14 +121,14 @@ void FORM::reduce_term()
 	clock_t usr_time = time.tms_utime;
 	clock_t sys_time = time.tms_stime;
 	init_stack();
-	FORM *f1 = this->lo_redex();
+	Form *f1 = this->lo_redex();
 	// reset_garbage();
 	gc.reset();
 	while (f1 != this && !type_error)
 	{
 		if (f1->nport[0] == 0)
 		{
-			FORM *f2 = f1->nform[0];
+			Form *f2 = f1->nform[0];
 			if (f1->index <= f2->index)
 			{
 				reduce_redex(f1, f2);
@@ -207,11 +207,11 @@ void FORM::reduce_term()
 //  interacting forms are passed as a parameter and the
 //  second form is not a INT, NIL, True or False;
 static void reduce_redex(
-	FORM *f1,
-	FORM *f2)
+	Form *f1,
+	Form *f2)
 {
-	FORM *new1;
-	FORM *new2;
+	Form *new1;
+	Form *new2;
 
 	if (option == 2 && gc.del_head != NULL && num_nodes > limit)
 	{
@@ -345,7 +345,7 @@ static void reduce_redex(
 					connect(f1, 2, f2, 1);
 					if (f1->nlevel[2] != 0)
 					{
-						new1 = new FORM(TRIANGLE, f1->index);
+						new1 = new Form(TRIANGLE, f1->index);
 						new1->nlevel[1] = f1->nlevel[2];
 						connect1(new1, 0, f2->nform[2], f2->nport[2]);
 						connect(new1, 1, f2, 2);
@@ -396,7 +396,7 @@ static void reduce_redex(
 					f1->index -= 1;
 					if (f1->nlevel[2] != 0)
 					{
-						new1 = new FORM(TRIANGLE, f1->index);
+						new1 = new Form(TRIANGLE, f1->index);
 						new1->nlevel[1] = f1->nlevel[2];
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 						connect(new1, 1, f2, 1);
@@ -440,7 +440,7 @@ static void reduce_redex(
 					f1->bool_connect(1, F);
 					if (f1->nlevel[2] != 0)
 					{
-						new1 = new FORM(TRIANGLE, f1->index - 1);
+						new1 = new Form(TRIANGLE, f1->index - 1);
 						new1->nlevel[1] = f1->nlevel[2];
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 						connect(new1, 1, f2, 1);
@@ -476,7 +476,7 @@ static void reduce_redex(
 					}
 					else
 					{
-						new1 = new FORM(ERASE, 0);
+						new1 = new Form(ERASE, 0);
 						f1->del();
 						connect1(new1, 0, f2->nform[1], f2->nport[1]);
 					}
@@ -650,9 +650,9 @@ static void reduce_redex(
 			case IFELSE:
 			case APP:
 			case LAMBDA:
-				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new Form(f2->kind, f2->index + f1->nlevel[2]);
 				f2->index += f1->nlevel[1];
-				new2 = new FORM(FAN, f1->index);
+				new2 = new Form(FAN, f1->index);
 				new2->num_safe = f1->num_safe;
 				new2->nlevel[1] = f1->nlevel[1];
 				new2->nlevel[2] = f1->nlevel[2];
@@ -671,12 +671,12 @@ static void reduce_redex(
 			case CAR1:
 			case CDR1:
 			case CONS1:
-				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new Form(f2->kind, f2->index + f1->nlevel[2]);
 				f2->index += f1->nlevel[1];
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
 				new1->nlevel[2] = f2->nlevel[2];
-				new2 = new FORM(FAN, f1->index);
+				new2 = new Form(FAN, f1->index);
 				new2->num_safe = f1->num_safe;
 				new2->nlevel[1] = f1->nlevel[1];
 				new2->nlevel[2] = f1->nlevel[2];
@@ -694,7 +694,7 @@ static void reduce_redex(
 			case UNS_FAN2:
 				unsafe++;
 			case TRIANGLE:
-				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new Form(f2->kind, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
 				f2->index += f1->nlevel[1];
@@ -721,7 +721,7 @@ static void reduce_redex(
 			case PROD1:
 			case DIV1:
 			case MOD1:
-				new1 = new FORM(f2->kind, f2->index + f1->nlevel[2]);
+				new1 = new Form(f2->kind, f2->index + f1->nlevel[2]);
 				new1->num_safe = f2->num_safe;
 				new1->nform[2] = f2->nform[2];
 				f2->index += f1->nlevel[1];
@@ -770,7 +770,7 @@ static void reduce_redex(
 			case CAR1:
 			case CDR1:
 			case CONS1:
-				new1 = new FORM(f1->kind, f1->index);
+				new1 = new Form(f1->kind, f1->index);
 				new1->nlevel[1] = f1->nlevel[1];
 				new1->num_safe = f1->num_safe;
 
@@ -817,10 +817,10 @@ static void reduce_redex(
 //  The following function reduces the redex whose
 //  interacting forms are passed as a parameter and the
 //  second form is a INT, NIL, True or False;
-void FORM::reduce_form()
+void Form::reduce_form()
 {
-	FORM *tmp;
-	FORM *f1 = this;
+	Form *tmp;
+	Form *f1 = this;
 	switch (f1->kind)
 	{
 	case IFELSE:
@@ -1416,10 +1416,10 @@ void FORM::reduce_form()
 //  The following function looks for the leftmost outemost
 //  redex, saving on the m_stack pointers to the form along
 //  the main spine of the term.
-FORM *FORM::lo_redex()
+Form *Form::lo_redex()
 {
-	FORM *temp = this;
-	FORM *next = temp->nform[0];
+	Form *temp = this;
+	Form *next = temp->nform[0];
 	int p = temp->nport[0];
 
 	while (p > 0)

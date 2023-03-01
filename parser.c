@@ -170,7 +170,7 @@ bool			quit,
 			       /* flag indicating if parsing is */
 			       /* done after a load directive */
 char                    *include_file;
-FORM                    *lastinputterm,
+Form                    *lastinputterm,
 			       /* pointer to the root of the */
 			       /* term in input */
                         *current_pos;
@@ -180,9 +180,9 @@ FORM                    *lastinputterm,
 #define UNBOUND_VARIABLE "scoping error: undefined variable"
 
 int                    app_nesting_depth;
-PATTERN                *pattmp;
+Pattern                *pattmp;
 
-static bool defined(STBUCKET	*st);
+static bool defined(StBucket	*st);
 
 
 /* Enabling traces.  */
@@ -210,19 +210,19 @@ typedef union YYSTYPE
 		/* pointer to a symbol */
 		/* table bucket */
 		/* numerical constant */
-		STBUCKET	*st_bucket;
+		StBucket	*st_bucket;
 		
 		int		num_const;
 
 		/* graph representation */
 		/* of the term */
-		TERM		*term;
+		Term		*term;
 	
 		/* root_form  */
-		FORM		*root;
+		Form		*root;
 
 		char            *astring;
-		PATTERN         *pattern;
+		Pattern         *pattern;
 	}
 /* Line 193 of yacc.c.  */
 #line 229 "y.tab.c"
@@ -1873,14 +1873,14 @@ yyreduce:
   case 26:
 #line 411 "parser.y"
     {
-		 		  (yyval.term) = TERM::minus(app_nesting_depth, (yyvsp[(2) - (2)].term));
+		 		  (yyval.term) = Term::minus(app_nesting_depth, (yyvsp[(2) - (2)].term));
 				}
     break;
 
   case 27:
 #line 415 "parser.y"
     {
-				  (yyval.term) = TERM::and_(app_nesting_depth,
+				  (yyval.term) = Term::and_(app_nesting_depth,
 						       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
@@ -1888,7 +1888,7 @@ yyreduce:
   case 28:
 #line 420 "parser.y"
     {
-				  (yyval.term) = TERM::or_(app_nesting_depth,
+				  (yyval.term) = Term::or_(app_nesting_depth,
 						       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
@@ -1896,7 +1896,7 @@ yyreduce:
   case 29:
 #line 425 "parser.y"
     {
-		 		  (yyval.term) = TERM::relop(app_nesting_depth,
+		 		  (yyval.term) = Term::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),LESS);
 		 		}
     break;
@@ -1904,7 +1904,7 @@ yyreduce:
   case 30:
 #line 430 "parser.y"
     {
-		 		  (yyval.term) = TERM::relop(app_nesting_depth,
+		 		  (yyval.term) = Term::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),EQ);
 		 		}
     break;
@@ -1912,7 +1912,7 @@ yyreduce:
   case 31:
 #line 435 "parser.y"
     {
-				  (yyval.term) = TERM::relop(app_nesting_depth,
+				  (yyval.term) = Term::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),NOTEQ);
 		 		}
     break;
@@ -1920,7 +1920,7 @@ yyreduce:
   case 32:
 #line 440 "parser.y"
     {
-		 		  (yyval.term) = TERM::relop(app_nesting_depth,
+		 		  (yyval.term) = Term::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MORE);
 				}
     break;
@@ -1928,7 +1928,7 @@ yyreduce:
   case 33:
 #line 445 "parser.y"
     {
-		 		  (yyval.term) = TERM::relop(app_nesting_depth,
+		 		  (yyval.term) = Term::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),LEQ);
 		 		}
     break;
@@ -1936,7 +1936,7 @@ yyreduce:
   case 34:
 #line 450 "parser.y"
     {
-		 		  (yyval.term) = TERM::relop(app_nesting_depth,
+		 		  (yyval.term) = Term::relop(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MEQ);
 		 		}
     break;
@@ -1944,7 +1944,7 @@ yyreduce:
   case 35:
 #line 455 "parser.y"
     {
-				  (yyval.term) = TERM::matterm(app_nesting_depth,
+				  (yyval.term) = Term::matterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),ADD);
 				}
     break;
@@ -1952,7 +1952,7 @@ yyreduce:
   case 36:
 #line 460 "parser.y"
     {
-		 		  (yyval.term) = TERM::matterm(app_nesting_depth,
+		 		  (yyval.term) = Term::matterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),SUB);
 				}
     break;
@@ -1960,7 +1960,7 @@ yyreduce:
   case 37:
 #line 465 "parser.y"
     {
-		 		  (yyval.term) = TERM::matterm(app_nesting_depth,
+		 		  (yyval.term) = Term::matterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),PROD);
 				}
     break;
@@ -1968,7 +1968,7 @@ yyreduce:
   case 38:
 #line 470 "parser.y"
     {
-		 		  (yyval.term) = TERM::matterm(app_nesting_depth,
+		 		  (yyval.term) = Term::matterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),DIV);
 				}
     break;
@@ -1976,7 +1976,7 @@ yyreduce:
   case 39:
 #line 475 "parser.y"
     {
-				  (yyval.term) = TERM::matterm(app_nesting_depth,
+				  (yyval.term) = Term::matterm(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term),MOD);
 		 		}
     break;
@@ -1984,21 +1984,21 @@ yyreduce:
   case 40:
 #line 482 "parser.y"
     {
-				  (yyval.term) = TERM::true_(app_nesting_depth);
+				  (yyval.term) = Term::true_(app_nesting_depth);
 				}
     break;
 
   case 41:
 #line 486 "parser.y"
     {
-				  (yyval.term) = TERM::false_(app_nesting_depth);
+				  (yyval.term) = Term::false_(app_nesting_depth);
 				}
     break;
 
   case 42:
 #line 490 "parser.y"
     {
-				  (yyval.term) = TERM::int_(app_nesting_depth,(yyvsp[(1) - (1)].num_const));
+				  (yyval.term) = Term::int_(app_nesting_depth,(yyvsp[(1) - (1)].num_const));
 				}
     break;
 
@@ -2006,7 +2006,7 @@ yyreduce:
 #line 494 "parser.y"
     {
 				  if (defined((yyvsp[(1) - (1)].st_bucket)))
-				     (yyval.term) = TERM::var(app_nesting_depth,(yyvsp[(1) - (1)].st_bucket));
+				     (yyval.term) = Term::var(app_nesting_depth,(yyvsp[(1) - (1)].st_bucket));
 				  else
 				     {
 					signal_error(UNBOUND_VARIABLE);
@@ -2042,7 +2042,7 @@ yyreduce:
     {
                                   pattmp=(yyvsp[(3) - (6)].pattern);
                                   (yyval.term) = 
-                                    TERM::plambda(app_nesting_depth,(yyvsp[(3) - (6)].pattern),(yyvsp[(6) - (6)].term));
+                                    Term::plambda(app_nesting_depth,(yyvsp[(3) - (6)].pattern),(yyvsp[(6) - (6)].term));
                                   delete pattmp;
 				  st.pop_local_env();
 				}
@@ -2067,7 +2067,7 @@ yyreduce:
   case 50:
 #line 535 "parser.y"
     {
-				  (yyval.term) = TERM::let_in(app_nesting_depth,
+				  (yyval.term) = Term::let_in(app_nesting_depth,
 						      (yyvsp[(2) - (8)].st_bucket),(yyvsp[(5) - (8)].term),(yyvsp[(8) - (8)].term));
 				  st.pop_local_env();
 				}
@@ -2085,7 +2085,7 @@ yyreduce:
   case 52:
 #line 547 "parser.y"
     {
-				  (yyval.term) = TERM::mu(--app_nesting_depth,
+				  (yyval.term) = Term::mu(--app_nesting_depth,
 						     (yyvsp[(2) - (5)].st_bucket),(yyvsp[(5) - (5)].term));
 				  st.pop_local_env();
 				 }
@@ -2094,7 +2094,7 @@ yyreduce:
   case 53:
 #line 553 "parser.y"
     {
-				  (yyval.term) = TERM::ifelse(app_nesting_depth,
+				  (yyval.term) = Term::ifelse(app_nesting_depth,
 						       (yyvsp[(2) - (6)].term),(yyvsp[(4) - (6)].term),(yyvsp[(6) - (6)].term));
 				}
     break;
@@ -2109,7 +2109,7 @@ yyreduce:
   case 55:
 #line 563 "parser.y"
     {
-				  (yyval.term) = TERM::not_(app_nesting_depth,
+				  (yyval.term) = Term::not_(app_nesting_depth,
 		 		  		       (yyvsp[(2) - (2)].term));
 				}
     break;
@@ -2117,7 +2117,7 @@ yyreduce:
   case 56:
 #line 568 "parser.y"
     {
-		 		  (yyval.term) = TERM::list(app_nesting_depth,
+		 		  (yyval.term) = Term::list(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (6)].term),(yyvsp[(5) - (6)].term));
 		 		}
     break;
@@ -2125,7 +2125,7 @@ yyreduce:
   case 57:
 #line 573 "parser.y"
     {
-		 		  (yyval.term) = TERM::car(app_nesting_depth,
+		 		  (yyval.term) = Term::car(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
 		 		}
     break;
@@ -2133,7 +2133,7 @@ yyreduce:
   case 58:
 #line 578 "parser.y"
     {
-				  (yyval.term) = TERM::cdr(app_nesting_depth,
+				  (yyval.term) = Term::cdr(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
 		 		}
     break;
@@ -2141,7 +2141,7 @@ yyreduce:
   case 59:
 #line 583 "parser.y"
     {
-		 		  (yyval.term) = TERM::testnil(app_nesting_depth,
+		 		  (yyval.term) = Term::testnil(app_nesting_depth,
 		 		  		       (yyvsp[(3) - (4)].term));
 				}
     break;
@@ -2149,14 +2149,14 @@ yyreduce:
   case 60:
 #line 590 "parser.y"
     {
-				  (yyval.term) = TERM::nillist(app_nesting_depth);
+				  (yyval.term) = Term::nillist(app_nesting_depth);
 				}
     break;
 
   case 61:
 #line 594 "parser.y"
     {
-                                  (yyval.term) = TERM::nillist(app_nesting_depth);
+                                  (yyval.term) = Term::nillist(app_nesting_depth);
 				}
     break;
 
@@ -2170,7 +2170,7 @@ yyreduce:
   case 63:
 #line 603 "parser.y"
     {
-				  (yyval.term) = TERM::list(app_nesting_depth,
+				  (yyval.term) = Term::list(app_nesting_depth,
 						(yyvsp[(1) - (2)].term),NULL);
 				}
     break;
@@ -2178,7 +2178,7 @@ yyreduce:
   case 64:
 #line 608 "parser.y"
     {
-				  (yyval.term) = TERM::list(app_nesting_depth,
+				  (yyval.term) = Term::list(app_nesting_depth,
 						(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
@@ -2186,7 +2186,7 @@ yyreduce:
   case 65:
 #line 613 "parser.y"
     {
-				  (yyval.term) = TERM::list(app_nesting_depth,
+				  (yyval.term) = Term::list(app_nesting_depth,
 						 (yyvsp[(1) - (4)].term),(yyvsp[(3) - (4)].term));
 				}
     break;
@@ -2194,7 +2194,7 @@ yyreduce:
   case 67:
 #line 621 "parser.y"
     {
-		 		  (yyval.term) = TERM::list(app_nesting_depth,
+		 		  (yyval.term) = Term::list(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
                                 }
     break;
@@ -2209,7 +2209,7 @@ yyreduce:
   case 69:
 #line 630 "parser.y"
     { app_nesting_depth--;
-				  (yyval.term) = TERM::app(app_nesting_depth,(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
+				  (yyval.term) = Term::app(app_nesting_depth,(yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
 				}
     break;
 
@@ -2223,7 +2223,7 @@ yyreduce:
   case 71:
 #line 641 "parser.y"
     {
-		 		  (yyval.term) = TERM::list(app_nesting_depth,
+		 		  (yyval.term) = Term::list(app_nesting_depth,
 		 		  		       (yyvsp[(1) - (3)].term),(yyvsp[(3) - (3)].term));
                                 }
     break;
@@ -2238,9 +2238,9 @@ yyreduce:
   case 73:
 #line 652 "parser.y"
     {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
                                   pattmp->term=
-                                    TERM::list1(app_nesting_depth,
+                                    Term::list1(app_nesting_depth,
                                               (yyvsp[(1) - (3)].pattern)->term,(yyvsp[(3) - (3)].pattern)->term);
                                   pattmp->var_list=
                                     (yyvsp[(1) - (3)].pattern)->var_list->merge((yyvsp[(3) - (3)].pattern)->var_list);
@@ -2253,9 +2253,9 @@ yyreduce:
   case 74:
 #line 665 "parser.y"
     {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
                                   pattmp->term=
-                                    TERM::list1(app_nesting_depth,
+                                    Term::list1(app_nesting_depth,
                                               (yyvsp[(3) - (6)].pattern)->term,(yyvsp[(5) - (6)].pattern)->term);
                                   pattmp->var_list=
                                     mergevarlist((yyvsp[(3) - (6)].pattern)->var_list,(yyvsp[(5) - (6)].pattern)->var_list);
@@ -2268,8 +2268,8 @@ yyreduce:
   case 75:
 #line 677 "parser.y"
     {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
-                                  pattmp->term=TERM::nillist(app_nesting_depth);
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
+                                  pattmp->term=Term::nillist(app_nesting_depth);
                                   pattmp->var_list=NULL;
                                   (yyval.pattern)=pattmp;
                                 }
@@ -2285,9 +2285,9 @@ yyreduce:
   case 77:
 #line 688 "parser.y"
     {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
                                   pattmp->term=
-                                    TERM::void_(app_nesting_depth);
+                                    Term::void_(app_nesting_depth);
                                   (yyvsp[(1) - (1)].st_bucket)->create_variable_binding(NULL);
                                   pattmp->var_list=
                                     makevarlist((yyvsp[(1) - (1)].st_bucket),pattmp->term);
@@ -2526,7 +2526,7 @@ yyreturn:
 /* The following function checks if an identifier has been */
 /* previously declared */
 static bool defined(
-	STBUCKET	*st
+	StBucket	*st
 )
 			      /* pointer to the bucket for the */
 			      /* identifier */

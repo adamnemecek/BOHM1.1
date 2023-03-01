@@ -129,7 +129,7 @@ bool			quit,
 			       /* flag indicating if parsing is */
 			       /* done after a load directive */
 char                    *include_file;
-FORM                    *lastinputterm,
+Form                    *lastinputterm,
 			       /* pointer to the root of the */
 			       /* term in input */
                         *current_pos;
@@ -144,9 +144,9 @@ FORM                    *lastinputterm,
 #define UNBOUND_VARIABLE "scoping error: undefined variable"
 
 int                    app_nesting_depth;
-PATTERN                *pattmp;
+Pattern                *pattmp;
 
-static bool defined(STBUCKET	*st);
+static bool defined(StBucket	*st);
 %}
 
  /***************************************************************/
@@ -157,19 +157,19 @@ static bool defined(STBUCKET	*st);
 		/* pointer to a symbol */
 		/* table bucket */
 		/* numerical constant */
-		STBUCKET	*st_bucket;
+		StBucket	*st_bucket;
 		
 		int		num_const;
 
 		/* graph representation */
 		/* of the term */
-		TERM		*term;
+		Term		*term;
 	
 		/* root_form  */
-		FORM		*root;
+		Form		*root;
 
 		char            *astring;
-		PATTERN         *pattern;
+		Pattern         *pattern;
 	}
 
 
@@ -409,91 +409,91 @@ expr            :       expr0
                                 }
 		|	'-' expr %prec NEG
 				{
-		 		  $$ = TERM::minus(app_nesting_depth, $2);
+		 		  $$ = Term::minus(app_nesting_depth, $2);
 				}
 		 |	expr ANDKW expr
 				{
-				  $$ = TERM::and_(app_nesting_depth,
+				  $$ = Term::and_(app_nesting_depth,
 						       $1,$3);
 				}
 		 |	expr ORKW expr
 				{
-				  $$ = TERM::or_(app_nesting_depth,
+				  $$ = Term::or_(app_nesting_depth,
 						       $1,$3);
 				}
 		 |	expr '<' expr
 		 		{
-		 		  $$ = TERM::relop(app_nesting_depth,
+		 		  $$ = Term::relop(app_nesting_depth,
 		 		  		       $1,$3,LESS);
 		 		}
 		 |	expr EQUAL expr
 		 		{
-		 		  $$ = TERM::relop(app_nesting_depth,
+		 		  $$ = Term::relop(app_nesting_depth,
 		 		  		       $1,$3,EQ);
 		 		}
 		 |	expr NOTEQUAL expr
 		 		{
-				  $$ = TERM::relop(app_nesting_depth,
+				  $$ = Term::relop(app_nesting_depth,
 		 		  		       $1,$3,NOTEQ);
 		 		}
 		 |	expr '>' expr
 		 		{
-		 		  $$ = TERM::relop(app_nesting_depth,
+		 		  $$ = Term::relop(app_nesting_depth,
 		 		  		       $1,$3,MORE);
 				}
 		 |	expr LEQUAL expr
 		 		{
-		 		  $$ = TERM::relop(app_nesting_depth,
+		 		  $$ = Term::relop(app_nesting_depth,
 		 		  		       $1,$3,LEQ);
 		 		}
 		 |	expr MEQUAL expr
 		 		{
-		 		  $$ = TERM::relop(app_nesting_depth,
+		 		  $$ = Term::relop(app_nesting_depth,
 		 		  		       $1,$3,MEQ);
 		 		}
 		 |	expr '+' expr
 				{
-				  $$ = TERM::matterm(app_nesting_depth,
+				  $$ = Term::matterm(app_nesting_depth,
 		 		  		       $1,$3,ADD);
 				}
 		 |	expr '-' expr
 				{
-		 		  $$ = TERM::matterm(app_nesting_depth,
+		 		  $$ = Term::matterm(app_nesting_depth,
 		 		  		       $1,$3,SUB);
 				}
 		 |	expr '*' expr
 				{
-		 		  $$ = TERM::matterm(app_nesting_depth,
+		 		  $$ = Term::matterm(app_nesting_depth,
 		 		  		       $1,$3,PROD);
 				}
 		 |	expr DIVKW expr
 				{
-		 		  $$ = TERM::matterm(app_nesting_depth,
+		 		  $$ = Term::matterm(app_nesting_depth,
 		 		  		       $1,$3,DIV);
 				}
 		 |	expr MODKW expr
 				{
-				  $$ = TERM::matterm(app_nesting_depth,
+				  $$ = Term::matterm(app_nesting_depth,
 		 		  		       $1,$3,MOD);
 		 		}
                 ;
 
 expr0           : 	TRUEKW
 				{
-				  $$ = TERM::true_(app_nesting_depth);
+				  $$ = Term::true_(app_nesting_depth);
 				}
 		| 	FALSEKW
 				{
-				  $$ = TERM::false_(app_nesting_depth);
+				  $$ = Term::false_(app_nesting_depth);
 				}
 		| 	NUMCONST
 				{
-				  $$ = TERM::int_(app_nesting_depth,$1);
+				  $$ = Term::int_(app_nesting_depth,$1);
 				}
 		|       ID
 				{
 				  if (defined($1))
-				     $$ = TERM::var(app_nesting_depth,$1);
+				     $$ = Term::var(app_nesting_depth,$1);
 				  else
 				     {
 					signal_error(UNBOUND_VARIABLE);
@@ -517,7 +517,7 @@ expr0           : 	TRUEKW
 				{
                                   pattmp=$3;
                                   $$ = 
-                                    TERM::plambda(app_nesting_depth,$3,$6);
+                                    Term::plambda(app_nesting_depth,$3,$6);
                                   delete pattmp;
 				  st.pop_local_env();
 				}
@@ -533,7 +533,7 @@ expr0           : 	TRUEKW
 				}
 			expr
 				{
-				  $$ = TERM::let_in(app_nesting_depth,
+				  $$ = Term::let_in(app_nesting_depth,
 						      $2,$5,$8);
 				  st.pop_local_env();
 				}
@@ -545,13 +545,13 @@ expr0           : 	TRUEKW
 				 }
 			expr
 				{
-				  $$ = TERM::mu(--app_nesting_depth,
+				  $$ = Term::mu(--app_nesting_depth,
 						     $2,$5);
 				  st.pop_local_env();
 				 }
 		 |	IFKW expr THENKW expr ELSEKW expr
 				{
-				  $$ = TERM::ifelse(app_nesting_depth,
+				  $$ = Term::ifelse(app_nesting_depth,
 						       $2,$4,$6);
 				}
 		 |	list
@@ -561,38 +561,38 @@ expr0           : 	TRUEKW
 
 		 |	NOTKW expr
 		 		{
-				  $$ = TERM::not_(app_nesting_depth,
+				  $$ = Term::not_(app_nesting_depth,
 		 		  		       $2);
 				}
 		 |	CONSKW '(' expr ',' expr ')'
 				{
-		 		  $$ = TERM::list(app_nesting_depth,
+		 		  $$ = Term::list(app_nesting_depth,
 		 		  		       $3,$5);
 		 		}	
 		 |	HEADKW '(' expr ')'
 				{
-		 		  $$ = TERM::car(app_nesting_depth,
+		 		  $$ = Term::car(app_nesting_depth,
 		 		  		       $3);
 		 		}
 		 |	TAILKW '(' expr ')'
 				{
-				  $$ = TERM::cdr(app_nesting_depth,
+				  $$ = Term::cdr(app_nesting_depth,
 		 		  		       $3);
 		 		}
 		 |	TESTNILKW '(' expr ')'
 				{
-		 		  $$ = TERM::testnil(app_nesting_depth,
+		 		  $$ = Term::testnil(app_nesting_depth,
 		 		  		       $3);
 				}
                  ;
 
 list		 :	NILKW
 				{
-				  $$ = TERM::nillist(app_nesting_depth);
+				  $$ = Term::nillist(app_nesting_depth);
 				}
 		 |      '[' ']'
                                 {
-                                  $$ = TERM::nillist(app_nesting_depth);
+                                  $$ = Term::nillist(app_nesting_depth);
 				}
 		 |	'[' exprlist
 				{
@@ -601,17 +601,17 @@ list		 :	NILKW
 		 ;
 exprlist	:	expr ']'
 				{
-				  $$ = TERM::list(app_nesting_depth,
+				  $$ = Term::list(app_nesting_depth,
 						$1,NULL);
 				}
 		|	expr ',' exprlist
 				{
-				  $$ = TERM::list(app_nesting_depth,
+				  $$ = Term::list(app_nesting_depth,
 						$1,$3);
 				}
 		|       expr '|' expr ']'
 				{
-				  $$ = TERM::list(app_nesting_depth,
+				  $$ = Term::list(app_nesting_depth,
 						 $1,$3);
 				}
 		;
@@ -619,7 +619,7 @@ exprlist	:	expr ']'
 applist         :       expr
                 |       expr ',' comlist
                                 {
-		 		  $$ = TERM::list(app_nesting_depth,
+		 		  $$ = Term::list(app_nesting_depth,
 		 		  		       $1,$3);
                                 }
 		|       applist
@@ -628,7 +628,7 @@ applist         :       expr
 				}
 			expr0
 				{ app_nesting_depth--;
-				  $$ = TERM::app(app_nesting_depth,$1,$3);
+				  $$ = Term::app(app_nesting_depth,$1,$3);
 				}
 		;
 
@@ -639,7 +639,7 @@ comlist         :       expr
                                 }
                 |       expr ',' comlist
                                 {
-		 		  $$ = TERM::list(app_nesting_depth,
+		 		  $$ = Term::list(app_nesting_depth,
 		 		  		       $1,$3);
                                 }
 
@@ -650,9 +650,9 @@ comlistpat      :       pattern
                                 }
                 |       pattern ',' comlistpat
                                 {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
                                   pattmp->term=
-                                    TERM::list1(app_nesting_depth,
+                                    Term::list1(app_nesting_depth,
                                               $1->term,$3->term);
                                   pattmp->var_list=
                                     $1->var_list->merge($3->var_list);
@@ -663,9 +663,9 @@ comlistpat      :       pattern
 
 pattern         :       CONSKW '(' pattern ',' pattern ')'
                                 {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
                                   pattmp->term=
-                                    TERM::list1(app_nesting_depth,
+                                    Term::list1(app_nesting_depth,
                                               $3->term,$5->term);
                                   pattmp->var_list=
                                     mergevarlist($3->var_list,$5->var_list);
@@ -675,8 +675,8 @@ pattern         :       CONSKW '(' pattern ',' pattern ')'
                                 }
                 |       NILKW
                                 {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
-                                  pattmp->term=TERM::nillist(app_nesting_depth);
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
+                                  pattmp->term=Term::nillist(app_nesting_depth);
                                   pattmp->var_list=NULL;
                                   $$=pattmp;
                                 }
@@ -686,9 +686,9 @@ pattern         :       CONSKW '(' pattern ',' pattern ')'
                                 }
                 |       ID
                                 {
-                                  pattmp=(PATTERN *)malloc(sizeof(PATTERN));
+                                  pattmp=(Pattern *)malloc(sizeof(Pattern));
                                   pattmp->term=
-                                    TERM::void_(app_nesting_depth);
+                                    Term::void_(app_nesting_depth);
                                   $1->create_variable_binding(NULL);
                                   pattmp->var_list=
                                     makevarlist($1,pattmp->term);
@@ -708,7 +708,7 @@ term    	:	error  EXPRDELIM
 /* The following function checks if an identifier has been */
 /* previously declared */
 static bool defined(
-	STBUCKET	*st
+	StBucket	*st
 )
 			      /* pointer to the bucket for the */
 			      /* identifier */

@@ -21,10 +21,10 @@ extern bool seenode;
 extern bool seetime;
 extern bool seenumber;
 extern char *include_file;
-// extern FORM *del_head;
-// extern FORM *headfree;
-extern FORM *lastinputterm;
-extern FORM *current_pos;
+// extern Form *del_head;
+// extern Form *headfree;
+extern Form *lastinputterm;
+extern Form *current_pos;
 extern int lines;
 extern int option;
 extern unsigned limit;
@@ -45,32 +45,32 @@ extern "C"
 
 char *malloc_da(unsigned size);
 
-VARLIST *makevarlist(
-    STBUCKET *e,
-    TERM *t);
+VarList *makevarlist(
+    StBucket *e,
+    Term *t);
 
-VARLIST *mergevarlist(
-    VARLIST *l1,
-    VARLIST *l2);
+VarList *mergevarlist(
+    VarList *l1,
+    VarList *l2);
 
 // void clean(void);
 
 void connect(
-    FORM *form1,
+    Form *form1,
     int portf1,
-    FORM *form2,
+    Form *form2,
     int portf2);
 
 void connect1(
-    FORM *form1,
+    Form *form1,
     int portf1,
-    FORM *form2,
+    Form *form2,
     int portf2);
 
 void int_connect(
-    FORM *form1,
+    Form *form1,
     int portf1,
-    FORM *form2,
+    Form *form2,
     int portf2);
 
 struct Destroyer final
@@ -80,12 +80,12 @@ public:
     void destroy();
     void no_destroy();
 
-    FORM *alloc();
-    void release(FORM *form);
+    Form *alloc();
+    void release(Form *form);
 
 private:
-    FORM *headfree;
-    FORM *headfull;
+    Form *headfree;
+    Form *headfull;
     unsigned start_nodes;
 };
 
@@ -93,22 +93,22 @@ private:
 
 struct SymbolTable final
 {
-    LOCALENVENTRY *curr_local_env;
+    LocalEnvEntry *curr_local_env;
     SymbolTable();
 
     void pop_local_env();
     void push_local_env();
 
-    STBUCKET *search_bucket(const char *id);
+    StBucket *search_bucket(const char *id);
 
 private:
-    STBUCKET *dictionary[DICTSIZE];
+    StBucket *dictionary[DICTSIZE];
     int curr_nesting_depth;
 
     void reset();
-    STBUCKET *allocate_bucket(const char *id);
+    StBucket *allocate_bucket(const char *id);
     void move_bucket(
-        STBUCKET *st,
+        StBucket *st,
         int dict_index);
     void allocate_local_env_entry();
 };
@@ -116,11 +116,11 @@ private:
 struct Garbage final
 {
 public:
-    FORM *del_head;
+    Form *del_head;
 
     Garbage();
 
-    void del(FORM *form);
+    void del(Form *form);
 
     void clean();
 
@@ -132,7 +132,7 @@ private:
     long unsigned cl_count;
     clock_t usr_garb_time;
     clock_t sys_garb_time;
-    void garbage(FORM *form);
+    void garbage(Form *form);
 };
 
 inline SymbolTable st = SymbolTable();

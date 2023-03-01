@@ -23,7 +23,7 @@
 /* Definitions of functions to be exported.			*/
 /****************************************************************/
 
-void FORM::inspect_driver()
+void Form::inspect_driver()
 {
 	// if (f == NULL)
 	// {
@@ -38,7 +38,7 @@ void FORM::inspect_driver()
 	printf("input next port to visit (0, 1, 2 or 3)\n");
 	printf("input  q  to exit\n");
 
-	FORM *travel = this;
+	Form *travel = this;
 	int c = getchar();
 	while (c != 'q')
 	{
@@ -55,7 +55,7 @@ void FORM::inspect_driver()
 	printf("**** end of inspection mode ****\n\n");
 }
 
-FORM *FORM::inspect(int p)
+Form *Form::inspect(int p)
 {
 	bool ok = true;
 	switch (p)
@@ -150,7 +150,7 @@ FORM *FORM::inspect(int p)
 		return this;
 	}
 
-	FORM *nextform = this->nform[p];
+	Form *nextform = this->nform[p];
 	switch (nextform->kind)
 	{
 	case FAN:

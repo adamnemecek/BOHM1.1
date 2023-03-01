@@ -32,15 +32,15 @@
 
 #define DIM_REL 256
 
-// static COPY_FORM *copy_relation[DIM_REL];
+// static CopyForm *copy_relation[DIM_REL];
 
-FORM *copy_connect(
-	FORM *temp,
+Form *copy_connect(
+	Form *temp,
 	int port,
-	FORM *newf1,
+	Form *newf1,
 	int offset)
 {
-	FORM *ret;
+	Form *ret;
 	if (temp->nport[port] >= 0)
 	{
 		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
@@ -54,13 +54,13 @@ FORM *copy_connect(
 	return ret;
 }
 
-FORM *copy_connect1(
-	FORM *temp,
+Form *copy_connect1(
+	Form *temp,
 	int port,
-	FORM *newf1,
+	Form *newf1,
 	int offset)
 {
-	FORM *ret;
+	Form *ret;
 	if (temp->nport[port] >= 0)
 	{
 		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
@@ -76,7 +76,7 @@ FORM *copy_connect1(
 
 struct Relations final
 {
-	COPY_FORM *copy_relation[DIM_REL];
+	CopyForm *copy_relation[DIM_REL];
 
 	Relations()
 	{
@@ -104,7 +104,7 @@ struct Relations final
 
 		for (int i = 0; i < DIM_REL; i++)
 		{
-			COPY_FORM *dep;
+			CopyForm *dep;
 			while ((dep = copy_relation[i]) != NULL)
 			{
 				copy_relation[i] = dep->next;
@@ -115,10 +115,10 @@ struct Relations final
 
 	// The following function inserts a two-form relation in the table.
 	// put_relation(
-	void store(FORM *src, FORM *dest)
+	void store(Form *src, Form *dest)
 	{
 		int dep1 = src->hash();
-		COPY_FORM *dep = new COPY_FORM(src, dest, this->copy_relation[dep1]);
+		CopyForm *dep = new CopyForm(src, dest, this->copy_relation[dep1]);
 
 		this->copy_relation[dep1] = dep;
 	}
@@ -126,9 +126,9 @@ struct Relations final
 	// The following function checks whether or not a form has
 	// already been copied.
 	// is_in_relation
-	FORM *rel(FORM *src)
+	Form *rel(Form *src)
 	{
-		COPY_FORM *dep = this->copy_relation[src->hash()];
+		CopyForm *dep = this->copy_relation[src->hash()];
 		if (dep == NULL)
 		{
 			return NULL;
@@ -152,11 +152,11 @@ inline Relations rel = Relations();
 
 // The following function initialises the hash table, calls
 // function copy_aux and eliminates the table.
-FORM *FORM::copy(
+Form *Form::copy(
 	int p,
 	int offset)
 {
-	FORM *risul;
+	Form *risul;
 	rel.start();
 	if (p < 0)
 	{
@@ -172,18 +172,18 @@ FORM *FORM::copy(
 
 // The following function duplicates the input graph and
 // returns it as output.
-FORM *FORM::copy_aux(int p, int offset)
+Form *Form::copy_aux(int p, int offset)
 {
-	FORM *newf1;
-	FORM *newf2;
-	FORM *newf3;
+	Form *newf1;
+	Form *newf2;
+	Form *newf3;
 	int q;
 
-	FORM *temp = this;
+	Form *temp = this;
 	switch (temp->kind)
 	{
 	case TRIANGLE:
-		newf1 = new FORM(temp->kind, temp->index + offset);
+		newf1 = new Form(temp->kind, temp->index + offset);
 		newf1->nlevel[1] = temp->nlevel[1];
 		newf2 = copy_connect1(temp, 0, newf1, offset);
 		return newf1;
@@ -212,7 +212,7 @@ FORM *FORM::copy_aux(int p, int offset)
 		{
 			q = 0;
 		}
-		newf1 = new FORM(temp->kind, temp->index + offset);
+		newf1 = new Form(temp->kind, temp->index + offset);
 		newf1->num_safe = temp->num_safe;
 		newf1->nform[2] = temp->nform[2];
 		newf2 = copy_connect(temp, q, newf1, offset);
@@ -224,7 +224,7 @@ FORM *FORM::copy_aux(int p, int offset)
 		{
 			return rel.rel(temp);
 		}
-		newf1 = new FORM(temp->kind, temp->index + offset);
+		newf1 = new Form(temp->kind, temp->index + offset);
 		rel.store(temp, newf1);
 		newf2 = temp->nform[1]->copy_aux(temp->nport[1], offset);
 		::connect1(newf1, 1, newf2, temp->nport[1]);
@@ -239,7 +239,7 @@ FORM *FORM::copy_aux(int p, int offset)
 		{
 			return newf1;
 		}
-		newf1 = new FORM(temp->kind, temp->index + offset);
+		newf1 = new Form(temp->kind, temp->index + offset);
 		newf1->nlevel[1] = temp->nlevel[1];
 		newf1->nlevel[2] = temp->nlevel[2];
 		rel.store(temp, newf1);
@@ -262,13 +262,13 @@ FORM *FORM::copy_aux(int p, int offset)
 	case LEQ:
 	case MEQ:
 	case IFELSE:
-		newf1 = new FORM(temp->kind, temp->index + offset);
+		newf1 = new Form(temp->kind, temp->index + offset);
 		newf2 = copy_connect(temp, 0, newf1, offset);
 		newf3 = copy_connect(temp, 2, newf1, offset);
 		return newf1;
 
 	case CONS:
-		newf1 = new FORM(temp->kind, temp->index + offset);
+		newf1 = new Form(temp->kind, temp->index + offset);
 		newf2 = copy_connect(temp, 1, newf1, offset);
 		newf3 = copy_connect(temp, 2, newf1, offset);
 		return newf1;
@@ -279,18 +279,18 @@ FORM *FORM::copy_aux(int p, int offset)
 
 // The following function inserts a two-form relation in the table.
 // static void put_relation(
-// 	FORM *src,
-// 	FORM *dest)
+// 	Form *src,
+// 	Form *dest)
 // {
 // 	int dep1 = src->hash();
-// 	COPY_FORM *dep = new COPY_FORM(src, dest, copy_relation[dep1]);
+// 	CopyForm *dep = new CopyForm(src, dest, copy_relation[dep1]);
 
 // 	copy_relation[dep1] = dep;
 // }
 
-// static FORM *is_in_relation(FORM *src)
+// static Form *is_in_relation(Form *src)
 // {
-// 	COPY_FORM *dep = copy_relation[src->hash()];
+// 	CopyForm *dep = copy_relation[src->hash()];
 // 	if (dep == NULL)
 // 		return NULL;
 
@@ -303,7 +303,7 @@ FORM *FORM::copy_aux(int p, int offset)
 // }
 
 // The following function implements hash function.
-int FORM::hash()
+int Form::hash()
 {
 	unsigned long risul = (unsigned long)this;
 	risul = risul / 8 * 13;

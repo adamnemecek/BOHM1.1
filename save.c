@@ -36,11 +36,11 @@
 //**************************************************************
 
 FILE *save_file;
-ELEM *head, *tail;
+Elem *head, *tail;
 int max;
 
 // static void put_int(
-// 	FORM *f,
+// 	Form *f,
 // 	int p);
 static int num_port(int name);
 
@@ -49,7 +49,7 @@ static int num_port(int name);
 //**************************************************************
 
 // The following function saves a graph on a file.
-void FORM::save(
+void Form::save(
 	char *name,
 	char *id)
 {
@@ -72,12 +72,12 @@ void FORM::save(
 	{
 		this->nform[0]->save_aux(this->nport[0]);
 	}
-	ELEM *p = head;
+	Elem *p = head;
 	fprintf(save_file, "\n\n\nI N D E X :\n\n");
 	while (p != NULL)
 	{
 		p->eindex();
-		ELEM *dep = p;
+		Elem *dep = p;
 		p = p->next;
 		free(dep);
 	}
@@ -98,11 +98,11 @@ void FORM::save(
 
 // The following function checks whether a form has already
 // been copied once.
-int FORM::present()
+int Form::present()
 {
 	int risp = true;
 
-	ELEM *p = head;
+	Elem *p = head;
 	while (p != NULL && risp)
 	{
 		if (p->node == this)
@@ -120,7 +120,7 @@ int FORM::present()
 		return risp;
 	}
 
-	ELEM *alloc = new ELEM(NULL, 0, NULL);
+	Elem *alloc = new Elem(NULL, 0, NULL);
 
 	if (head == NULL)
 	{
@@ -138,7 +138,7 @@ int FORM::present()
 }
 
 // The following function saves on file a link
-void FORM::stampa(
+void Form::stampa(
 	int p,
 	int card)
 {
@@ -159,7 +159,7 @@ void FORM::stampa(
 }
 
 // The following function saves any graph part.
-void FORM::save_aux(
+void Form::save_aux(
 	int p)
 {
 	int card = this->present();
@@ -184,13 +184,13 @@ void FORM::save_aux(
 }
 
 // The following function prints form name.
-void FORM::put_form()
+void Form::put_form()
 {
 	fprintf(save_file, kind_desc(this->kind));
 }
 
 // The following function prints NIL, INT and BOOL forms names.
-void FORM::put_int(const int p)
+void Form::put_int(const int p)
 {
 	switch (p)
 	{
@@ -268,7 +268,7 @@ static int num_port(int name)
 }
 
 // The following function saves a file index row
-void ELEM::eindex()
+void Elem::eindex()
 {
 	fprintf(save_file, "%3d ", this->num);
 	this->node->put_form();

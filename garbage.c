@@ -50,7 +50,7 @@
 // 4. Definitions of variables to be exported.
 //***********************************************************************
 
-// FORM *del_head = NULL; // head of erases list
+// Form *del_head = NULL; // head of erases list
 
 //***********************************************************************
 // 5. Definitions of functions to be exported.
@@ -60,13 +60,13 @@
 // the first node.
 Garbage::Garbage()
 {
-	del_head = (FORM *)malloc_da(sizeof(FORM));
+	del_head = (Form *)malloc_da(sizeof(Form));
 	del_head->nform[1] = NULL;
 }
 
 // The following function insert a new erase operator at the
 // head of a list to be scanned when the G.C. is activated.
-void Garbage::del(FORM *form)
+void Garbage::del(Form *form)
 {
 	form->index = EXISTENT;
 	form->nform[1] = del_head->nform[1];
@@ -80,7 +80,7 @@ void Garbage::del(FORM *form)
 // originated by duplication rules during travelling.
 void Garbage::clean()
 {
-	FORM *q;
+	Form *q;
 	struct tms partial_time, final_time;
 	if (seegarb)
 	{
@@ -126,17 +126,17 @@ void user(void)
 
 // The following function performs the propagation of a single
 // erase node by applicating garbage rules.
-void Garbage::garbage(FORM *f1)
+void Garbage::garbage(Form *f1)
 {
 
 	bool end = false;
-	FORM *newform;
+	Form *newform;
 	int p1, p2;
 	auto [nextform, nextport] = f1->port(0);
 	f1->release();
 	while (!end)
 	{
-		FORM *form = nextform;
+		Form *form = nextform;
 		int port = nextport;
 		// we have found a variable
 		if (port < 0)
@@ -190,7 +190,7 @@ void Garbage::garbage(FORM *f1)
 					else
 					{
 						form->kind = TRIANGLE;
-						newform = new FORM(propagate_kind(form->kind), form->index);
+						newform = new Form(propagate_kind(form->kind), form->index);
 						newform->connect1(0, form->port(0));
 						::connect(newform, 1, form, 0);
 						form->index -= 1;
@@ -387,7 +387,7 @@ void Garbage::show_stats(bool seetime)
 	}
 }
 
-void FORM::del()
+void Form::del()
 {
 	gc.del(this);
 }

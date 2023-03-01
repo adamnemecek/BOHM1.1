@@ -52,15 +52,15 @@
 //               all forms removed from the graph.
 //		 These forms will be used for future
 //		 allocations.
-//  -new FORM(): it allocates a new graphical form.
+//  -new Form(): it allocates a new graphical form.
 // The functions buildvarterm(), buildplambdaterm(),
 // buildappterm() and buildletinterm() etc. are called by the
 // parser.
-// The functions connect() andnew FORM() are also used
+// The functions connect() andnew Form() are also used
 // during reduction.
 // The following functions are local to the module:
 //  - allocate_var(): it allocates a new entry for a variable.
-//  - new TERM(): it allocates a new entry for a term.
+//  - new Term(): it allocates a new entry for a term.
 //  - makebox(): it builds a box around a term.
 //  - addbrackets(): it adds a sequence of brackets of
 //                   specified index along a sequence of
@@ -77,86 +77,86 @@ unsigned num_nodes, max_nodes;
 
 unsigned length_list = 0;
 
-static VARENTRY *addbrackets(
+static VarEntry *addbrackets(
 	int index,
-	VARENTRY *listvar);
+	VarEntry *listvar);
 
-static VARENTRY *share(
+static VarEntry *share(
 	int index,
-	VARENTRY *l1,
-	VARENTRY *l2);
+	VarEntry *l1,
+	VarEntry *l2);
 
-static VARENTRY *lookfor(
-	STBUCKET *id,
-	VARENTRY *listvar);
+static VarEntry *lookfor(
+	StBucket *id,
+	VarEntry *listvar);
 
-static VARENTRY *remv(
-	STBUCKET *id,
-	VARENTRY *listvar);
+static VarEntry *remv(
+	StBucket *id,
+	VarEntry *listvar);
 
-static VARENTRY *remvp(
-	VARLIST *vl,
-	VARENTRY *listvar);
+static VarEntry *remvp(
+	VarList *vl,
+	VarEntry *listvar);
 
-// static VARENTRY *allocate_var(
-// 	STBUCKET *id,
-// 	FORM *form,
-// 	VARENTRY *nextvar);
+// static VarEntry *allocate_var(
+// 	StBucket *id,
+// 	Form *form,
+// 	VarEntry *nextvar);
 
-static void closeglobalvars(VARENTRY *listvar);
+static void closeglobalvars(VarEntry *listvar);
 
 // The following function creates the graph representation of
 // a variable
-TERM *TERM::var(
+Term *Term::var(
 	int level,
-	STBUCKET *id)
+	StBucket *id)
 {
 	// pointer to the new form to be created
-	FORM *newf = new FORM(TRIANGLE, level);
+	Form *newf = new Form(TRIANGLE, level);
 	newf->nlevel[1] = -1;
 
 	// pointer to the new free variable entry
-	VARENTRY *newvar = new VARENTRY(id, newf, NULL);
-	return new TERM(newf, 1, newvar);
+	VarEntry *newvar = new VarEntry(id, newf, NULL);
+	return new Term(newf, 1, newvar);
 }
 
 // The following function creates the graph representation of
 // a true constant
-TERM *TERM::true_(int level)
+Term *Term::true_(int level)
 {
-	return new TERM(NULL, T, NULL);
+	return new Term(NULL, T, NULL);
 }
 
 // The following function creates the graph representation of
 // a false constant
-TERM *TERM::false_(int level)
+Term *Term::false_(int level)
 {
-	return new TERM(NULL, F, NULL);
+	return new Term(NULL, F, NULL);
 }
 
 // The following function creates the graph representation of
 // a numerical constant
-TERM *TERM::int_(
+Term *Term::int_(
 	int level,
 	long int value)
 {
-	return new TERM((FORM *)value, INT, NULL);
+	return new Term((Form *)value, INT, NULL);
 }
 
 // The following function creates the graph representation of a
 // lambda-abstraction
-TERM *TERM::lambda(
+Term *Term::lambda(
 	int level,
-	STBUCKET *id,
-	TERM *body)
+	StBucket *id,
+	Term *body)
 {
-	TERM *t; // pointer to the new TERM to be created
+	Term *t; // pointer to the new Term to be created
 
-	VARENTRY *boundvar = lookfor(id, body->vars);
+	VarEntry *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
-		FORM *newf1 = new FORM(LAMBDA, level);
-		FORM *varform = boundvar->var;
+		Form *newf1 = new Form(LAMBDA, level);
+		Form *varform = boundvar->var;
 		if (varform->kind == TRIANGLE && varform->nlevel[1] == 0)
 		{
 			connect(varform->nform[1],
@@ -170,29 +170,29 @@ TERM *TERM::lambda(
 		}
 		newf1->connect(1, body);
 		// newf1->connect1(1, body);
-		t = new TERM(newf1, 0, remv(id, body->vars));
+		t = new Term(newf1, 0, remv(id, body->vars));
 	}
 	else
 	{
-		FORM *newf1 = new FORM(LAMBDAUNB, level);
-		t = new TERM(newf1, 0, body->vars);
+		Form *newf1 = new Form(LAMBDAUNB, level);
+		t = new Term(newf1, 0, body->vars);
 		newf1->connect1(1, body);
 	}
 	free(body);
 	return t;
 }
 
-TERM *TERM::plambda(
+Term *Term::plambda(
 	int level,
-	PATTERN *pattern,
-	TERM *body)
+	Pattern *pattern,
+	Term *body)
 {
-	TERM *t; // pointer to the new TERM to be created
-	VARLIST *vp;
-	FORM *newf1;
-	FORM *newf2;		// pointers to the new forms to be created
-	VARENTRY *boundvar; // pointer to the entry for the bound variable
-	FORM *varform;		// pointer to the bound variable form
+	Term *t; // pointer to the new Term to be created
+	VarList *vp;
+	Form *newf1;
+	Form *newf2;		// pointers to the new forms to be created
+	VarEntry *boundvar; // pointer to the entry for the bound variable
+	Form *varform;		// pointer to the bound variable form
 	bool boundp;
 
 	for (vp = pattern->var_list, boundp = false; vp; vp = vp->next)
@@ -204,13 +204,13 @@ TERM *TERM::plambda(
 
 	if (boundp)
 	{
-		newf1 = new FORM(LAMBDA, level);
+		newf1 = new Form(LAMBDA, level);
 		connect(pattern->term->root_form, 0, newf1, 2);
 		for (vp = pattern->var_list; vp != NULL; vp = vp->next)
 		{
 			if ((boundvar = lookfor(vp->id->id, body->vars)) == 0)
 			{
-				newf2 = new FORM(ERASE, level);
+				newf2 = new Form(ERASE, level);
 				connect(newf2, 0, vp->id->form->nform[0], vp->id->form->nport[0]);
 			}
 			else
@@ -237,14 +237,14 @@ TERM *TERM::plambda(
 			}
 			vp->id->form->release();
 		} // for
-		t = new TERM(newf1, 0, remvp(pattern->var_list, body->vars));
+		t = new Term(newf1, 0, remvp(pattern->var_list, body->vars));
 		connect(newf1, 1, body->root_form, body->root_ports);
 	}
 	else
 	{
 		// apparent memory leak, but there's the destroyer
-		newf1 = new FORM(LAMBDAUNB, level);
-		t = new TERM(newf1, 0, body->vars);
+		newf1 = new Form(LAMBDAUNB, level);
+		t = new Term(newf1, 0, body->vars);
 		newf1->connect1(1, body);
 	}
 	free(body);
@@ -253,24 +253,24 @@ TERM *TERM::plambda(
 
 // The following function creates the graph representation of a
 // recursive definition.
-TERM *TERM::mu(
+Term *Term::mu(
 	int level,
-	STBUCKET *id,
-	TERM *body)
+	StBucket *id,
+	Term *body)
 {
-	TERM *t;
-	// pointer to the new TERM to be created
-	TERM *temp;
-	FORM *newf1; // pointer to the new form to be created
+	Term *t;
+	// pointer to the new Term to be created
+	Term *temp;
+	Form *newf1; // pointer to the new form to be created
 
-	FORM *varform;
+	Form *varform;
 	// pointer to the bound variable form
 
 	// pointer to the entry for the bound variable
-	VARENTRY *boundvar = lookfor(id, body->vars);
+	VarEntry *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
-		newf1 = new FORM(FAN, level);
+		newf1 = new Form(FAN, level);
 		newf1->nlevel[1] = -1;
 		newf1->nlevel[2] = 1;
 		varform = boundvar->var;
@@ -287,17 +287,17 @@ TERM *TERM::mu(
 		{
 			newf1->intelligent_connect(2, varform);
 		}
-		temp = new TERM(newf1, 1, remv(id, body->vars));
+		temp = new Term(newf1, 1, remv(id, body->vars));
 		t = temp->makebox(level);
 		newf1->connect(0, body);
 	}
 	else
 	{
-		newf1 = new FORM(TRIANGLE, level);
+		newf1 = new Form(TRIANGLE, level);
 		newf1->nlevel[1] = -1;
 		newf1->connect1(0, body);
 
-		temp = new TERM(newf1, 1, body->vars);
+		temp = new Term(newf1, 1, body->vars);
 		t = temp->makebox(level);
 	}
 	free(body);
@@ -306,21 +306,21 @@ TERM *TERM::mu(
 
 // The following function creates the graph representation of
 // an application
-TERM *TERM::app(
+Term *Term::app(
 	int level,
-	TERM *fun,
-	TERM *arg)
+	Term *fun,
+	Term *arg)
 {
-	TERM *temp = arg->makebox(level);
+	Term *temp = arg->makebox(level);
 	// free variables of the application
-	FORM *newf = new FORM(APP, level);
+	Form *newf = new Form(APP, level);
 
 	newf->connect1(0, fun);
 	newf->connect1(2, temp);
 
-	VARENTRY *newvars = share(level, fun->vars, temp->vars);
+	VarEntry *newvars = share(level, fun->vars, temp->vars);
 
-	TERM *t = new TERM(newf, 1, newvars);
+	Term *t = new Term(newf, 1, newvars);
 	free(arg);
 	free(fun);
 	return t;
@@ -328,15 +328,15 @@ TERM *TERM::app(
 
 // The following function creates the graph representation of
 // an if_then_else term
-TERM *TERM::ifelse(
+Term *Term::ifelse(
 	int level,
-	TERM *arg1,
-	TERM *arg2,
-	TERM *arg3)
+	Term *arg1,
+	Term *arg2,
+	Term *arg3)
 {
 	// free variables of the application
-	FORM *newf = new FORM(IFELSE, level);
-	FORM *newf1 = new FORM(CONS, level);
+	Form *newf = new Form(IFELSE, level);
+	Form *newf1 = new Form(CONS, level);
 	// pointers to the new forms
 
 	newf->connect1(0, arg1);
@@ -345,11 +345,11 @@ TERM *TERM::ifelse(
 	newf1->connect1(1, arg2);
 	newf1->connect1(2, arg3);
 
-	VARENTRY *tempvars = share(level, arg2->vars, arg3->vars);
-	VARENTRY *newvars = share(level, tempvars, arg1->vars);
+	VarEntry *tempvars = share(level, arg2->vars, arg3->vars);
+	VarEntry *newvars = share(level, tempvars, arg1->vars);
 
 	// pointer to the term to be created
-	TERM *t = new TERM(newf, 1, newvars);
+	Term *t = new Term(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	free(arg3);
@@ -358,34 +358,34 @@ TERM *TERM::ifelse(
 
 // The following function creates the graph representation of
 // a let_in expression
-TERM *TERM::let_in(
+Term *Term::let_in(
 	int level,
-	STBUCKET *id,
-	TERM *arg1,
-	TERM *arg2)
+	StBucket *id,
+	Term *arg1,
+	Term *arg2)
 {
-	TERM *temp = TERM::lambda(level, id, arg2);
-	return TERM::app(level, temp, arg1);
+	Term *temp = Term::lambda(level, id, arg2);
+	return Term::app(level, temp, arg1);
 }
 
 // The following function creates the graph representation of
 // a boolean and-expression
-TERM *TERM::and_(
+Term *Term::and_(
 	int level,
-	TERM *arg1,
-	TERM *arg2)
+	Term *arg1,
+	Term *arg2)
 {
 	// pointer to the new form to be created
-	FORM *newf = new FORM(AND, level);
+	Form *newf = new Form(AND, level);
 
 	newf->connect1(0, arg1);
 	newf->connect1(2, arg2);
 
 	// free variables of the application
-	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
+	VarEntry *newvars = share(level, arg1->vars, arg2->vars);
 
 	// pointer to the term to be created
-	TERM *t = new TERM(newf, 1, newvars);
+	Term *t = new Term(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
@@ -393,22 +393,22 @@ TERM *TERM::and_(
 
 // The following function creates the graph representation of
 // a boolean or-expression
-TERM *TERM::or_(
+Term *Term::or_(
 	int level,
-	TERM *arg1,
-	TERM *arg2)
+	Term *arg1,
+	Term *arg2)
 {
 	// pointer to the new form to be created
-	FORM *newf = new FORM(OR, level);
+	Form *newf = new Form(OR, level);
 
 	newf->connect1(0, arg1);
 	newf->connect1(2, arg2);
 
 	// free variables of the application
-	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
+	VarEntry *newvars = share(level, arg1->vars, arg2->vars);
 
 	// pointer to the term to be created
-	TERM *t = new TERM(newf, 1, newvars);
+	Term *t = new Term(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
@@ -416,34 +416,34 @@ TERM *TERM::or_(
 
 // The following function creates the graph representation of
 // a boolean not-expression
-TERM *TERM::not_(
+Term *Term::not_(
 	int level,
-	TERM *arg)
+	Term *arg)
 {
 	// pointer to the new form to be created
-	FORM *newf = new FORM(NOT, level);
+	Form *newf = new Form(NOT, level);
 
 	newf->connect1(0, arg);
 
 	// pointer to the term to be created
-	TERM *t = new TERM(newf, 1, arg->vars);
+	Term *t = new Term(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
 
 // The following function creates the graph representation of
 // a mat-expression
-TERM *TERM::matterm(
+Term *Term::matterm(
 	int level,
-	TERM *arg1,
-	TERM *arg2,
+	Term *arg1,
+	Term *arg2,
 	int op)
 {
 	// pointer to the term to be created
-	TERM *t;
+	Term *t;
 
 	// pointer to the new form to be created
-	FORM *newf = new FORM(op, level);
+	Form *newf = new Form(op, level);
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
@@ -466,7 +466,7 @@ TERM *TERM::matterm(
 			break;
 		}
 		newf->connect1(0, arg2);
-		t = new TERM(newf, 1, arg2->vars);
+		t = new Term(newf, 1, arg2->vars);
 	}
 	else
 	{
@@ -480,7 +480,7 @@ TERM *TERM::matterm(
 				break;
 			case SUB:
 				newf->kind = ADD1;
-				newf->nform[2] = (FORM *)-(long int)newf->nform[2];
+				newf->nform[2] = (Form *)-(long int)newf->nform[2];
 				break;
 			case PROD:
 				newf->kind = PROD1;
@@ -488,7 +488,7 @@ TERM *TERM::matterm(
 			}
 			newf->connect1(0, arg1);
 
-			t = new TERM(newf, 1, arg1->vars);
+			t = new Term(newf, 1, arg1->vars);
 		}
 		else
 		{
@@ -496,8 +496,8 @@ TERM *TERM::matterm(
 			newf->connect1(2, arg2);
 			// free variables of the application
 
-			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-			t = new TERM(newf, 1, newvars);
+			VarEntry *newvars = share(level, arg1->vars, arg2->vars);
+			t = new Term(newf, 1, newvars);
 		}
 	}
 	free(arg1);
@@ -507,38 +507,38 @@ TERM *TERM::matterm(
 
 // The following function creates the graph representation of
 // a unary minus-expression
-TERM *TERM::minus(
+Term *Term::minus(
 	int level,
-	TERM *arg1)
+	Term *arg1)
 {
 	// pointer to the term to be created
 	if (arg1->root_ports == INT)
 	{
-		arg1->root_form = (FORM *)(-(long int)arg1->root_form);
+		arg1->root_form = (Form *)(-(long int)arg1->root_form);
 		return arg1;
 	}
 	// pointer to the new form to be created
-	FORM *newf = new FORM(SUB1, level);
+	Form *newf = new Form(SUB1, level);
 	newf->num_safe = 0;
 	newf->connect1(0, arg1);
-	TERM *t = new TERM(newf, 1, arg1->vars);
+	Term *t = new Term(newf, 1, arg1->vars);
 	free(arg1);
 	return t;
 }
 
 // The following function creates the graph representation of
 // a relop-expression
-TERM *TERM::relop(
+Term *Term::relop(
 	int level,
-	TERM *arg1,
-	TERM *arg2,
+	Term *arg1,
+	Term *arg2,
 	int relop)
 {
 	// pointer to the term to be created
-	TERM *t;
+	Term *t;
 
 	// pointer to the new form to be created
-	FORM *newf = new FORM(relop, level);
+	Form *newf = new Form(relop, level);
 
 	if (arg1->root_ports == INT)
 	{
@@ -565,7 +565,7 @@ TERM *TERM::relop(
 			break;
 		}
 		newf->connect1(0, arg2);
-		t = new TERM(newf, 1, arg2->vars);
+		t = new Term(newf, 1, arg2->vars);
 	}
 	else
 	{
@@ -594,15 +594,15 @@ TERM *TERM::relop(
 				break;
 			}
 			newf->connect1(0, arg1);
-			t = new TERM(newf, 1, arg1->vars);
+			t = new Term(newf, 1, arg1->vars);
 		}
 		else
 		{
 			newf->connect1(0, arg1);
 			newf->connect1(2, arg2);
 			// free variables of the application
-			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-			t = new TERM(newf, 1, newvars);
+			VarEntry *newvars = share(level, arg1->vars, arg2->vars);
+			t = new Term(newf, 1, newvars);
 		}
 	}
 	free(arg1);
@@ -610,33 +610,33 @@ TERM *TERM::relop(
 	return t;
 }
 
-TERM *TERM::nillist(int level)
+Term *Term::nillist(int level)
 {
-	return new TERM(NULL, NIL, NULL);
+	return new Term(NULL, NIL, NULL);
 }
 
-TERM *TERM::list(
+Term *Term::list(
 	int level,
-	TERM *arg1,
-	TERM *arg2)
+	Term *arg1,
+	Term *arg2)
 {
-	TERM *t; // pointer to the term to be created
+	Term *t; // pointer to the term to be created
 	// pointer to the new form to be created
 
-	FORM *newf1 = new FORM(CONS, level);
+	Form *newf1 = new Form(CONS, level);
 
 	newf1->connect1(1, arg1);
 
 	if (arg2 != NULL)
 	{
 		newf1->connect1(2, arg2);
-		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-		t = new TERM(newf1, 0, newvars);
+		VarEntry *newvars = share(level, arg1->vars, arg2->vars);
+		t = new Term(newf1, 0, newvars);
 	}
 	else
 	{
 		newf1->bool_connect(2, NIL);
-		t = new TERM(newf1, 0, arg1->vars);
+		t = new Term(newf1, 0, arg1->vars);
 	}
 
 	free(arg1);
@@ -644,28 +644,28 @@ TERM *TERM::list(
 	return t;
 }
 
-TERM *TERM::list1(
+Term *Term::list1(
 	int level,
-	TERM *arg1,
-	TERM *arg2)
+	Term *arg1,
+	Term *arg2)
 {
-	TERM *t; // pointer to the term to be created
+	Term *t; // pointer to the term to be created
 	// pointer to the new form to be created
 
-	FORM *newf1 = new FORM(CONS1, level);
+	Form *newf1 = new Form(CONS1, level);
 	newf1->connect1(1, arg1);
 
 	if (arg2 != NULL)
 	{
 		newf1->connect1(2, arg2);
 
-		VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
-		t = new TERM(newf1, 0, newvars);
+		VarEntry *newvars = share(level, arg1->vars, arg2->vars);
+		t = new Term(newf1, 0, newvars);
 	}
 	else
 	{
 		newf1->bool_connect(2, NIL);
-		t = new TERM(newf1, 0, arg1->vars);
+		t = new Term(newf1, 0, arg1->vars);
 	}
 
 	free(arg1);
@@ -673,47 +673,47 @@ TERM *TERM::list1(
 	return t;
 }
 
-TERM *TERM::car(
+Term *Term::car(
 	int level,
-	TERM *arg)
+	Term *arg)
 {
 	// pointer to the new form to be created
-	FORM *newf = new FORM(CAR, level);
+	Form *newf = new Form(CAR, level);
 	newf->connect1(0, arg);
-	TERM *t = new TERM(newf, 1, arg->vars);
+	Term *t = new Term(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
 
-TERM *TERM::cdr(
+Term *Term::cdr(
 	int level,
-	TERM *arg)
+	Term *arg)
 {
 	// pointer to the new form to be created
-	FORM *newf = new FORM(CDR, level);
+	Form *newf = new Form(CDR, level);
 	newf->connect1(0, arg);
-	TERM *t = new TERM(newf, 1, arg->vars);
+	Term *t = new Term(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
 
-TERM *TERM::testnil(
+Term *Term::testnil(
 	int level,
-	TERM *arg)
+	Term *arg)
 {
 	// pointer to the new form to be created
-	FORM *newf = new FORM(TESTNIL, level);
+	Form *newf = new Form(TESTNIL, level);
 	newf->connect1(0, arg);
-	TERM *t = new TERM(newf, 1, arg->vars);
+	Term *t = new Term(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
 
 // the following function adds a root node to a term
-FORM *TERM::close(
+Form *Term::close(
 	int level)
 {
-	FORM *newroot = new FORM(ROOT, 0);
+	Form *newroot = new Form(ROOT, 0);
 
 	newroot->connect1(0, this);
 
@@ -727,7 +727,7 @@ FORM *TERM::close(
 
 // the following function allocate a new graphical form
 // and initialize the name and index fields
-FORM::FORM(
+Form::Form(
 	// name of the form
 	int kind,
 	// index of the form
@@ -752,7 +752,7 @@ FORM::FORM(
 // the following function adds a graphical form to deallocate
 // in a list of free forms (i.e a free-list of forms)
 
-void FORM::release()
+void Form::release()
 {
 	this->prev->next = this->next;
 	this->next->prev = this->prev;
@@ -763,9 +763,9 @@ void FORM::release()
 // the following function connects together the port portf1 of
 // form1 to the port portf2 of form2
 void connect(
-	FORM *form1,
+	Form *form1,
 	int portf1,
-	FORM *form2,
+	Form *form2,
 	int portf2)
 {
 	form1->nport[portf1] = portf2;
@@ -778,9 +778,9 @@ void connect(
 // the port portf2 of form2 and vice versa if the form2 is not
 // a NIL, INT, True or False form.
 void connect1(
-	FORM *form1,
+	Form *form1,
 	int portf1,
-	FORM *form2,
+	Form *form2,
 	int portf2)
 {
 	form1->nport[portf1] = portf2;
@@ -797,9 +797,9 @@ void PORT::connect1(PORT other)
 	::connect1(form, port, other.form, other.port);
 }
 
-void FORM::connect1(
+void Form::connect1(
 	int portf1,
-	TERM *term)
+	Term *term)
 {
 	::connect1(
 		this,
@@ -807,17 +807,17 @@ void FORM::connect1(
 		term->root_form, term->root_ports);
 }
 
-void FORM::connect(int port, TERM *term)
+void Form::connect(int port, Term *term)
 {
 	::connect(this, port, term->root_form, term->root_ports);
 }
 
-void FORM::connect(int port, PORT p)
+void Form::connect(int port, PORT p)
 {
 	::connect(this, port, p.form, p.port);
 }
 
-void FORM::connect1(int port, PORT p)
+void Form::connect1(int port, PORT p)
 {
 	::connect1(this, port, p.form, p.port);
 }
@@ -825,21 +825,21 @@ void FORM::connect1(int port, PORT p)
 // the following function connects only the port portf1 of
 // form1 to the port portf2 of form2, because form2 is a INT
 void int_connect(
-	FORM *form1,
+	Form *form1,
 	int portf1,
-	FORM *form2,
+	Form *form2,
 	int portf2)
 {
 	form1->nport[portf1] = portf2;
 	form1->nform[portf1] = form2;
 }
 
-void FORM::binop(long int (&op)(long int, long int))
+void Form::binop(long int (&op)(long int, long int))
 {
 	int_connect(
 		this->nform[1],
 		this->nport[1],
-		(FORM *)op((long int)this->nform[2], (long int)this->nform[0]),
+		(Form *)op((long int)this->nform[2], (long int)this->nform[0]),
 		INT);
 }
 //**************************************************************
@@ -847,28 +847,28 @@ void FORM::binop(long int (&op)(long int, long int))
 //**************************************************************
 
 // the following function allocate a new variable entry
-VARENTRY::VARENTRY(
+VarEntry::VarEntry(
 	// identifier of the variable
-	STBUCKET *id,
+	StBucket *id,
 	// graphical form for the variable
-	FORM *form,
+	Form *form,
 	// pointer to the next free variable
-	VARENTRY *nextvar)
+	VarEntry *nextvar)
 {
 	this->name = id;
 	this->var = form;
 	this->next = nextvar;
 }
 
-// the following function allocate a new TERM entry
-TERM::TERM(
+// the following function allocate a new Term entry
+Term::Term(
 	// pointer to the root form of the term
-	FORM *root_form,
+	Form *root_form,
 	// root port of the term
 	int root_ports,
 	// pointer to the free variables entries
 	// of the term
-	VARENTRY *freevars)
+	VarEntry *freevars)
 {
 	this->root_form = root_form;
 	this->root_ports = root_ports;
@@ -876,7 +876,7 @@ TERM::TERM(
 }
 
 // the following function build a box around a term
-TERM *TERM::makebox(int level)
+Term *Term::makebox(int level)
 {
 	this->vars = addbrackets(level, this->vars);
 	return this;
@@ -884,9 +884,9 @@ TERM *TERM::makebox(int level)
 
 // the following function add a sequence of square brackets of
 // given index at the free variables in listvar
-static VARENTRY *addbrackets(
+static VarEntry *addbrackets(
 	int index,
-	VARENTRY *listvar)
+	VarEntry *listvar)
 {
 	if (listvar == NULL)
 	{
@@ -895,7 +895,7 @@ static VARENTRY *addbrackets(
 	// resulting variable entry list
 	// new form to be created
 
-	FORM *variab = listvar->var;
+	Form *variab = listvar->var;
 	if (variab->kind != CONS1)
 	{
 		switch (variab->kind)
@@ -917,30 +917,30 @@ static VARENTRY *addbrackets(
 		return listvar;
 	}
 
-	FORM *bracket = new FORM(TRIANGLE, index);
+	Form *bracket = new Form(TRIANGLE, index);
 	bracket->nlevel[1] = 1;
 	connect(bracket, 1, variab, 0);
-	return new VARENTRY(listvar->name,
+	return new VarEntry(listvar->name,
 						bracket,
 						addbrackets(index, listvar->next));
 }
 
 // The following function shares the free variables of
 // two terms, by adding suitable FANS.
-static VARENTRY *share(
+static VarEntry *share(
 	int index,
 	// pointers to the lists of variables to be shared
-	VARENTRY *l1,
-	VARENTRY *l2)
+	VarEntry *l1,
+	VarEntry *l2)
 
 {
 	if (l1 == NULL)
 	{
 		return l2;
 	}
-	VARENTRY *res = NULL;
+	VarEntry *res = NULL;
 
-	VARENTRY *var = lookfor(l1->name, l2);
+	VarEntry *var = lookfor(l1->name, l2);
 	if (var == NULL)
 	{
 		res = l1;
@@ -948,7 +948,7 @@ static VARENTRY *share(
 		return res;
 	}
 
-	FORM *fan = new FORM(FAN, index);
+	Form *fan = new Form(FAN, index);
 	fan->nlevel[1] = 0;
 	fan->nlevel[2] = 0;
 
@@ -963,11 +963,11 @@ static VARENTRY *share(
 }
 
 // The following function searches for a variable inside a list.
-static VARENTRY *lookfor(
+static VarEntry *lookfor(
 	// pointer to the identifier to be found
-	STBUCKET *id,
+	StBucket *id,
 	// pointer to the variable list to be scanned
-	VARENTRY *listvar)
+	VarEntry *listvar)
 {
 
 	if (listvar == NULL)
@@ -985,10 +985,10 @@ static VARENTRY *lookfor(
 
 // the following function remove an identifier form a list
 // of variables
-static VARENTRY *remv(
-	STBUCKET *id,
+static VarEntry *remv(
+	StBucket *id,
 	// pointer to the identifier to be removed
-	VARENTRY *listvar)
+	VarEntry *listvar)
 // pointer to the variable list to be scanned
 {
 	if (listvar == NULL)
@@ -998,7 +998,7 @@ static VARENTRY *remv(
 
 	if (id == listvar->name)
 	{
-		VARENTRY *temp = listvar->next;
+		VarEntry *temp = listvar->next;
 		free(listvar);
 		return temp;
 	}
@@ -1009,11 +1009,11 @@ static VARENTRY *remv(
 
 // the following functions does the set substraction of two variable lists
 // it runs in quadratic time, but who cares?
-static VARENTRY *remvp(
-	VARLIST *vl,
-	VARENTRY *listvar) // pointer to the variable list to be scanned
+static VarEntry *remvp(
+	VarList *vl,
+	VarEntry *listvar) // pointer to the variable list to be scanned
 {
-	for (VARLIST *v = vl; v; v = v->next)
+	for (VarList *v = vl; v; v = v->next)
 	{
 		listvar = remv(v->id->id, listvar);
 	}
@@ -1023,7 +1023,7 @@ static VARENTRY *remvp(
 // The following function copies all the graph of the global
 // definition.
 static void closeglobalvars(
-	VARENTRY *listvar)
+	VarEntry *listvar)
 // pointer to the variable list to be scanned
 {
 	if (listvar == NULL)
@@ -1031,11 +1031,11 @@ static void closeglobalvars(
 		return;
 	}
 
-	FORM *formvar = listvar->var;
-	FORM *formterm = listvar->name->curr_binding->root;
+	Form *formvar = listvar->var;
+	Form *formterm = listvar->name->curr_binding->root;
 	if (formvar->kind == TRIANGLE)
 	{
-		FORM *newf = formterm->nform[0]->copy(
+		Form *newf = formterm->nform[0]->copy(
 			formterm->nport[0],
 			formvar->nlevel[1]);
 		connect1(formvar->nform[1], formvar->nport[1],
@@ -1043,7 +1043,7 @@ static void closeglobalvars(
 	}
 	else
 	{
-		FORM *newf = formterm->nform[0]->copy(formterm->nport[0], 0);
+		Form *newf = formterm->nform[0]->copy(formterm->nport[0], 0);
 		connect1(formvar, 0,
 				 newf, formterm->nport[0]);
 	}
@@ -1053,12 +1053,12 @@ static void closeglobalvars(
 // The following function tries to merge two forms into a single one.
 // If failing doing so, connects them normally
 
-void FORM::intelligent_connect(
+void Form::intelligent_connect(
 	int port,
-	FORM *f2)
+	Form *f2)
 {
 	int dep;
-	FORM *newf;
+	Form *newf;
 
 	switch (this->kind)
 	{
@@ -1117,7 +1117,7 @@ void FORM::intelligent_connect(
 				this->kind = CONS1;
 				if (this->nlevel[1] != 0)
 				{
-					newf = new FORM(TRIANGLE, this->index - 1);
+					newf = new Form(TRIANGLE, this->index - 1);
 					newf->nlevel[1] = this->nlevel[1];
 					newf->connect1(1, this->port(1));
 					::connect(this, 1, newf, 0);
@@ -1181,7 +1181,7 @@ void FORM::intelligent_connect(
 				this->kind = CONS1;
 				if (this->nlevel[1] != 0)
 				{
-					newf = new FORM(TRIANGLE, this->index - 1);
+					newf = new Form(TRIANGLE, this->index - 1);
 					newf->nlevel[1] = this->nlevel[1];
 					newf->connect1(1, this->port(1));
 					::connect(this, 2, newf, 0);
@@ -1243,7 +1243,7 @@ void FORM::intelligent_connect(
 
 // The following function checks whether it's possible to apply
 // function intelligent_connect. Otherwise applies a normal connect.
-void FORM::inspect_connect(
+void Form::inspect_connect(
 	int p1,
 	PORT p)
 {
@@ -1257,15 +1257,15 @@ void FORM::inspect_connect(
 	}
 }
 
-VARLIST *mergevarlist(
-	VARLIST *l1,
-	VARLIST *l2)
+VarList *mergevarlist(
+	VarList *l1,
+	VarList *l2)
 {
 	if (!l1)
 	{
 		return l2;
 	}
-	VARLIST *p;
+	VarList *p;
 	for (p = l1; p->next; p = p->next)
 	{
 		if (l2->contains(p->id))
@@ -1281,12 +1281,12 @@ VARLIST *mergevarlist(
 	return l1;
 }
 
-VARLIST *VARLIST::merge(VARLIST *other)
+VarList *VarList::merge(VarList *other)
 {
 	return mergevarlist(this, other);
 }
 
-bool VARLIST::contains(BINDINGID *id)
+bool VarList::contains(BindingID *id)
 {
 	auto l = this;
 	while (l)
@@ -1300,37 +1300,37 @@ bool VARLIST::contains(BINDINGID *id)
 	return false;
 }
 
-VARLIST *makevarlist(
-	STBUCKET *e,
-	TERM *t)
+VarList *makevarlist(
+	StBucket *e,
+	Term *t)
 {
-	BINDINGID *bid = (BINDINGID *)malloc(sizeof(BINDINGID));
+	BindingID *bid = (BindingID *)malloc(sizeof(BindingID));
 	bid->id = e;
 	bid->form = t->root_form;
-	VARLIST *vl = (VARLIST *)malloc(sizeof(VARLIST));
+	VarList *vl = (VarList *)malloc(sizeof(VarList));
 	vl->next = NULL;
 	vl->id = bid;
 	return vl;
 }
 
-// VARLIST1::VARLIST1(BINDINGID *id, TERM *t)
+// VARLIST1::VARLIST1(BindingID *id, Term *t)
 // {
 // 	this->id = id;
 // 	// this->list =
 // 	// return nullptr;
 // }
 
-TERM *TERM::void_(int level)
+Term *Term::void_(int level)
 {
-	FORM *newf = new FORM(TRIANGLE, level);
+	Form *newf = new Form(TRIANGLE, level);
 	newf->nlevel[1] = 0;
-	return new TERM(newf, 0, NULL);
+	return new Term(newf, 0, NULL);
 }
 
-PATTERN::~PATTERN()
+Pattern::~Pattern()
 {
-	VARLIST *vln;
-	for (VARLIST *vl = this->var_list; vl; vl = vln)
+	VarList *vln;
+	for (VarList *vl = this->var_list; vl; vl = vln)
 	{
 		vln = vl->next;
 		free(vl);
