@@ -2025,7 +2025,7 @@ yyreduce:
   case 45:
 #line 508 "parser.y"
     {
-				  push_local_env();
+				  st.push_local_env();
                                   app_nesting_depth++;
 				}
     break;
@@ -2044,7 +2044,7 @@ yyreduce:
                                   (yyval.term) = 
                                     TERM::plambda(app_nesting_depth,(yyvsp[(3) - (6)].pattern),(yyvsp[(6) - (6)].term));
                                   delete pattmp;
-				  pop_local_env();
+				  st.pop_local_env();
 				}
     break;
 
@@ -2059,7 +2059,7 @@ yyreduce:
 #line 529 "parser.y"
     {
 				  app_nesting_depth--;
-				  push_local_env();
+				  st.push_local_env();
 				  (yyvsp[(2) - (6)].st_bucket)->create_variable_binding(NULL);
 				}
     break;
@@ -2069,14 +2069,14 @@ yyreduce:
     {
 				  (yyval.term) = TERM::let_in(app_nesting_depth,
 						      (yyvsp[(2) - (8)].st_bucket),(yyvsp[(5) - (8)].term),(yyvsp[(8) - (8)].term));
-				  pop_local_env();
+				  st.pop_local_env();
 				}
     break;
 
   case 51:
 #line 541 "parser.y"
     {
-				  push_local_env();
+				  st.push_local_env();
 				  (yyvsp[(2) - (3)].st_bucket)->create_variable_binding(NULL);
 				  app_nesting_depth++;
 				 }
@@ -2087,7 +2087,7 @@ yyreduce:
     {
 				  (yyval.term) = TERM::mu(--app_nesting_depth,
 						     (yyvsp[(2) - (5)].st_bucket),(yyvsp[(5) - (5)].term));
-				  pop_local_env();
+				  st.pop_local_env();
 				 }
     break;
 

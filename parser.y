@@ -506,7 +506,7 @@ expr0           : 	TRUEKW
 				}
 		|       '\\' 
 				{
-				  push_local_env();
+				  st.push_local_env();
                                   app_nesting_depth++;
 				}
 			pattern 
@@ -519,7 +519,7 @@ expr0           : 	TRUEKW
                                   $$ = 
                                     TERM::plambda(app_nesting_depth,$3,$6);
                                   delete pattmp;
-				  pop_local_env();
+				  st.pop_local_env();
 				}
 		|       LETKW ID '='
 				{
@@ -528,18 +528,18 @@ expr0           : 	TRUEKW
 			expr INKW
 				{
 				  app_nesting_depth--;
-				  push_local_env();
+				  st.push_local_env();
 				  $2->create_variable_binding(NULL);
 				}
 			expr
 				{
 				  $$ = TERM::let_in(app_nesting_depth,
 						      $2,$5,$8);
-				  pop_local_env();
+				  st.pop_local_env();
 				}
 		 |	LETRECKW ID '='
 				{
-				  push_local_env();
+				  st.push_local_env();
 				  $2->create_variable_binding(NULL);
 				  app_nesting_depth++;
 				 }
@@ -547,7 +547,7 @@ expr0           : 	TRUEKW
 				{
 				  $$ = TERM::mu(--app_nesting_depth,
 						     $2,$5);
-				  pop_local_env();
+				  st.pop_local_env();
 				 }
 		 |	IFKW expr THENKW expr ELSEKW expr
 				{

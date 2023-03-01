@@ -130,7 +130,7 @@ string                  [^\"]*\"
 {id}		   {
 			/* identifier */
                         if (loading_mode == 1) ECHO;
-			yylval.st_bucket = search_bucket(yytext);
+			yylval.st_bucket = st.search_bucket(yytext);
 			return yylval.st_bucket->token;
 		   }
 

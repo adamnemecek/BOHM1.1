@@ -100,7 +100,6 @@ int main(
 	printf("***              P. Gruppioni and A. Naletto.           ***\n");
 	printf("***          Dipartimento di Matematica, Bologna        ***\n");
 	printf("***********************************************************\n\n");
-	init_symbol_table();
 	init_garbage();
 	lines = 0;
 	setbuf(stdout, NULL);

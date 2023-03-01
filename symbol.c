@@ -113,40 +113,11 @@
 // constants concerning scope analysis
 #define NONESTING -2
 
-static LOCALENVENTRY *curr_local_env;
+// static LOCALENVENTRY *curr_local_env;
 // pointer to the entry for the
 // current local environment
 
-static STBUCKET *dictionary[DICTSIZE] = {0};
-
-struct SymbolTable
-{
-	STBUCKET *dictionary[DICTSIZE];
-	int curr_nesting_depth;
-
-	SymbolTable()
-	{
-		// dictionary = {0};
-		//
-	}
-
-	STBUCKET *find(const char *id);
-};
-
-// pointers to bucket lists
-
-static int curr_nesting_depth;
-// current nesting depth
-
-static int hash_pjw(const char *id);
-static void allocate_local_env_entry(void);
-
-static void move_bucket(
-	STBUCKET *st,
-	int dict_index);
-
-// static STBUCKET *allocate_bucket(const char *id);
-
+// static STBUCKET *dictionary[DICTSIZE] = {0};
 // keywords
 const char *keywords[] =
 	{
@@ -180,57 +151,116 @@ const char *keywords[] =
 		"travel",
 };
 
-// The following function turns a given string into a lower case one.
-static void to_lower_s(char *s)
+// The following function implements Weinberger's hash function.
+static int hash_pjw(const char *id)
 {
-	for (; *s != '\0'; s++)
+	unsigned h;
+
+	for (h = 0; *id != '\0'; id++)
 	{
-		if ('A' <= *s && *s <= 'Z')
+		h = (h << HASH1) + (*id);
+		unsigned g = h & HASH2;
+		if (g)
 		{
-			*s += 'a' - 'A';
+			h = h ^ (g >> HASH3) ^ g;
 		}
 	}
+	return h % DICTSIZE;
 }
 
-//**************************************************************
-// 5. Definitions of functions to be exported.
-//**************************************************************
-
-// The following function initializes the symbol table by inserting
-// P keywords into the dictionary and the external and global
-// environments into the scope stack.
-void init_symbol_table(void)
+SymbolTable::SymbolTable()
 {
-	// initialize the dictionary
-	for (int i = 0; i < DICTSIZE; i++)
-	{
-		dictionary[i] = NULL;
-	}
+	curr_local_env = NULL;
+	curr_nesting_depth = NONESTING;
 
-	// insert P keywords into the appropriate bucket lists
+	reset();
+
 	for (int i = 0; i < KEYWORDNUM; i++)
 	{
 		STBUCKET *st = search_bucket(keywords[i]);
 		st->token = FIRSTKEYWORD + i;
 	}
 
-	// initialize the scope stack
-	curr_local_env = NULL;
-	curr_nesting_depth = NONESTING;
-
 	push_local_env();
 	push_local_env();
 }
 
-// The following function searches the symbol table for an identifier
-// and inserts it if it is not present; the function returns the
-// pointer to the bucket containing information associated with the
-// given identifier. The bucket associated with the given identifier
-// becomes the first one in its list.
+// The following function allocates a local environment entry.
+void SymbolTable::allocate_local_env_entry()
+{
+	// pointer to the entry to
+	// be allocated
+	LOCALENVENTRY *le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
+	le->nesting_depth = curr_nesting_depth;
+	le->last_local_binding = NULL;
+	le->prev_local_env = curr_local_env;
+	curr_local_env = le;
+}
 
-STBUCKET *search_bucket(
-	// identifier
-	const char *id)
+// The following function allocates a bucket for an identifier.
+STBUCKET *SymbolTable::allocate_bucket(const char *id)
+{
+	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
+	st->id = strdup(id);
+	st->token = ID;
+	st->curr_binding = NULL;
+	st->next_st_bucket = NULL;
+	return st;
+}
+
+// The following function moves a bucket to the head of the
+// list in which it lies.
+void SymbolTable::move_bucket(
+	// pointer to the bucket to
+	// be moved
+	STBUCKET *st,
+	// index corresponding to
+	// the list in which the
+	// bucket lies
+	int dict_index)
+{
+	st->next_st_bucket = dictionary[dict_index];
+	dictionary[dict_index] = st;
+}
+
+// The following function pops a local environment entry off
+// the scope stack.
+void SymbolTable::pop_local_env()
+{
+	LOCALENVENTRY *le = curr_local_env;
+
+	// remove all the entries for bindings created in the
+	// local environment
+	while (le->last_local_binding != NULL)
+	{
+		BINDINGENTRY *b = le->last_local_binding;
+		b->st_bucket->curr_binding = b->prev_id_binding;
+		le->last_local_binding = b->prev_local_binding;
+		free(b);
+	}
+
+	curr_local_env = le->prev_local_env;
+	free(le);
+	curr_nesting_depth--;
+}
+
+// The following function pushes a new local environment entry onto
+// the scope stack.
+void SymbolTable::push_local_env()
+{
+	curr_nesting_depth++;
+	allocate_local_env_entry();
+}
+
+void SymbolTable::reset()
+{
+	for (int i = 0; i < DICTSIZE; i++)
+	{
+		dictionary[i] = NULL;
+	}
+}
+
+STBUCKET *SymbolTable::search_bucket(const char *id)
 {
 	STBUCKET *curr;
 	STBUCKET *st;
@@ -267,39 +297,140 @@ STBUCKET *search_bucket(
 	return st;
 }
 
-STBUCKET *SymbolTable::find(const char *id)
+// pointers to bucket lists
+
+// static int curr_nesting_depth;
+// current nesting depth
+
+// static int hash_pjw(const char *id);
+// static void allocate_local_env_entry(void);
+
+// static void move_bucket(
+// 	STBUCKET *st,
+// 	int dict_index);
+
+// static STBUCKET *allocate_bucket(const char *id);
+
+// The following function turns a given string into a lower case one.
+static void to_lower_s(char *s)
 {
-	return nullptr;
+	for (; *s != '\0'; s++)
+	{
+		if ('A' <= *s && *s <= 'Z')
+		{
+			*s += 'a' - 'A';
+		}
+	}
 }
+
+//**************************************************************
+// 5. Definitions of functions to be exported.
+//**************************************************************
+
+// The following function initializes the symbol table by inserting
+// P keywords into the dictionary and the external and global
+// environments into the scope stack.
+// void init_symbol_table(void)
+// {
+// 	// initialize the dictionary
+// 	for (int i = 0; i < DICTSIZE; i++)
+// 	{
+// 		dictionary[i] = NULL;
+// 	}
+
+// 	// insert P keywords into the appropriate bucket lists
+// 	for (int i = 0; i < KEYWORDNUM; i++)
+// 	{
+// 		STBUCKET *st = search_bucket(keywords[i]);
+// 		st->token = FIRSTKEYWORD + i;
+// 	}
+
+// 	// initialize the scope stack
+// 	curr_local_env = NULL;
+// 	curr_nesting_depth = NONESTING;
+
+// 	push_local_env();
+// 	push_local_env();
+// }
+
+// The following function searches the symbol table for an identifier
+// and inserts it if it is not present; the function returns the
+// pointer to the bucket containing information associated with the
+// given identifier. The bucket associated with the given identifier
+// becomes the first one in its list.
+
+// STBUCKET *search_bucket(
+// 	// identifier
+// 	const char *id)
+// {
+// 	STBUCKET *curr;
+// 	STBUCKET *st;
+
+// 	// turn the identifier into lower case
+// 	// to_lower_s(id);
+
+// 	// apply the hash function
+// 	int dict_index = hash_pjw(id);
+
+// 	// scan the bucket list indicated by the hash function
+// 	STBUCKET *prev = curr = dictionary[dict_index];
+// 	while (curr != NULL && strcmp(id, curr->id) != 0)
+// 	{
+// 		prev = curr;
+// 		curr = curr->next_st_bucket;
+// 	}
+
+// 	// the identifier is not in the list
+// 	if (curr == NULL)
+// 	{
+// 		st = new STBUCKET(id, ID);
+// 		move_bucket(st, dict_index);
+// 		return st;
+// 	}
+// 	// the identifier is already in the list
+// 	st = curr;
+// 	if (prev != curr)
+// 	// the identifier is not in the first position
+// 	{
+// 		prev->next_st_bucket = curr->next_st_bucket;
+// 		move_bucket(curr, dict_index);
+// 	}
+// 	return st;
+// }
+
+// STBUCKET *SymbolTable::find(const char *id)
+// {
+// 	return nullptr;
+// }
 
 // The following function pushes a new local environment entry onto
 // the scope stack.
-void push_local_env()
-{
-	curr_nesting_depth++;
-	allocate_local_env_entry();
-}
+// void push_local_env()
+// {
+// 	curr_nesting_depth++;
+// 	allocate_local_env_entry();
+// }
 
 // The following function pops a local environment entry off
 // the scope stack.
-void pop_local_env()
-{
-	LOCALENVENTRY *le = curr_local_env;
+// void pop_local_env()
+// {
+// 	LOCALENVENTRY *le = curr_local_env;
 
-	// remove all the entries for bindings created in the
-	// local environment
-	while (le->last_local_binding != NULL)
-	{
-		BINDINGENTRY *b = le->last_local_binding;
-		b->st_bucket->curr_binding = b->prev_id_binding;
-		le->last_local_binding = b->prev_local_binding;
-		free(b);
-	}
+// 	// remove all the entries for bindings created in the
+// 	// local environment
+// 	while (le->last_local_binding != NULL)
+// 	{
+// 		BINDINGENTRY *b = le->last_local_binding;
+// 		b->st_bucket->curr_binding = b->prev_id_binding;
+// 		le->last_local_binding = b->prev_local_binding;
+// 		free(b);
+// 	}
 
-	curr_local_env = le->prev_local_env;
-	free(le);
-	curr_nesting_depth--;
-}
+// 	curr_local_env = le->prev_local_env;
+// 	free(le);
+// 	curr_nesting_depth--;
+// }
 
 // The following function creates entries for a variable binding
 // pointer to the bucket for the
@@ -319,8 +450,8 @@ void STBUCKET::create_variable_binding(
 	b->root = rootform;
 	b->prev_id_binding = this->curr_binding;
 	this->curr_binding = b;
-	b->prev_local_binding = curr_local_env->last_local_binding;
-	curr_local_env->last_local_binding = b;
+	b->prev_local_binding = st.curr_local_env->last_local_binding;
+	st.curr_local_env->last_local_binding = b;
 }
 
 //**************************************************************
@@ -328,56 +459,38 @@ void STBUCKET::create_variable_binding(
 //**************************************************************
 
 // The following function allocates a bucket for an identifier.
-static STBUCKET *allocate_bucket(const char *id)
-{
-	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
-	st->id = strdup(id);
-	st->token = ID;
-	st->curr_binding = NULL;
-	st->next_st_bucket = NULL;
-	return st;
-}
+// static STBUCKET *allocate_bucket(const char *id)
+// {
+// 	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
+// 	st->id = strdup(id);
+// 	st->token = ID;
+// 	st->curr_binding = NULL;
+// 	st->next_st_bucket = NULL;
+// 	return st;
+// }
 
 // The following function moves a bucket to the head of the
 // list in which it lies.
-static void move_bucket(
-	// pointer to the bucket to
-	// be moved
-	STBUCKET *st,
-	// index corresponding to
-	// the list in which the
-	// bucket lies
-	int dict_index)
-{
-	st->next_st_bucket = dictionary[dict_index];
-	dictionary[dict_index] = st;
-}
+// static void move_bucket(
+// 	// pointer to the bucket to
+// 	// be moved
+// 	STBUCKET *st,
+// 	// index corresponding to
+// 	// the list in which the
+// 	// bucket lies
+// 	int dict_index)
+// {
+// 	st->next_st_bucket = dictionary[dict_index];
+// 	dictionary[dict_index] = st;
+// }
 
-// The following function implements Weinberger's hash function.
-static int hash_pjw(const char *id)
-{
-	unsigned h;
-
-	for (h = 0; *id != '\0'; id++)
-	{
-		h = (h << HASH1) + (*id);
-		unsigned g = h & HASH2;
-		if (g)
-		{
-			h = h ^ (g >> HASH3) ^ g;
-		}
-	}
-	return h % DICTSIZE;
-}
-
-// The following function allocates a local environment entry.
-static void allocate_local_env_entry(void)
-{
-	// pointer to the entry to
-	// be allocated
-	LOCALENVENTRY *le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
-	le->nesting_depth = curr_nesting_depth;
-	le->last_local_binding = NULL;
-	le->prev_local_env = curr_local_env;
-	curr_local_env = le;
-}
+// static void allocate_local_env_entry(void)
+// {
+// 	// pointer to the entry to
+// 	// be allocated
+// 	LOCALENVENTRY *le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
+// 	le->nesting_depth = curr_nesting_depth;
+// 	le->last_local_binding = NULL;
+// 	le->prev_local_env = curr_local_env;
+// 	curr_local_env = le;
+// }

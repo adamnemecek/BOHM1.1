@@ -88,18 +88,40 @@ public:
     FORM *alloc();
     void release(FORM *form);
 };
+
+#define DICTSIZE 211
+
+struct SymbolTable final
+{
+    STBUCKET *dictionary[DICTSIZE];
+    int curr_nesting_depth;
+    LOCALENVENTRY *curr_local_env;
+    SymbolTable();
+    void allocate_local_env_entry();
+    STBUCKET *allocate_bucket(const char *id);
+    void move_bucket(
+        STBUCKET *st,
+        int dict_index);
+    void pop_local_env();
+    void push_local_env();
+    void reset();
+    STBUCKET *search_bucket(const char *id);
+};
+
+inline SymbolTable st = SymbolTable();
+
 // void destroy(void);
 void info(char *choices);
 inline Destroyer destroyer = Destroyer();
 // void init_destroy(void);
 void init_garbage(void);
-void init_symbol_table(void);
+// void init_symbol_table(void);
 
 void menu(int choice);
-void pop_local_env(void);
-void push_local_env(void);
+// void pop_local_env(void);
+// void push_local_env(void);
 void reset_garbage(void);
-STBUCKET *search_bucket(const char *id);
+// STBUCKET *search_bucket(const char *id);
 void show_garb_stat(bool seetime);
 void signal_error(const char *msg);
 void user(void);
