@@ -73,7 +73,7 @@ void int_connect(
     FORM *form2,
     int portf2);
 
-struct Destroyer
+struct Destroyer final
 {
 private:
     FORM *headfree;
@@ -93,19 +93,25 @@ public:
 
 struct SymbolTable final
 {
-    STBUCKET *dictionary[DICTSIZE];
-    int curr_nesting_depth;
+
     LOCALENVENTRY *curr_local_env;
     SymbolTable();
-    void allocate_local_env_entry();
+
+    void pop_local_env();
+    void push_local_env();
+
+    STBUCKET *search_bucket(const char *id);
+
+private:
+    STBUCKET *dictionary[DICTSIZE];
+    int curr_nesting_depth;
+
+    void reset();
     STBUCKET *allocate_bucket(const char *id);
     void move_bucket(
         STBUCKET *st,
         int dict_index);
-    void pop_local_env();
-    void push_local_env();
-    void reset();
-    STBUCKET *search_bucket(const char *id);
+    void allocate_local_env_entry();
 };
 
 inline SymbolTable st = SymbolTable();
