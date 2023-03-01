@@ -1148,7 +1148,7 @@ static void intelligent_connect(
 				{
 					newf = new FORM(TRIANGLE, f1->index - 1);
 					newf->nlevel[1] = f1->nlevel[1];
-					connect1(newf, 1, f1->nform[1], f1->nport[1]);
+					newf->connect1(1, f1->port(1));
 					connect(f1, 1, newf, 0);
 				}
 				if (f1->nlevel[2] != 0)
@@ -1160,12 +1160,14 @@ static void intelligent_connect(
 				}
 				else
 				{
-					connect1(f1, 2, f2->nform[1], f2->nport[1]);
+					f1->connect1(2, f2->port(1));
 					f2->release();
 				}
 			}
 			else
+			{
 				connect(f1, port, f2, 0);
+			}
 			break;
 		case TESTNIL:
 			if (port == 2)
@@ -1180,7 +1182,7 @@ static void intelligent_connect(
 				f1->nlevel[2] = dep;
 				newf = f1->nform[1];
 				dep = f1->nport[1];
-				connect1(f1, 1, f2->nform[1], f2->nport[1]);
+				f1->connect1(1, f2->port(1));
 				connect1(f2, 1, newf, dep);
 				connect(f2, 0, f1, 2);
 			}
@@ -1208,11 +1210,13 @@ static void intelligent_connect(
 				{
 					newf = new FORM(TRIANGLE, f1->index - 1);
 					newf->nlevel[1] = f1->nlevel[1];
-					connect1(newf, 1, f1->nform[1], f1->nport[1]);
+					newf->connect1(1, f1->port(1));
 					connect(f1, 2, newf, 0);
 				}
 				else
+				{
 					connect(f1, 2, f1->nform[1], f1->nport[1]);
+				}
 				if (f1->nlevel[2] != 0)
 				{
 					f2->kind = TRIANGLE;
@@ -1222,7 +1226,7 @@ static void intelligent_connect(
 				}
 				else
 				{
-					connect1(f1, 1, f2->nform[1], f2->nport[1]);
+					f1->connect1(1, f2->port(1));
 					f2->release();
 				}
 			}
@@ -1242,12 +1246,14 @@ static void intelligent_connect(
 				f1->nlevel[2] = dep;
 				newf = f1->nform[1];
 				dep = f1->nport[1];
-				connect1(f1, 1, f2->nform[1], f2->nport[1]);
+				newf->connect1(1, f2->port(2));
 				connect1(f2, 1, newf, dep);
 				connect(f2, 0, f1, 2);
 			}
 			else
+			{
 				connect(f1, port, f2, 0);
+			}
 			break;
 		default:
 			connect(f1, port, f2, 0);
@@ -1269,9 +1275,13 @@ static void inspect_connect(
 	int p2)
 {
 	if (p2 == 0)
+	{
 		intelligent_connect(f1, p1, f2);
+	}
 	else
+	{
 		connect1(f1, p1, f2, p2);
+	}
 }
 
 VARLIST *mergevarlist(
