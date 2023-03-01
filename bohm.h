@@ -55,11 +55,6 @@ VARLIST *mergevarlist(
 
 void clean(void);
 
-void bool_connect(
-    FORM *form1,
-    int portf1,
-    int portf2);
-
 void connect(
     FORM *form1,
     int portf1,

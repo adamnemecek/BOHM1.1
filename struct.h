@@ -106,8 +106,13 @@ struct FORM final
 	void connect(int port, TERM *term);
 	void connect1(int port, TERM *term);
 
-	// val is T, F, NIL
-	void bool_connect(int port, int val);
+	/* the following function connects only the port portf1 of 	*/
+	/* form1 to the port portf2 of form2, because form2 is a INT,	*/
+	/* NIL, True or False.						*/
+	void bool_connect(int port, int val)
+	{
+		this->nport[port] = val;
+	}
 	// void selfconnect1(int from, int to);
 
 	void connect(int port, PORT p);

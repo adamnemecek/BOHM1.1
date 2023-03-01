@@ -673,7 +673,7 @@ TERM *TERM::list1(
 	}
 	else
 	{
-		bool_connect(newf1, 2, NIL);
+		newf1->bool_connect(2, NIL);
 		t = new TERM(newf1, 0, arg1->vars);
 	}
 
@@ -845,17 +845,6 @@ void int_connect(
 {
 	form1->nport[portf1] = portf2;
 	form1->nform[portf1] = form2;
-}
-
-/* the following function connects only the port portf1 of 	*/
-/* form1 to the port portf2 of form2, because form2 is a INT,	*/
-/* NIL, True or False.						*/
-void bool_connect(
-	FORM *form1,
-	int portf1,
-	int portf2)
-{
-	form1->nport[portf1] = portf2;
 }
 
 /****************************************************************/
