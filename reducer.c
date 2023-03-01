@@ -724,9 +724,9 @@ static void reduce_redex(
 				new1->num_safe = f2->num_safe;
 				new1->nform[2] = f2->nform[2];
 				f2->index += f1->nlevel[1];
-				connect1(f2, 0, f1->nform[1], f1->nport[1]);
-				connect1(new1, 0, f1->nform[2], f1->nport[2]);
-				connect1(f1, 0, f2->nform[1], f2->nport[1]);
+				f2->connect1(0, f1->port(1));
+				new1->connect1(0, f1->port(2));
+				f1->connect1(0, f2->port(1));
 				connect(f1, 1, f2, 1);
 				connect(f1, 2, new1, 1);
 				break;
