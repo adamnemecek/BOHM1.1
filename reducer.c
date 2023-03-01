@@ -468,7 +468,7 @@ static void reduce_redex(
 				switch (f2->kind)
 				{
 				case CONS:
-					if (f1->nport[1] >= 0)
+					if (is_int(f1->nport[1]))
 					{
 						connect1(f1->nform[1],
 								 f1->nport[1],
@@ -481,7 +481,7 @@ static void reduce_redex(
 						f1->del();
 						new1->connect1(0, f2->port(1));
 					}
-					if (f1->nport[2] >= 0)
+					if (is_int(f1->nport[2]))
 					{
 						connect1(f1->nform[2],
 								 f1->nport[2],
@@ -1441,7 +1441,7 @@ Form *Form::lo_redex()
 			 temp->kind == UNS_FAN1 || temp->kind == UNS_FAN2) &&
 			(next->kind == TRIANGLE || next->kind == FAN) &&
 			next->num_safe &&
-			((next->nlevel[p] >= 0 && temp->index >= next->index &&
+			((is_int(next->nlevel[p]) && temp->index >= next->index &&
 			  temp->index <= next->index + next->nlevel[p]) ||
 			 (temp->num_safe &&
 			  next->nlevel[p] < 0 && temp->index <= next->index &&

@@ -785,7 +785,7 @@ void connect1(
 {
 	form1->nport[portf1] = portf2;
 	form1->nform[portf1] = form2;
-	if (portf2 >= 0)
+	if (is_int(portf2))
 	{
 		form2->nport[portf2] = portf1;
 		form2->nform[portf2] = form1;

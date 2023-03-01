@@ -41,7 +41,7 @@ Form *copy_connect(
 	int offset)
 {
 	Form *ret;
-	if (temp->nport[port] >= 0)
+	if (is_int(temp->nport[port]))
 	{
 		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
 		connect(newf1, port, ret, temp->nport[port]);
@@ -61,7 +61,7 @@ Form *copy_connect1(
 	int offset)
 {
 	Form *ret;
-	if (temp->nport[port] >= 0)
+	if (is_int(temp->nport[port]))
 	{
 		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
 		connect1(newf1, port, ret, temp->nport[port]);

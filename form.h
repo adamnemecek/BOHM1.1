@@ -98,6 +98,11 @@ inline int unpropagate_kind(int kind)
     // return CAR1;
 }
 
+inline bool is_int(char kind)
+{
+    return kind >= 0;
+}
+
 inline const char *kind_desc(char kind)
 {
     switch (kind)
