@@ -41,16 +41,16 @@
 #define EXISTENT 3
 #define NOTEXISTENT 4
 
-static long unsigned er_count; // counter for erasing operations
-static long unsigned cl_count; // counter for clean() calls
-static clock_t usr_garb_time;
-static clock_t sys_garb_time;
+// static long unsigned er_count; // counter for erasing operations
+// static long unsigned cl_count; // counter for clean() calls
+// static clock_t usr_garb_time;
+// static clock_t sys_garb_time;
 
 //***********************************************************************
 // 4. Definitions of variables to be exported.
 //***********************************************************************
 
-FORM *del_head = NULL; // head of erases list
+// FORM *del_head = NULL; // head of erases list
 
 //***********************************************************************
 // 5. Definitions of functions to be exported.
@@ -58,7 +58,7 @@ FORM *del_head = NULL; // head of erases list
 
 // The following function initializes the erase-list inserting
 // the first node.
-void init_garbage(void)
+Garbage::Garbage()
 {
 	del_head = (FORM *)malloc_da(sizeof(FORM));
 	del_head->nform[1] = NULL;
@@ -66,11 +66,11 @@ void init_garbage(void)
 
 // The following function insert a new erase operator at the
 // head of a list to be scanned when the G.C. is activated.
-void FORM::del()
+void Garbage::del(FORM *form)
 {
-	this->index = EXISTENT;
-	this->nform[1] = del_head->nform[1];
-	del_head->nform[1] = this;
+	form->index = EXISTENT;
+	form->nform[1] = del_head->nform[1];
+	del_head->nform[1] = form;
 }
 
 // The following function activates the G.C. by scanning the
@@ -78,7 +78,7 @@ void FORM::del()
 // the local function "garbage()" which propagates a single
 // node and inserts in the erases list new operators
 // originated by duplication rules during travelling.
-void clean(void)
+void Garbage::clean()
 {
 	FORM *q;
 	struct tms partial_time, final_time;
@@ -96,7 +96,7 @@ void clean(void)
 		}
 		else
 		{
-			q->garbage();
+			this->garbage(q);
 		}
 	}
 	if (seegarb)
@@ -115,7 +115,7 @@ void user(void)
 	printf("*****************************************************\n");
 	printf("Initial number of nodes %u\n", num_nodes);
 	printf("Please wait . . .\n");
-	clean();
+	gc.clean();
 	printf("Final number of nodes %u\n", num_nodes);
 	printf("*****************************************************\n");
 }
@@ -126,14 +126,14 @@ void user(void)
 
 // The following function performs the propagation of a single
 // erase node by applicating garbage rules.
-void FORM::garbage()
+void Garbage::garbage(FORM *f1)
 {
 
 	bool end = false;
 	FORM *newform;
 	int p1, p2;
-	auto [nextform, nextport] = this->port(0);
-	this->release();
+	auto [nextform, nextport] = f1->port(0);
+	f1->release();
 	while (!end)
 	{
 		FORM *form = nextform;
@@ -159,7 +159,7 @@ void FORM::garbage()
 				nextform = form->nform[2];
 				nextport = form->nport[2];
 				form->connect1(0, form->port(1));
-				form->del();
+				this->del(form);
 			}
 			else
 			{
@@ -208,7 +208,7 @@ void FORM::garbage()
 				nextport = form->nport[2];
 				form->kind = ERASE;
 				form->connect1(0, form->port(1));
-				form->del();
+				this->del(form);
 			}
 			else
 			{
@@ -233,7 +233,7 @@ void FORM::garbage()
 				nextport = form->nport[2];
 				form->kind = ERASE;
 				form->connect1(0, form->port(1));
-				form->del();
+				this->del(form);
 			}
 			else
 			{
@@ -333,7 +333,7 @@ void FORM::garbage()
 			nextport = form->nport[p2];
 			form->kind = ERASE;
 			form->connect1(0, form->port(p1));
-			form->del();
+			this->del(form);
 			break;
 
 		case LAMBDA:
@@ -344,7 +344,7 @@ void FORM::garbage()
 				nextport = form->nport[!port];
 				form->kind = ERASE;
 				form->connect1(0, form->port(2));
-				form->del();
+				this->del(form);
 			}
 			else
 			{
@@ -360,14 +360,14 @@ void FORM::garbage()
 			break;
 
 		default:
-			printf("Error: form %d\n", (this->nform[0])->kind);
+			printf("Error: form %d\n", (f1->nform[0])->kind);
 			exit(1);
 			break;
 		}
 	}
 }
 
-void reset_garbage(void)
+void Garbage::reset(void)
 {
 	er_count = 0;
 	cl_count = 0;
@@ -375,7 +375,7 @@ void reset_garbage(void)
 	sys_garb_time = 0;
 }
 
-void show_garb_stat(bool seetime)
+void Garbage::show_garb_stat(bool seetime)
 {
 	printf("Total number of garbage calls      %lu\n", cl_count);
 	printf("Total number of garbage operations %lu\n", er_count);
@@ -385,4 +385,9 @@ void show_garb_stat(bool seetime)
 			   (double)usr_garb_time / 60, (double)sys_garb_time / 60);
 		printf("*****************************************************\n");
 	}
+}
+
+void FORM::del()
+{
+	gc.del(this);
 }

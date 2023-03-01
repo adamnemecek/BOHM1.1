@@ -21,8 +21,8 @@ extern bool seenode;
 extern bool seetime;
 extern bool seenumber;
 extern char *include_file;
-extern FORM *del_head;
-extern FORM *headfree;
+// extern FORM *del_head;
+// extern FORM *headfree;
 extern FORM *lastinputterm;
 extern FORM *current_pos;
 extern int lines;
@@ -113,8 +113,30 @@ private:
     void allocate_local_env_entry();
 };
 
+struct Garbage final
+{
+
+    FORM *del_head; // head of erases list
+    long unsigned er_count;
+    long unsigned cl_count;
+    clock_t usr_garb_time;
+    clock_t sys_garb_time;
+
+    Garbage();
+
+    void del(FORM *form);
+
+    void clean();
+
+    // void::garbage()
+    void garbage(FORM *form);
+    void reset(void);
+    void show_garb_stat(bool seetime);
+};
+
 inline SymbolTable st = SymbolTable();
 inline Destroyer destroyer = Destroyer();
+inline Garbage gc = Garbage();
 
 void info(char *choices);
 

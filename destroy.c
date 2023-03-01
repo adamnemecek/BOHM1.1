@@ -80,7 +80,7 @@ void Destroyer::destroy()
     headfree = headfull->next;
   }
   start_nodes = num_nodes;
-  del_head->nform[1] = NULL;
+  gc.del_head->nform[1] = NULL;
 }
 
 /* The following function makes a graph associated to a	*/

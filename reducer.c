@@ -122,7 +122,8 @@ void FORM::reduce_term()
 	clock_t sys_time = time.tms_stime;
 	init_stack();
 	FORM *f1 = this->lo_redex();
-	reset_garbage();
+	// reset_garbage();
+	gc.reset();
 	while (f1 != this && !type_error)
 	{
 		if (f1->nport[0] == 0)
@@ -188,7 +189,7 @@ void FORM::reduce_term()
 	}
 	if (option != 3 && seegarb)
 	{
-		show_garb_stat(seetime);
+		gc.show_garb_stat(seetime);
 	}
 	if (seenode)
 	{
@@ -212,9 +213,9 @@ static void reduce_redex(
 	FORM *new1;
 	FORM *new2;
 
-	if (option == 2 && del_head != NULL && num_nodes > limit)
+	if (option == 2 && gc.del_head != NULL && num_nodes > limit)
 	{
-		clean();
+		gc.clean();
 	}
 
 	if (f1->index == f2->index)
@@ -296,7 +297,7 @@ static void reduce_redex(
 					f1->del();
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					f2->release();
 					break;
@@ -321,7 +322,7 @@ static void reduce_redex(
 					f1->del();
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					f2->release();
 					break;
@@ -372,7 +373,7 @@ static void reduce_redex(
 					f1->del();
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					f2->release();
 					break;
@@ -420,7 +421,7 @@ static void reduce_redex(
 					connect(f1, 0, f2, 0);
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					break;
 				default:
@@ -516,7 +517,7 @@ static void reduce_redex(
 					f1->del();
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					f2->release();
 					break;
@@ -530,7 +531,7 @@ static void reduce_redex(
 					f2->del();
 					if (option == 1)
 						;
-					clean();
+					gc.clean();
 					break;
 				default:
 					printf("deadlock1\n");
@@ -551,7 +552,7 @@ static void reduce_redex(
 					f1->del();
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					f2->release();
 					break;
@@ -565,7 +566,7 @@ static void reduce_redex(
 					new2->del();
 					if (option == 1)
 						;
-					clean();
+					gc.clean();
 					break;
 				default:
 					printf("deadlock\n");
@@ -586,7 +587,7 @@ static void reduce_redex(
 					f1->del();
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					f2->release();
 					break;
@@ -600,7 +601,7 @@ static void reduce_redex(
 					f1->del();
 					if (option == 1)
 					{
-						clean();
+						gc.clean();
 					}
 					f2->release();
 					break;
@@ -855,7 +856,7 @@ void FORM::reduce_form()
 			f1->del();
 			if (option == 1)
 			{
-				clean();
+				gc.clean();
 			}
 			break;
 
@@ -885,7 +886,7 @@ void FORM::reduce_form()
 			f1->del();
 			if (option == 1)
 			{
-				clean();
+				gc.clean();
 			}
 			break;
 
