@@ -56,19 +56,18 @@ Form *copy_connect(
 
 Form *copy_connect1(
 	Form *temp,
-	int port,
 	Form *newf1,
 	int offset)
 {
 	Form *ret;
-	if (is_int(temp->nport[port]))
+	if (is_int(temp->nport[0]))
 	{
-		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
-		connect1(newf1, port, ret, temp->nport[port]);
+		ret = temp->nform[0]->copy_aux(temp->nport[0], offset);
+		connect1(newf1, 0, ret, temp->nport[0]);
 	}
 	else
 	{
-		int_connect(newf1, port, temp->nform[port], temp->nport[port]);
+		int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
 	}
 
 	return ret;
@@ -184,7 +183,7 @@ Form *Form::copy_aux(int p, int offset)
 	case TRIANGLE:
 		newf1 = new Form(this->kind, this->index + offset);
 		newf1->nlevel[1] = this->nlevel[1];
-		newf2 = copy_connect1(this, 0, newf1, offset);
+		newf2 = copy_connect1(this, newf1, offset);
 		return newf1;
 
 	case NOTEQ1:
@@ -243,7 +242,7 @@ Form *Form::copy_aux(int p, int offset)
 		newf1->nlevel[2] = this->nlevel[2];
 		rel.store(this, newf1);
 
-		newf2 = copy_connect1(this, 0, newf1, offset);
+		newf2 = copy_connect1(this, newf1, offset);
 		return newf1;
 
 	case APP:
@@ -271,6 +270,7 @@ Form *Form::copy_aux(int p, int offset)
 		newf2 = copy_connect(this, 1, newf1, offset);
 		newf3 = copy_connect(this, 2, newf1, offset);
 		return newf1;
+
 	default:
 		return NULL;
 	}
