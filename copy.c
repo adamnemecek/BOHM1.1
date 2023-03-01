@@ -48,7 +48,7 @@ Form *copy_connect(
 	}
 	else
 	{
-		int_connect(newf1, port, this_->nform[port], this_->nport[port]);
+		newf1->int_connect(port, this_->port(port));
 	}
 
 	return ret;
@@ -67,7 +67,7 @@ Form *copy_connect1(
 	}
 	else
 	{
-		int_connect(newf1, 0, this_->nform[0], this_->nport[0]);
+		newf1->int_connect(0, this_->port(0));
 	}
 
 	return ret;

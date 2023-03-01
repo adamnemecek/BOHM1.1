@@ -4,12 +4,12 @@
 struct Term;
 struct Form;
 
-struct PORT
+struct Port
 {
 	Form *form;
 	int port;
 
-	void connect1(PORT other);
+	void connect1(Port other);
 };
 
 #define BINOP(name, op)   \
@@ -82,9 +82,9 @@ struct Form final
 
 	void put_int(const int p);
 
-	PORT port(int i)
+	Port port(int i)
 	{
-		return PORT{nform[i], nport[i]};
+		return Port{nform[i], nport[i]};
 	}
 
 	Form *copy(
@@ -133,13 +133,15 @@ struct Form final
 
 	// void selfconnect1(int from, int to);
 
-	void connect(int port, PORT p);
-	void connect1(int port, PORT p);
+	void connect(int port, Port p);
+	void connect1(int port, Port p);
 	void garbage();
+
+	void int_connect(int port, Port p);
 
 	void inspect_connect(
 		int p1,
-		PORT p);
+		Port p);
 };
 
 struct BindingEntry;

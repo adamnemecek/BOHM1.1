@@ -792,7 +792,7 @@ void connect1(
 	}
 }
 
-void PORT::connect1(PORT other)
+void Port::connect1(Port other)
 {
 	::connect1(form, port, other.form, other.port);
 }
@@ -812,12 +812,12 @@ void Form::connect(int port, Term *term)
 	::connect(this, port, term->root_form, term->root_ports);
 }
 
-void Form::connect(int port, PORT p)
+void Form::connect(int port, Port p)
 {
 	::connect(this, port, p.form, p.port);
 }
 
-void Form::connect1(int port, PORT p)
+void Form::connect1(int port, Port p)
 {
 	::connect1(this, port, p.form, p.port);
 }
@@ -834,9 +834,14 @@ void int_connect(
 	form1->nform[portf1] = form2;
 }
 
+void Form::int_connect(int port, Port p)
+{
+	::int_connect(this, port, p.form, p.port);
+}
+
 void Form::binop(long int (&op)(long int, long int))
 {
-	int_connect(
+	::int_connect(
 		this->nform[1],
 		this->nport[1],
 		(Form *)op((long int)this->nform[2], (long int)this->nform[0]),
@@ -1245,7 +1250,7 @@ void Form::intelligent_connect(
 // function intelligent_connect. Otherwise applies a normal connect.
 void Form::inspect_connect(
 	int p1,
-	PORT p)
+	Port p)
 {
 	if (p.port == 0)
 	{
