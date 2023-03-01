@@ -125,7 +125,7 @@ public:
     void clean();
 
     void reset(void);
-    void show_garb_stat(bool seetime);
+    void show_stats(bool seetime);
 
 private:
     long unsigned er_count;
@@ -141,10 +141,6 @@ inline Garbage gc = Garbage();
 
 void info(char *choices);
 
-// void init_garbage(void);
-
 void menu(int choice);
-// void reset_garbage(void);
-// void show_garb_stat(bool seetime);
 void signal_error(const char *msg);
 void user(void);

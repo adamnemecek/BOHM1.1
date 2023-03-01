@@ -189,7 +189,7 @@ void FORM::reduce_term()
 	}
 	if (option != 3 && seegarb)
 	{
-		gc.show_garb_stat(seetime);
+		gc.show_stats(seetime);
 	}
 	if (seenode)
 	{

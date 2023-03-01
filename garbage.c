@@ -375,7 +375,7 @@ void Garbage::reset(void)
 	sys_garb_time = 0;
 }
 
-void Garbage::show_garb_stat(bool seetime)
+void Garbage::show_stats(bool seetime)
 {
 	printf("Total number of garbage calls      %lu\n", cl_count);
 	printf("Total number of garbage operations %lu\n", er_count);
