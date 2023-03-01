@@ -31,6 +31,7 @@ void FORM::rdbk()
 void FORM::rdbk_1(int port)
 {
   if (left_to_print > 0)
+  {
     if (this->nport[port] < 0)
     {
       switch (this->nport[port])
@@ -57,9 +58,13 @@ void FORM::rdbk_1(int port)
       case LAMBDA:
       case LAMBDAUNB:
         if (this->nport[port] == 0)
+        {
           left_to_print -= printf("#<function>");
+        }
         else
+        {
           left_to_print -= printf("...");
+        }
         break;
       case CONS:
         if (this->nport[port] == 0)
@@ -75,7 +80,9 @@ void FORM::rdbk_1(int port)
         break;
       case FAN:
         if (this->nport[port] != 0)
+        {
           this->nform[port]->rdbk_1(0);
+        }
         else
         {
           left_to_print -= printf("...");
@@ -87,16 +94,23 @@ void FORM::rdbk_1(int port)
       default:
         left_to_print -= printf("...");
       }
+  }
   else
+  {
     left_to_print -= printf("...");
+  }
 }
 
 void FORM::rdbk_list(int port)
 {
   if ((int)this->nport[port] == NIL)
+  {
     left_to_print -= printf("]");
+  }
   else if (left_to_print <= 0)
+  {
     left_to_print -= printf("...]");
+  }
   else if (this->nport[port] < 0)
   {
     left_to_print -= printf("|");

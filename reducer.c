@@ -220,6 +220,7 @@ static void reduce_redex(
 	if (f1->index == f2->index)
 	{
 		if (f1->kind == f2->kind)
+		{
 			switch (f1->kind)
 			{
 			case FAN:
@@ -260,7 +261,9 @@ static void reduce_redex(
 				fan_int++;
 				break;
 			}
+		}
 		else
+		{
 
 			switch (f1->kind)
 			{
@@ -317,7 +320,9 @@ static void reduce_redex(
 					connect1(f1, 0, f2->nform[2], f2->nport[2]);
 					f1->del();
 					if (option == 1)
+					{
 						clean();
+					}
 					f2->release();
 					break;
 				default:
@@ -366,7 +371,9 @@ static void reduce_redex(
 					connect1(f1, 0, f2->nform[1], f2->nport[1]);
 					f1->del();
 					if (option == 1)
+					{
 						clean();
+					}
 					f2->release();
 					break;
 				default:
@@ -412,7 +419,9 @@ static void reduce_redex(
 					f1->del();
 					connect(f1, 0, f2, 0);
 					if (option == 1)
+					{
 						clean();
+					}
 					break;
 				default:
 					printf("--->   type error\n");
@@ -506,7 +515,9 @@ static void reduce_redex(
 					connect1(f1, 0, f2->nform[1], f2->nport[1]);
 					f1->del();
 					if (option == 1)
+					{
 						clean();
+					}
 					f2->release();
 					break;
 
@@ -539,7 +550,9 @@ static void reduce_redex(
 					connect1(f1, 0, f2->nform[2], f2->nport[2]);
 					f1->del();
 					if (option == 1)
+					{
 						clean();
+					}
 					f2->release();
 					break;
 
@@ -572,7 +585,9 @@ static void reduce_redex(
 					connect1(f1, 0, f1->nform[1], f1->nport[1]);
 					f1->del();
 					if (option == 1)
+					{
 						clean();
+					}
 					f2->release();
 					break;
 
@@ -600,6 +615,7 @@ static void reduce_redex(
 				printf("deadlock\n");
 				exit(1);
 			}
+		}
 	}
 	else
 	{ /* f1.index < f2.index */
@@ -720,11 +736,15 @@ static void reduce_redex(
 		case UNS_FAN1:
 		case UNS_FAN2:
 			if (f2->kind != TRIANGLE)
+			{
 				fan_int++;
+			}
 			unsafe++;
 		case TRIANGLE:
 			if (f2->kind == LAMBDA)
+			{
 				f1->num_safe = false;
+			}
 			switch (f2->kind)
 			{
 			case CONS:
@@ -834,7 +854,9 @@ void FORM::reduce_form()
 			f1->connect1(0, f1->port(2));
 			f1->del();
 			if (option == 1)
+			{
 				clean();
+			}
 			break;
 
 		case T:
@@ -862,7 +884,9 @@ void FORM::reduce_form()
 			f1->connect1(0, f1->port(2));
 			f1->del();
 			if (option == 1)
+			{
 				clean();
+			}
 			break;
 
 		case F:
@@ -923,9 +947,13 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] < f1->nform[0])
+			{
 				f1->bool_connect(1, T);
+			}
 			else
+			{
 				f1->bool_connect(1, F);
+			}
 			f1->release();
 			break;
 		}
@@ -1423,7 +1451,9 @@ void FORM::reduce_form()
 	case UNS_FAN1:
 	case UNS_FAN2:
 		if (f1->kind != TRIANGLE)
+		{
 			fan_int++;
+		}
 		switch (f1->nport[0])
 		{
 		case NIL:

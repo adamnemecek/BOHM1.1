@@ -48,7 +48,9 @@ bool seegarb;
 void menu(int choice)
 {
 	if (choice == 1)
+	{
 		option = 1;
+	}
 	else if (choice > 1) /* we interpret this value as max  */
 						 /* allocation before invoking g.c. */
 	{
@@ -73,9 +75,13 @@ void info(char *choices)
 	int select;
 	bool nomoreargs = choices[0] == '\0';
 	if (nomoreargs)
+	{
 		select = 'x';
+	}
 	else
+	{
 		select = choices[0];
+	}
 	while (select != 'y' && select != 'n')
 	{
 		printf("Display time?\n");
@@ -110,9 +116,13 @@ void info(char *choices)
 	}
 	nomoreargs = nomoreargs || choices[1] == '\0';
 	if (nomoreargs)
+	{
 		select = 'x';
+	}
 	else
+	{
 		select = choices[1];
+	}
 	while (select != 'y' && select != 'n')
 	{
 		printf("Display number of interactions?\n");
@@ -150,9 +160,13 @@ void info(char *choices)
 	}
 	nomoreargs = nomoreargs || choices[2] == '\0';
 	if (nomoreargs)
+	{
 		select = 'x';
+	}
 	else
+	{
 		select = choices[2];
+	}
 	while (select != 'y' && select != 'n')
 	{
 		printf("Display memory occupation informations ?\n");
@@ -192,9 +206,13 @@ void info(char *choices)
 	};
 	nomoreargs = nomoreargs || choices[3] == '\0';
 	if (nomoreargs)
+	{
 		select = 'x';
+	}
 	else
+	{
 		select = choices[3];
+	}
 	while (select != 'y' && select != 'n')
 	{
 		printf("Display garbage collection informations ?\n");
@@ -297,10 +315,14 @@ static bool do_menu1(void)
 			printf("by the user via the '#garbage' directive.\n\n");
 		}
 		else if (option != 1 && option != 2 && option != 3)
+		{
 			printf("Illegal option . . .\n\n");
+		}
 	}
 	if (option == 2)
+	{
 		cont = true;
+	}
 	return cont;
 }
 
@@ -328,7 +350,9 @@ static bool do_menu2(void)
 			printf("Option 4. allows you to input a different value.\n");
 		}
 		else if (select != 1 && select != 2 && select != 3 && select != 4)
+		{
 			printf("Illegal option . . .\n\n");
+		}
 	}
 	switch (select)
 	{
