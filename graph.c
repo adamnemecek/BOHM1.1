@@ -295,7 +295,7 @@ TERM *TERM::mu(
 		}
 		else
 		{
-			intelligent_connect(newf1, 2, varform);
+			newf1->intelligent_connect(2, varform);
 		}
 		temp = new TERM(newf1, 1, remv(id, body->vars));
 		t = temp->makebox(level);
@@ -961,8 +961,8 @@ static VARENTRY *share(
 	fan->nlevel[1] = 0;
 	fan->nlevel[2] = 0;
 
-	intelligent_connect(fan, 1, l1->var);
-	intelligent_connect(fan, 2, var->var);
+	fan->intelligent_connect(1, l1->var);
+	fan->intelligent_connect(2, var->var);
 
 	res = l1;
 	res->name = l1->name;
@@ -1062,41 +1062,40 @@ static void closeglobalvars(
 /* The following function tries to merge two forms into a single one. */
 /* If failing doing so, connects them normally        		      */
 
-static void intelligent_connect(
-	FORM *f1,
+void FORM::intelligent_connect(
 	int port,
 	FORM *f2)
 {
 	int dep;
 	FORM *newf;
 
-	switch (f1->kind)
+	switch (this->kind)
 	{
 	case FAN:
 		switch (f2->kind)
 		{
 		case TRIANGLE:
-			f1->nlevel[port] += f2->nlevel[1];
-			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
+			this->nlevel[port] += f2->nlevel[1];
+			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
 			f2->release();
 			break;
 		case TESTNIL:
 		case CAR:
 		case CDR:
-			f1->kind = unpropagate_kind(f1->kind);
-			f1->index = f2->index - f1->nlevel[port];
+			this->kind = unpropagate_kind(this->kind);
+			this->index = f2->index - this->nlevel[port];
 			if (port == 2)
 			{
-				dep = f1->nlevel[1];
-				f1->nlevel[1] = f1->nlevel[2];
-				f1->nlevel[2] = dep;
-				inspect_connect(f1, 2, f1->nform[1], f1->nport[1]);
+				dep = this->nlevel[1];
+				this->nlevel[1] = this->nlevel[2];
+				this->nlevel[2] = dep;
+				inspect_connect(this, 2, this->nform[1], this->nport[1]);
 			}
-			inspect_connect(f1, 1, f2->nform[1], f2->nport[1]);
+			inspect_connect(this, 1, f2->nform[1], f2->nport[1]);
 			f2->release();
 			break;
 		default:
-			connect(f1, port, f2, 0);
+			::connect(this, port, f2, 0);
 			break;
 		}
 		break;
@@ -1104,12 +1103,12 @@ static void intelligent_connect(
 		switch (f2->kind)
 		{
 		case TRIANGLE:
-			f1->nlevel[port] += f2->nlevel[1];
-			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
+			this->nlevel[port] += f2->nlevel[1];
+			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
 			f2->release();
 			break;
 		default:
-			connect(f1, port, f2, 0);
+			::connect(this, port, f2, 0);
 			break;
 		}
 		break;
@@ -1117,61 +1116,63 @@ static void intelligent_connect(
 		switch (f2->kind)
 		{
 		case TRIANGLE:
-			f1->nlevel[port] += f2->nlevel[1];
-			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
+			this->nlevel[port] += f2->nlevel[1];
+			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
 			f2->release();
 			break;
 		case CDR:
 			if (port == 2)
 			{
-				f1->kind = CONS1;
-				if (f1->nlevel[1] != 0)
+				this->kind = CONS1;
+				if (this->nlevel[1] != 0)
 				{
-					newf = new FORM(TRIANGLE, f1->index - 1);
-					newf->nlevel[1] = f1->nlevel[1];
-					newf->connect1(1, f1->port(1));
-					connect(f1, 1, newf, 0);
+					newf = new FORM(TRIANGLE, this->index - 1);
+					newf->nlevel[1] = this->nlevel[1];
+					newf->connect1(1, this->port(1));
+					::connect(this, 1, newf, 0);
 				}
-				if (f1->nlevel[2] != 0)
+				if (this->nlevel[2] != 0)
 				{
 					f2->kind = TRIANGLE;
-					f2->nlevel[1] = f1->nlevel[2];
-					f2->index = f1->index - 1;
-					connect(f1, 2, f2, 0);
+					f2->nlevel[1] = this->nlevel[2];
+					f2->index = this->index - 1;
+					::connect(this, 2, f2, 0);
 				}
 				else
 				{
-					f1->connect1(2, f2->port(1));
+					this->connect1(2, f2->port(1));
 					f2->release();
 				}
 			}
 			else
 			{
-				connect(f1, port, f2, 0);
+				::connect(this, port, f2, 0);
 			}
 			break;
 		case TESTNIL:
 			if (port == 2)
 			{
-				f1->kind = TESTNIL1;
+				this->kind = TESTNIL1;
 				f2->kind = CAR;
 				dep = f2->index;
-				f2->index = f1->index + f1->nlevel[1];
-				f1->index = dep - f1->nlevel[2];
-				dep = f1->nlevel[1];
-				f1->nlevel[1] = f1->nlevel[2];
-				f1->nlevel[2] = dep;
-				newf = f1->nform[1];
-				dep = f1->nport[1];
-				f1->connect1(1, f2->port(1));
-				connect1(f2, 1, newf, dep);
-				connect(f2, 0, f1, 2);
+				f2->index = this->index + this->nlevel[1];
+				this->index = dep - this->nlevel[2];
+				dep = this->nlevel[1];
+				this->nlevel[1] = this->nlevel[2];
+				this->nlevel[2] = dep;
+				newf = this->nform[1];
+				dep = this->nport[1];
+				this->connect1(1, f2->port(1));
+				::connect1(f2, 1, newf, dep);
+				::connect(f2, 0, this, 2);
 			}
 			else
-				connect(f1, port, f2, 0);
+			{
+				::connect(this, port, f2, 0);
+			}
 			break;
 		default:
-			connect(f1, port, f2, 0);
+			::connect(this, port, f2, 0);
 			break;
 		}
 		break;
@@ -1179,70 +1180,72 @@ static void intelligent_connect(
 		switch (f2->kind)
 		{
 		case TRIANGLE:
-			f1->nlevel[port] += f2->nlevel[1];
-			inspect_connect(f1, port, f2->nform[1], f2->nport[1]);
+			this->nlevel[port] += f2->nlevel[1];
+			inspect_connect(this, port, f2->nform[1], f2->nport[1]);
 			f2->release();
 			break;
 		case CAR:
 			if (port == 2)
 			{
-				f1->kind = CONS1;
-				if (f1->nlevel[1] != 0)
+				this->kind = CONS1;
+				if (this->nlevel[1] != 0)
 				{
-					newf = new FORM(TRIANGLE, f1->index - 1);
-					newf->nlevel[1] = f1->nlevel[1];
-					newf->connect1(1, f1->port(1));
-					connect(f1, 2, newf, 0);
+					newf = new FORM(TRIANGLE, this->index - 1);
+					newf->nlevel[1] = this->nlevel[1];
+					newf->connect1(1, this->port(1));
+					::connect(this, 2, newf, 0);
 				}
 				else
 				{
-					connect(f1, 2, f1->nform[1], f1->nport[1]);
+					::connect(this, 2, this->nform[1], this->nport[1]);
 				}
-				if (f1->nlevel[2] != 0)
+				if (this->nlevel[2] != 0)
 				{
 					f2->kind = TRIANGLE;
-					f2->nlevel[1] = f1->nlevel[2];
-					f2->index = f1->index - 1;
-					connect(f1, 1, f2, 0);
+					f2->nlevel[1] = this->nlevel[2];
+					f2->index = this->index - 1;
+					::connect(this, 1, f2, 0);
 				}
 				else
 				{
-					f1->connect1(1, f2->port(1));
+					this->connect1(1, f2->port(1));
 					f2->release();
 				}
 			}
 			else
-				connect(f1, port, f2, 0);
+			{
+				::connect(this, port, f2, 0);
+			}
 			break;
 		case TESTNIL:
 			if (port == 2)
 			{
-				f1->kind = TESTNIL1;
+				this->kind = TESTNIL1;
 				f2->kind = CDR;
 				dep = f2->index;
-				f2->index = f1->index + f1->nlevel[1];
-				f1->index = dep - f1->nlevel[2];
-				dep = f1->nlevel[1];
-				f1->nlevel[1] = f1->nlevel[2];
-				f1->nlevel[2] = dep;
-				newf = f1->nform[1];
-				dep = f1->nport[1];
+				f2->index = this->index + this->nlevel[1];
+				this->index = dep - this->nlevel[2];
+				dep = this->nlevel[1];
+				this->nlevel[1] = this->nlevel[2];
+				this->nlevel[2] = dep;
+				newf = this->nform[1];
+				dep = this->nport[1];
 				newf->connect1(1, f2->port(2));
-				connect1(f2, 1, newf, dep);
-				connect(f2, 0, f1, 2);
+				::connect1(f2, 1, newf, dep);
+				::connect(f2, 0, this, 2);
 			}
 			else
 			{
-				connect(f1, port, f2, 0);
+				::connect(this, port, f2, 0);
 			}
 			break;
 		default:
-			connect(f1, port, f2, 0);
+			::connect(this, port, f2, 0);
 			break;
 		}
 		break;
 	default:
-		connect(f1, port, f2, 0);
+		::connect(this, port, f2, 0);
 		break;
 	}
 }
@@ -1257,7 +1260,7 @@ static void inspect_connect(
 {
 	if (p2 == 0)
 	{
-		intelligent_connect(f1, p1, f2);
+		f1->intelligent_connect(p1, f2);
 	}
 	else
 	{

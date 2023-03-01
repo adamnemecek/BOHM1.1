@@ -127,6 +127,7 @@ struct FORM final
 		this->nport[port] = val;
 	}
 
+	void intelligent_connect(int port, FORM *f2);
 	void binop(long int (&op)(long int, long int));
 
 	// void selfconnect1(int from, int to);
