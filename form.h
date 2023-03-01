@@ -65,6 +65,23 @@ inline int propagate_kind(int kind)
     // return CAR1;
 }
 
+inline int unpropagate_kind(int kind)
+{
+    switch (kind)
+    {
+    // case CAR1: return CAR;
+    case CAR:
+        return CAR1;
+    case CDR:
+        return CDR1;
+    case TESTNIL:
+        return TESTNIL1;
+    default:
+        assert(false);
+    }
+    // return CAR1;
+}
+
 inline const char *kind_desc(char kind)
 {
     switch (kind)

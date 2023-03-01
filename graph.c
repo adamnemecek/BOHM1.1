@@ -727,7 +727,9 @@ FORM *TERM::close(
 	newroot->connect1(0, this);
 
 	if (level == 1)
+	{
 		this->vars = addbrackets(0, this->vars);
+	}
 	closeglobalvars(this->vars);
 	return newroot;
 }
@@ -744,7 +746,9 @@ FORM::FORM(
 	*this = *destroyer.alloc();
 	num_nodes++;
 	if (num_nodes > max_nodes)
+	{
 		max_nodes = num_nodes;
+	}
 	this->kind = kind;
 	this->index = index;
 	this->nform[0] = NULL;
@@ -976,10 +980,14 @@ static VARENTRY *lookfor(
 {
 
 	if (listvar == NULL)
+	{
 		return NULL;
+	}
 
 	if (listvar->name == id)
+	{
 		return listvar;
+	}
 
 	return lookfor(id, listvar->next);
 }
@@ -1073,33 +1081,9 @@ static void intelligent_connect(
 			f2->release();
 			break;
 		case TESTNIL:
-			f1->kind = TESTNIL1;
-			f1->index = f2->index - f1->nlevel[port];
-			if (port == 2)
-			{
-				dep = f1->nlevel[1];
-				f1->nlevel[1] = f1->nlevel[2];
-				f1->nlevel[2] = dep;
-				inspect_connect(f1, 2, f1->nform[1], f1->nport[1]);
-			}
-			inspect_connect(f1, 1, f2->nform[1], f2->nport[1]);
-			f2->release();
-			break;
 		case CAR:
-			f1->kind = CAR1;
-			f1->index = f2->index - f1->nlevel[port];
-			if (port == 2)
-			{
-				dep = f1->nlevel[1];
-				f1->nlevel[1] = f1->nlevel[2];
-				f1->nlevel[2] = dep;
-				inspect_connect(f1, 2, f1->nform[1], f1->nport[1]);
-			}
-			inspect_connect(f1, 1, f2->nform[1], f2->nport[1]);
-			f2->release();
-			break;
 		case CDR:
-			f1->kind = CDR1;
+			f1->kind = unpropagate_kind(f1->kind);
 			f1->index = f2->index - f1->nlevel[port];
 			if (port == 2)
 			{

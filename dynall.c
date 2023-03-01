@@ -54,7 +54,9 @@ char *malloc_da(unsigned size)
 {
 	char *p = (char *)malloc(size);
 	if (!p)
+	{
 		signal_crash(NOTENOUGHMEMORY);
+	}
 	return p;
 }
 

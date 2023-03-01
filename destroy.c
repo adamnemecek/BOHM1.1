@@ -103,7 +103,9 @@ void Destroyer::release(FORM *form)
   form->next = headfree->next;
   form->prev = headfree;
   if (headfree->next != NULL)
+  {
     headfree->next->prev = form;
+  }
   headfree->next = form;
 }
 

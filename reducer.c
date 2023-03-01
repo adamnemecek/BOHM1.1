@@ -442,7 +442,9 @@ static void reduce_redex(
 						f2->index += f1->nlevel[2];
 					}
 					else
+					{
 						f1->release();
+					}
 					break;
 				default:
 					printf("--->   type error\n");
@@ -582,7 +584,9 @@ static void reduce_redex(
 					connect1(f1, 0, f1->nform[2], f1->nport[2]);
 					f1->del();
 					if (option == 1)
+					{
 						clean();
+					}
 					f2->release();
 					break;
 
@@ -603,9 +607,13 @@ static void reduce_redex(
 		{
 		case FAN:
 			if (f2->kind != TRIANGLE)
+			{
 				fan_int++;
+			}
 			if (f2->kind == LAMBDA)
+			{
 				f1->num_safe = false;
+			}
 			switch (f2->kind)
 			{
 			case CONS:
