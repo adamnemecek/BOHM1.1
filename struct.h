@@ -120,9 +120,9 @@ struct FORM final
 	void connect(int port, TERM *term);
 	void connect1(int port, TERM *term);
 
-	/* the following function connects only the port portf1 of 	*/
-	/* form1 to the port portf2 of form2, because form2 is a INT,	*/
-	/* NIL, True or False.						*/
+	// the following function connects only the port portf1 of
+	// form1 to the port portf2 of form2, because form2 is a INT,
+	// NIL, True or False.
 	void bool_connect(int port, int val)
 	{
 		this->nport[port] = val;
@@ -145,27 +145,27 @@ struct FORM final
 struct BINDINGENTRY;
 struct PATTERN;
 
-/* symbol table bucket type */
+// symbol table bucket type
 struct STBUCKET final
 {
-	/* identifier */
+	// identifier
 	char *id;
 
-	/* token associated with */
-	/* the identifier (it can */
-	/* be either ID or a keyword */
-	/* token) */
+	// token associated with
+	// the identifier (it can
+	// be either ID or a keyword
+	// token)
 	int token;
 
-	/* pointer to the current */
-	/* binding entry for the */
-	/* identifier */
+	// pointer to the current
+	// binding entry for the
+	// identifier
 	BINDINGENTRY *curr_binding;
 
-	/* pointer to the bucket */
-	/* for the next identifier */
-	/* hashing in the same */
-	/* linked list of buckets */
+	// pointer to the bucket
+	// for the next identifier
+	// hashing in the same
+	// linked list of buckets
 	STBUCKET *next_st_bucket;
 
 	STBUCKET(
@@ -181,57 +181,57 @@ struct STBUCKET final
 	void create_variable_binding(FORM *form);
 };
 
-/* binding entry descriptor type */
+// binding entry descriptor type
 struct BINDINGENTRY final
 {
 	STBUCKET *st_bucket;
-	/* pointer to the bucket */
-	/* for the identifier */
-	/* involved in the binding */
+	// pointer to the bucket
+	// for the identifier
+	// involved in the binding
 	FORM *root;
-	/* pointer to the root form */
-	/* (for global identifiers) */
+	// pointer to the root form
+	// (for global identifiers)
 	BINDINGENTRY *prev_id_binding;
-	/* pointer to the entry for */
-	/* the binding previously */
-	/* enforced for the same */
-	/* identifier */
+	// pointer to the entry for
+	// the binding previously
+	// enforced for the same
+	// identifier
 	BINDINGENTRY *prev_local_binding;
-	/* pointer to the entry for the */
-	/* binding previously enforced */
-	/* in the same local environment */
+	// pointer to the entry for the
+	// binding previously enforced
+	// in the same local environment
 };
 
-/* local environment entry descriptor type */
+// local environment entry descriptor type
 struct LOCALENVENTRY final
 {
-	/* nesting depth associated */
-	/* with the local environment */
+	// nesting depth associated
+	// with the local environment
 	int nesting_depth;
 
-	/* pointer to the entry for */
-	/* the last binding enforced in */
-	/* this environment */
+	// pointer to the entry for
+	// the last binding enforced in
+	// this environment
 	BINDINGENTRY *last_local_binding;
 
-	/* pointer to the entry for the */
-	/* previous local environment */
+	// pointer to the entry for the
+	// previous local environment
 	LOCALENVENTRY *prev_local_env;
 };
 
-/* free variable descriptor type */
+// free variable descriptor type
 struct VARENTRY final
 {
-	/* pointer to the st_bucket */
-	/* for the variable */
+	// pointer to the st_bucket
+	// for the variable
 	STBUCKET *name;
 
-	/* pointer to the form */
-	/* for the variable */
+	// pointer to the form
+	// for the variable
 	FORM *var;
 
-	/* pointer to the next free */
-	/* variable in a term */
+	// pointer to the next free
+	// variable in a term
 	VARENTRY *next;
 
 	VARENTRY(
@@ -240,21 +240,21 @@ struct VARENTRY final
 		VARENTRY *nextvar);
 };
 
-/* term descriptor type */
+// term descriptor type
 struct TERM final
 {
-	/* pointer to the root form */
-	/* of the term */
+	// pointer to the root form
+	// of the term
 	FORM *root_form;
 
-	/* number of the root port */
-	/* of the term (0 for variables */
-	/* and abstractions, 1 for */
-	/* applications) */
+	// number of the root port
+	// of the term (0 for variables
+	// and abstractions, 1 for
+	// applications)
 	char root_ports;
 
-	/* pointer to the list of free */
-	/* variables in the term */
+	// pointer to the list of free
+	// variables in the term
 	VARENTRY *vars;
 
 	TERM(

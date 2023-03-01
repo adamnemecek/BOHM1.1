@@ -1,32 +1,32 @@
-/****************************************************************/
-/* This module carries out graph duplication. This is done in   */
-/* a top-down manner, starting off from the root and going      */
-/* downwards. However, when entering a FAN, we have to take     */
-/* into account the possibility to have already passed through  */
-/* it. Therefore, we have to keep track of the relations        */
-/* existing between source and destination FANS.		*/
-/* The same issue holds true for all those forms that "contain" */
-/* a FAN, such as CAR1, CDR and TESTNIL, as well as for LAMBDA. */
-/* In fact, when duplicationg a LAMBDA, we enter from its main  */
-/* port and start copying from port 1. Sooner or later, taking  */
-/* a certain path, we'll get to port 2, and need to know at     */
-/* this stage which is its twin-form.				*/
-/* In order to maintain the relations between source and        */
-/* destination forms, a hash table is used. This table is       */
-/* accessed by the source form's pointer.  			*/
-/* The following function is extern:				*/
-/*  - copy(): Initialises the hash table, calls function        */
-/*            copy_aux and eliminates the table.		*/
-/* The following functions are internal:			*/
-/*  - copy_aux(): Duplicates the input graph and returns it as  */
-/*	          output.					*/
-/*  - put_relation(): Inserts a two-form relation in the table  */
-/*  - is_in_relation(): Checks whether or not a form has already*/
-/*                      been copied.                            */
-/*  - entry(): Implements hash function.			*/
-/*  - start_copy(): Initialises hash table.		        */
-/*  - end_copy(): Eliminates hash table.			*/
-/****************************************************************/
+//**************************************************************
+// This module carries out graph duplication. This is done in
+// a top-down manner, starting off from the root and going
+// downwards. However, when entering a FAN, we have to take
+// into account the possibility to have already passed through
+// it. Therefore, we have to keep track of the relations
+// existing between source and destination FANS.
+// The same issue holds true for all those forms that "contain"
+// a FAN, such as CAR1, CDR and TESTNIL, as well as for LAMBDA.
+// In fact, when duplicationg a LAMBDA, we enter from its main
+// port and start copying from port 1. Sooner or later, taking
+// a certain path, we'll get to port 2, and need to know at
+// this stage which is its twin-form.
+// In order to maintain the relations between source and
+// destination forms, a hash table is used. This table is
+// accessed by the source form's pointer.
+// The following function is extern:
+//  - copy(): Initialises the hash table, calls function
+//            copy_aux and eliminates the table.
+// The following functions are internal:
+//  - copy_aux(): Duplicates the input graph and returns it as
+//	          output.
+//  - put_relation(): Inserts a two-form relation in the table
+//  - is_in_relation(): Checks whether or not a form has already
+//                      been copied.
+//  - entry(): Implements hash function.
+//  - start_copy(): Initialises hash table.
+//  - end_copy(): Eliminates hash table.
+//**************************************************************
 
 #include "bohm.h"
 
@@ -91,14 +91,14 @@ struct Relations final
 		}
 	}
 
-	/* The following function initialises hash table.	        */
+	// The following function initialises hash table.
 	void start()
 	{
 		reset();
 		//
 	}
 
-	/* The following function eliminates hash table.		*/
+	// The following function eliminates hash table.
 	void end()
 	{
 
@@ -113,7 +113,7 @@ struct Relations final
 		}
 	}
 
-	/* The following function inserts a two-form relation in the table. */
+	// The following function inserts a two-form relation in the table.
 	// put_relation(
 	void store(FORM *src, FORM *dest)
 	{
@@ -123,8 +123,8 @@ struct Relations final
 		this->copy_relation[dep1] = dep;
 	}
 
-	/* The following function checks whether or not a form has 	*/
-	/* already been copied.						*/
+	// The following function checks whether or not a form has
+	// already been copied.
 	// is_in_relation
 	FORM *rel(FORM *src)
 	{
@@ -150,8 +150,8 @@ struct Relations final
 
 inline Relations rel = Relations();
 
-/* The following function initialises the hash table, calls 	*/
-/* function copy_aux and eliminates the table.			*/
+// The following function initialises the hash table, calls
+// function copy_aux and eliminates the table.
 FORM *FORM::copy(
 	int p,
 	int offset)
@@ -170,8 +170,8 @@ FORM *FORM::copy(
 	return risul;
 }
 
-/* The following function duplicates the input graph and 	*/
-/* returns it as output.					*/
+// The following function duplicates the input graph and
+// returns it as output.
 FORM *FORM::copy_aux(int p, int offset)
 {
 	FORM *newf1;
@@ -277,7 +277,7 @@ FORM *FORM::copy_aux(int p, int offset)
 	}
 }
 
-/* The following function inserts a two-form relation in the table. */
+// The following function inserts a two-form relation in the table.
 // static void put_relation(
 // 	FORM *src,
 // 	FORM *dest)
@@ -302,7 +302,7 @@ FORM *FORM::copy_aux(int p, int offset)
 // 	return NULL;
 // }
 
-/* The following function implements hash function.		*/
+// The following function implements hash function.
 int FORM::hash()
 {
 	unsigned long risul = (unsigned long)this;

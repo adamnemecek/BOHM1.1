@@ -1,27 +1,27 @@
-/***************************************************************************/
-/* This module implements the menus to select the desired garbage strategy.*/
-/* It may be:                                                              */
-/* - garbage collection performed whenever possible.                       */
-/* - garbage collection attempted only if the number of operators in the   */
-/*   graph reaches a certain limit. In this case the user is asked to      */
-/*   choose such limit.                                                    */
-/* The only external functions are:                                        */
-/* - menu(): It activates the different menus depending on user's choice.  */
-/* - info(): It allows the user to get informations about the computation. */
-/* The external functions are:                                             */
-/* - do_menu1(): It prints the first menu, asking the user which strategy  */
-/*               he wants to use.                                          */
-/* - do_menu2(): If the second strategyhas been chosen, this function      */
-/*               shows some possible limits for memory occupation and asks */
-/*               the user to select one of them.                           */
-/* - do_menu3(): It is used to insert a limit different from the ones      */
-/*               listed by the previous function.                          */
-/*                                                                         */
-/***************************************************************************/
+//*************************************************************************
+// This module implements the menus to select the desired garbage strategy.
+// It may be:
+// - garbage collection performed whenever possible.
+// - garbage collection attempted only if the number of operators in the
+//   graph reaches a certain limit. In this case the user is asked to
+//   choose such limit.
+// The only external functions are:
+// - menu(): It activates the different menus depending on user's choice.
+// - info(): It allows the user to get informations about the computation.
+// The external functions are:
+// - do_menu1(): It prints the first menu, asking the user which strategy
+//               he wants to use.
+// - do_menu2(): If the second strategyhas been chosen, this function
+//               shows some possible limits for memory occupation and asks
+//               the user to select one of them.
+// - do_menu3(): It is used to insert a limit different from the ones
+//               listed by the previous function.
+//
+//*************************************************************************
 
-/***************************************************************************/
-/* 1. Inclusion of header files.                                           */
-/***************************************************************************/
+//*************************************************************************
+// 1. Inclusion of header files.
+//*************************************************************************
 
 #include "bohm.h"
 
@@ -30,20 +30,20 @@ static bool do_menu2(void);
 static void do_menu3(void);
 static int take_char(void);
 
-/***************************************************************************/
-/* 2. Definitions of variables to be exported.                             */
-/***************************************************************************/
+//*************************************************************************
+// 2. Definitions of variables to be exported.
+//*************************************************************************
 
-int option;		/* Initial option selected */
-unsigned limit; /* Limit for allocable operators (only for option 2) */
+int option;		// Initial option selected
+unsigned limit; // Limit for allocable operators (only for option 2)
 bool seetime;
 bool seenumber;
 bool seenode;
 bool seegarb;
 
-/****************************************************************************/
-/* 3. Definitions of functions to be exported.                              */
-/****************************************************************************/
+//**************************************************************************
+// 3. Definitions of functions to be exported.
+//**************************************************************************
 
 void menu(int choice)
 {
@@ -51,8 +51,8 @@ void menu(int choice)
 	{
 		option = 1;
 	}
-	else if (choice > 1) /* we interpret this value as max  */
-						 /* allocation before invoking g.c. */
+	else if (choice > 1) // we interpret this value as max
+						 // allocation before invoking g.c.
 	{
 		option = 2;
 		limit = choice;
@@ -259,9 +259,9 @@ void info(char *choices)
 	printf("***********************************************************\n\n");
 }
 
-/****************************************************************************/
-/* 4. Definitions of functions strictly local to the module.                */
-/****************************************************************************/
+//**************************************************************************
+// 4. Definitions of functions strictly local to the module.
+//**************************************************************************
 
 static int take_char(void)
 {

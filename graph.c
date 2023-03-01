@@ -1,75 +1,75 @@
-/****************************************************************/
-/* This module contains routines for generating the graph       */
-/* representation of lambda-terms.                              */
-/* The translation which has been implemented is the one        */
-/* described in "linear Logic, Comonads, and Optimal            */
-/* Reductions", by A.Asperti, to appear in Fundamenta           */
-/* Informaticae.                                                */
-/* During the translation, each term is described by a record   */
-/* with following fields:                                       */
-/*  - root_form : the root form of the term;                        */
-/*  - root_ports : the root (positive) port of the root form;        */
-/*  - vars:   a pointer to the list of free variables for the   */
-/*            term.                                             */
-/* Free variable of a same term are collected into a linked     */
-/* list. Each entry for a free variable consists of:            */
-/*  - a pointer to the next variable;                           */
-/*  - a pointer to the last form associated to the variable.    */
-/*  - a pointer to the symbol table bucket associated with the  */
-/*    the variable.                                             */
-/* The support of the implementation is an interaction net.     */
-/* Each connection between forms of the interaction net has     */
-/* been implemented by a double pointer. This is probably       */
-/* a bit redundant and inefficient, but it greatly simplified   */
-/* debugging, as it allows an easy inspection of the resulting  */
-/* graph (see also the directive "inspect" of the language).    */
-/* The following functions are external                         */
-/*  - buildvarterm():  it builds the graph corresponding to a   */
-/*                     a variable. If the variable has been     */
-/*                     globally defined by a let instruction,   */
-/*                     the corresponding graph is a (shared)    */
-/*                     instance of the corresponding term.      */
-/*  - buildplambdaterm(): it builds the graph corresponding to  */
-/*                        a lambda abstraction.                 */
-/*  - buildappterm(): it builds the graph corresponding to an   */
-/*                    application                               */
-/*  - buildletinterm(): it builds the graph corresponding to a  */
-/*                      let_in instruction (it is equivalent to */
-/*                      a partially evaluated lambda redex)     */
-/*  - closeterm(): it adds a root node to a term 		*/
-/*  - connect(): it connects two graphical forms at two         */
-/*               specified ports.                               */
-/*  - connect1():  it connects the port portf1 of form1 to the 	*/
-/* 		   port portf2 of form2 and vice versa if the 	*/
-/*		   form2 is not a NIL, INT, True or False form.	*/
-/*  - int_connect(): it connects only the port portf1 of form1	*/
-/*		    to the port portf2 of form2, becouse form2  */
-/*		    is a INT.					*/
-/*  - bool_connect(): it connects only the port portf1 of form1	*/
-/* 		      to the port portf2 of form2, because 	*/
-/*		      form2 is a NIL, True or False.		*/
-/*  - myfree():  it is used to handle a free list containig     */
-/*               all forms removed from the graph.              */
-/*		 These forms will be used for future            */
-/*		 allocations.                                   */
-/*  -new FORM(): it allocates a new graphical form.       */
-/* The functions buildvarterm(), buildplambdaterm(),            */
-/* buildappterm() and buildletinterm() etc. are called by the   */
-/* parser.                                                      */
-/* The functions connect() andnew FORM() are also used    */
-/* during reduction.                                            */
-/* The following functions are local to the module:             */
-/*  - allocate_var(): it allocates a new entry for a variable.  */
-/*  - new TERM(): it allocates a new entry for a term.     */
-/*  - makebox(): it builds a box around a term.                 */
-/*  - addbrackets(): it adds a sequence of brackets of          */
-/*                   specified index along a sequence of        */
-/*                   variables.                                 */
-/*  - share(): it shares the free variables of two terms, by    */
-/*             adding suitable FANS.                            */
-/*  - lookfor(): it searches for a variable inside a list.      */
-/*  - remv(): it removes a variable from a list.                */
-/****************************************************************/
+//**************************************************************
+// This module contains routines for generating the graph
+// representation of lambda-terms.
+// The translation which has been implemented is the one
+// described in "linear Logic, Comonads, and Optimal
+// Reductions", by A.Asperti, to appear in Fundamenta
+// Informaticae.
+// During the translation, each term is described by a record
+// with following fields:
+//  - root_form : the root form of the term;
+//  - root_ports : the root (positive) port of the root form;
+//  - vars:   a pointer to the list of free variables for the
+//            term.
+// Free variable of a same term are collected into a linked
+// list. Each entry for a free variable consists of:
+//  - a pointer to the next variable;
+//  - a pointer to the last form associated to the variable.
+//  - a pointer to the symbol table bucket associated with the
+//    the variable.
+// The support of the implementation is an interaction net.
+// Each connection between forms of the interaction net has
+// been implemented by a double pointer. This is probably
+// a bit redundant and inefficient, but it greatly simplified
+// debugging, as it allows an easy inspection of the resulting
+// graph (see also the directive "inspect" of the language).
+// The following functions are external
+//  - buildvarterm():  it builds the graph corresponding to a
+//                     a variable. If the variable has been
+//                     globally defined by a let instruction,
+//                     the corresponding graph is a (shared)
+//                     instance of the corresponding term.
+//  - buildplambdaterm(): it builds the graph corresponding to
+//                        a lambda abstraction.
+//  - buildappterm(): it builds the graph corresponding to an
+//                    application
+//  - buildletinterm(): it builds the graph corresponding to a
+//                      let_in instruction (it is equivalent to
+//                      a partially evaluated lambda redex)
+//  - closeterm(): it adds a root node to a term
+//  - connect(): it connects two graphical forms at two
+//               specified ports.
+//  - connect1():  it connects the port portf1 of form1 to the
+// 		   port portf2 of form2 and vice versa if the
+//		   form2 is not a NIL, INT, True or False form.
+//  - int_connect(): it connects only the port portf1 of form1
+//		    to the port portf2 of form2, becouse form2
+//		    is a INT.
+//  - bool_connect(): it connects only the port portf1 of form1
+// 		      to the port portf2 of form2, because
+//		      form2 is a NIL, True or False.
+//  - myfree():  it is used to handle a free list containig
+//               all forms removed from the graph.
+//		 These forms will be used for future
+//		 allocations.
+//  -new FORM(): it allocates a new graphical form.
+// The functions buildvarterm(), buildplambdaterm(),
+// buildappterm() and buildletinterm() etc. are called by the
+// parser.
+// The functions connect() andnew FORM() are also used
+// during reduction.
+// The following functions are local to the module:
+//  - allocate_var(): it allocates a new entry for a variable.
+//  - new TERM(): it allocates a new entry for a term.
+//  - makebox(): it builds a box around a term.
+//  - addbrackets(): it adds a sequence of brackets of
+//                   specified index along a sequence of
+//                   variables.
+//  - share(): it shares the free variables of two terms, by
+//             adding suitable FANS.
+//  - lookfor(): it searches for a variable inside a list.
+//  - remv(): it removes a variable from a list.
+//**************************************************************
 
 #include "bohm.h"
 
@@ -105,37 +105,37 @@ static VARENTRY *remvp(
 
 static void closeglobalvars(VARENTRY *listvar);
 
-/* The following function creates the graph representation of */
-/* a variable */
+// The following function creates the graph representation of
+// a variable
 TERM *TERM::var(
 	int level,
 	STBUCKET *id)
 {
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(TRIANGLE, level);
 	newf->nlevel[1] = -1;
 
-	/* pointer to the new free variable entry */
+	// pointer to the new free variable entry
 	VARENTRY *newvar = new VARENTRY(id, newf, NULL);
 	return new TERM(newf, 1, newvar);
 }
 
-/* The following function creates the graph representation of */
-/* a true constant */
+// The following function creates the graph representation of
+// a true constant
 TERM *TERM::true_(int level)
 {
 	return new TERM(NULL, T, NULL);
 }
 
-/* The following function creates the graph representation of */
-/* a false constant */
+// The following function creates the graph representation of
+// a false constant
 TERM *TERM::false_(int level)
 {
 	return new TERM(NULL, F, NULL);
 }
 
-/* The following function creates the graph representation of */
-/* a numerical constant */
+// The following function creates the graph representation of
+// a numerical constant
 TERM *TERM::int_(
 	int level,
 	long int value)
@@ -143,14 +143,14 @@ TERM *TERM::int_(
 	return new TERM((FORM *)value, INT, NULL);
 }
 
-/* The following function creates the graph representation of a */
-/* lambda-abstraction */
+// The following function creates the graph representation of a
+// lambda-abstraction
 TERM *TERM::lambda(
 	int level,
 	STBUCKET *id,
 	TERM *body)
 {
-	TERM *t; /* pointer to the new TERM to be created */
+	TERM *t; // pointer to the new TERM to be created
 
 	VARENTRY *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
@@ -187,12 +187,12 @@ TERM *TERM::plambda(
 	PATTERN *pattern,
 	TERM *body)
 {
-	TERM *t; /* pointer to the new TERM to be created */
+	TERM *t; // pointer to the new TERM to be created
 	VARLIST *vp;
 	FORM *newf1;
-	FORM *newf2;		/* pointers to the new forms to be created */
-	VARENTRY *boundvar; /* pointer to the entry for the bound variable */
-	FORM *varform;		/* pointer to the bound variable form */
+	FORM *newf2;		// pointers to the new forms to be created
+	VARENTRY *boundvar; // pointer to the entry for the bound variable
+	FORM *varform;		// pointer to the bound variable form
 	bool boundp;
 
 	for (vp = pattern->var_list, boundp = false; vp; vp = vp->next)
@@ -236,13 +236,13 @@ TERM *TERM::plambda(
 				}
 			}
 			vp->id->form->release();
-		} /* for */
+		} // for
 		t = new TERM(newf1, 0, remvp(pattern->var_list, body->vars));
 		connect(newf1, 1, body->root_form, body->root_ports);
 	}
 	else
 	{
-		/* apparent memory leak, but there's the destroyer */
+		// apparent memory leak, but there's the destroyer
 		newf1 = new FORM(LAMBDAUNB, level);
 		t = new TERM(newf1, 0, body->vars);
 		newf1->connect1(1, body);
@@ -251,22 +251,22 @@ TERM *TERM::plambda(
 	return t;
 }
 
-/* The following function creates the graph representation of a */
-/* recursive definition. */
+// The following function creates the graph representation of a
+// recursive definition.
 TERM *TERM::mu(
 	int level,
 	STBUCKET *id,
 	TERM *body)
 {
 	TERM *t;
-	/* pointer to the new TERM to be created */
+	// pointer to the new TERM to be created
 	TERM *temp;
-	FORM *newf1; /* pointer to the new form to be created */
+	FORM *newf1; // pointer to the new form to be created
 
 	FORM *varform;
-	/* pointer to the bound variable form */
+	// pointer to the bound variable form
 
-	/* pointer to the entry for the bound variable */
+	// pointer to the entry for the bound variable
 	VARENTRY *boundvar = lookfor(id, body->vars);
 	if (boundvar != NULL)
 	{
@@ -304,15 +304,15 @@ TERM *TERM::mu(
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* an application */
+// The following function creates the graph representation of
+// an application
 TERM *TERM::app(
 	int level,
 	TERM *fun,
 	TERM *arg)
 {
 	TERM *temp = arg->makebox(level);
-	/* free variables of the application */
+	// free variables of the application
 	FORM *newf = new FORM(APP, level);
 
 	newf->connect1(0, fun);
@@ -326,18 +326,18 @@ TERM *TERM::app(
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* an if_then_else term */
+// The following function creates the graph representation of
+// an if_then_else term
 TERM *TERM::ifelse(
 	int level,
 	TERM *arg1,
 	TERM *arg2,
 	TERM *arg3)
 {
-	/* free variables of the application */
+	// free variables of the application
 	FORM *newf = new FORM(IFELSE, level);
 	FORM *newf1 = new FORM(CONS, level);
-	/* pointers to the new forms */
+	// pointers to the new forms
 
 	newf->connect1(0, arg1);
 	connect(newf, 2, newf1, 0);
@@ -348,7 +348,7 @@ TERM *TERM::ifelse(
 	VARENTRY *tempvars = share(level, arg2->vars, arg3->vars);
 	VARENTRY *newvars = share(level, tempvars, arg1->vars);
 
-	/* pointer to the term to be created */
+	// pointer to the term to be created
 	TERM *t = new TERM(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
@@ -356,8 +356,8 @@ TERM *TERM::ifelse(
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* a let_in expression*/
+// The following function creates the graph representation of
+// a let_in expression
 TERM *TERM::let_in(
 	int level,
 	STBUCKET *id,
@@ -368,81 +368,81 @@ TERM *TERM::let_in(
 	return TERM::app(level, temp, arg1);
 }
 
-/* The following function creates the graph representation of */
-/* a boolean and-expression */
+// The following function creates the graph representation of
+// a boolean and-expression
 TERM *TERM::and_(
 	int level,
 	TERM *arg1,
 	TERM *arg2)
 {
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(AND, level);
 
 	newf->connect1(0, arg1);
 	newf->connect1(2, arg2);
 
-	/* free variables of the application */
+	// free variables of the application
 	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
-	/* pointer to the term to be created */
+	// pointer to the term to be created
 	TERM *t = new TERM(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* a boolean or-expression */
+// The following function creates the graph representation of
+// a boolean or-expression
 TERM *TERM::or_(
 	int level,
 	TERM *arg1,
 	TERM *arg2)
 {
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(OR, level);
 
 	newf->connect1(0, arg1);
 	newf->connect1(2, arg2);
 
-	/* free variables of the application */
+	// free variables of the application
 	VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 
-	/* pointer to the term to be created */
+	// pointer to the term to be created
 	TERM *t = new TERM(newf, 1, newvars);
 	free(arg1);
 	free(arg2);
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* a boolean not-expression */
+// The following function creates the graph representation of
+// a boolean not-expression
 TERM *TERM::not_(
 	int level,
 	TERM *arg)
 {
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(NOT, level);
 
 	newf->connect1(0, arg);
 
-	/* pointer to the term to be created */
+	// pointer to the term to be created
 	TERM *t = new TERM(newf, 1, arg->vars);
 	free(arg);
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* a mat-expression */
+// The following function creates the graph representation of
+// a mat-expression
 TERM *TERM::matterm(
 	int level,
 	TERM *arg1,
 	TERM *arg2,
 	int op)
 {
-	/* pointer to the term to be created */
+	// pointer to the term to be created
 	TERM *t;
 
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(op, level);
 	if (arg1->root_ports == INT)
 	{
@@ -494,7 +494,7 @@ TERM *TERM::matterm(
 		{
 			newf->connect1(0, arg1);
 			newf->connect1(2, arg2);
-			/* free variables of the application */
+			// free variables of the application
 
 			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 			t = new TERM(newf, 1, newvars);
@@ -505,19 +505,19 @@ TERM *TERM::matterm(
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* a unary minus-expression */
+// The following function creates the graph representation of
+// a unary minus-expression
 TERM *TERM::minus(
 	int level,
 	TERM *arg1)
 {
-	/* pointer to the term to be created */
+	// pointer to the term to be created
 	if (arg1->root_ports == INT)
 	{
 		arg1->root_form = (FORM *)(-(long int)arg1->root_form);
 		return arg1;
 	}
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(SUB1, level);
 	newf->num_safe = 0;
 	newf->connect1(0, arg1);
@@ -526,18 +526,18 @@ TERM *TERM::minus(
 	return t;
 }
 
-/* The following function creates the graph representation of */
-/* a relop-expression */
+// The following function creates the graph representation of
+// a relop-expression
 TERM *TERM::relop(
 	int level,
 	TERM *arg1,
 	TERM *arg2,
 	int relop)
 {
-	/* pointer to the term to be created */
+	// pointer to the term to be created
 	TERM *t;
 
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(relop, level);
 
 	if (arg1->root_ports == INT)
@@ -600,7 +600,7 @@ TERM *TERM::relop(
 		{
 			newf->connect1(0, arg1);
 			newf->connect1(2, arg2);
-			/* free variables of the application */
+			// free variables of the application
 			VARENTRY *newvars = share(level, arg1->vars, arg2->vars);
 			t = new TERM(newf, 1, newvars);
 		}
@@ -620,8 +620,8 @@ TERM *TERM::list(
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *t; /* pointer to the term to be created */
-	/* pointer to the new form to be created */
+	TERM *t; // pointer to the term to be created
+	// pointer to the new form to be created
 
 	FORM *newf1 = new FORM(CONS, level);
 
@@ -649,8 +649,8 @@ TERM *TERM::list1(
 	TERM *arg1,
 	TERM *arg2)
 {
-	TERM *t; /* pointer to the term to be created */
-	/* pointer to the new form to be created */
+	TERM *t; // pointer to the term to be created
+	// pointer to the new form to be created
 
 	FORM *newf1 = new FORM(CONS1, level);
 	newf1->connect1(1, arg1);
@@ -677,7 +677,7 @@ TERM *TERM::car(
 	int level,
 	TERM *arg)
 {
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(CAR, level);
 	newf->connect1(0, arg);
 	TERM *t = new TERM(newf, 1, arg->vars);
@@ -689,7 +689,7 @@ TERM *TERM::cdr(
 	int level,
 	TERM *arg)
 {
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(CDR, level);
 	newf->connect1(0, arg);
 	TERM *t = new TERM(newf, 1, arg->vars);
@@ -701,7 +701,7 @@ TERM *TERM::testnil(
 	int level,
 	TERM *arg)
 {
-	/* pointer to the new form to be created */
+	// pointer to the new form to be created
 	FORM *newf = new FORM(TESTNIL, level);
 	newf->connect1(0, arg);
 	TERM *t = new TERM(newf, 1, arg->vars);
@@ -709,7 +709,7 @@ TERM *TERM::testnil(
 	return t;
 }
 
-/* the following function adds a root node to a term */
+// the following function adds a root node to a term
 FORM *TERM::close(
 	int level)
 {
@@ -725,12 +725,12 @@ FORM *TERM::close(
 	return newroot;
 }
 
-/* the following function allocate a new graphical form */
-/* and initialize the name and index fields */
+// the following function allocate a new graphical form
+// and initialize the name and index fields
 FORM::FORM(
-	/* name of the form */
+	// name of the form
 	int kind,
-	/* index of the form */
+	// index of the form
 	int index)
 {
 
@@ -745,12 +745,12 @@ FORM::FORM(
 	this->nform[0] = NULL;
 	this->nform[1] = NULL;
 	this->nform[2] = NULL;
-	this->num_safe = true; /* initially, all operators are safe */
+	this->num_safe = true; // initially, all operators are safe
 						   // return form;
 }
 
-/* the following function adds a graphical form to deallocate */
-/* in a list of free forms (i.e a free-list of forms)         */
+// the following function adds a graphical form to deallocate
+// in a list of free forms (i.e a free-list of forms)
 
 void FORM::release()
 {
@@ -760,8 +760,8 @@ void FORM::release()
 	destroyer.release(this);
 }
 
-/* the following function connects together the port portf1 of */
-/* form1 to the port portf2 of form2 */
+// the following function connects together the port portf1 of
+// form1 to the port portf2 of form2
 void connect(
 	FORM *form1,
 	int portf1,
@@ -774,9 +774,9 @@ void connect(
 	form2->nform[portf2] = form1;
 }
 
-/* the following function connects the port portf1 of form1 to	*/
-/* the port portf2 of form2 and vice versa if the form2 is not */
-/* a NIL, INT, True or False form.				*/
+// the following function connects the port portf1 of form1 to
+// the port portf2 of form2 and vice versa if the form2 is not
+// a NIL, INT, True or False form.
 void connect1(
 	FORM *form1,
 	int portf1,
@@ -822,8 +822,8 @@ void FORM::connect1(int port, PORT p)
 	::connect1(this, port, p.form, p.port);
 }
 
-/* the following function connects only the port portf1 of 	*/
-/* form1 to the port portf2 of form2, because form2 is a INT	*/
+// the following function connects only the port portf1 of
+// form1 to the port portf2 of form2, because form2 is a INT
 void int_connect(
 	FORM *form1,
 	int portf1,
@@ -842,17 +842,17 @@ void FORM::binop(long int (&op)(long int, long int))
 		(FORM *)op((long int)this->nform[2], (long int)this->nform[0]),
 		INT);
 }
-/****************************************************************/
-/* 6. Definitions of functions strictly local to the module.	*/
-/****************************************************************/
+//**************************************************************
+// 6. Definitions of functions strictly local to the module.
+//**************************************************************
 
-/* the following function allocate a new variable entry */
+// the following function allocate a new variable entry
 VARENTRY::VARENTRY(
-	/* identifier of the variable */
+	// identifier of the variable
 	STBUCKET *id,
-	/* graphical form for the variable */
+	// graphical form for the variable
 	FORM *form,
-	/* pointer to the next free variable */
+	// pointer to the next free variable
 	VARENTRY *nextvar)
 {
 	this->name = id;
@@ -860,14 +860,14 @@ VARENTRY::VARENTRY(
 	this->next = nextvar;
 }
 
-/* the following function allocate a new TERM entry */
+// the following function allocate a new TERM entry
 TERM::TERM(
-	/* pointer to the root form of the term */
+	// pointer to the root form of the term
 	FORM *root_form,
-	/* root port of the term */
+	// root port of the term
 	int root_ports,
-	/* pointer to the free variables entries */
-	/* of the term */
+	// pointer to the free variables entries
+	// of the term
 	VARENTRY *freevars)
 {
 	this->root_form = root_form;
@@ -875,15 +875,15 @@ TERM::TERM(
 	this->vars = freevars;
 }
 
-/* the following function build a box around a term  */
+// the following function build a box around a term
 TERM *TERM::makebox(int level)
 {
 	this->vars = addbrackets(level, this->vars);
 	return this;
 }
 
-/* the following function add a sequence of square brackets of */
-/* given index at the free variables in listvar */
+// the following function add a sequence of square brackets of
+// given index at the free variables in listvar
 static VARENTRY *addbrackets(
 	int index,
 	VARENTRY *listvar)
@@ -892,8 +892,8 @@ static VARENTRY *addbrackets(
 	{
 		return NULL;
 	}
-	/* resulting variable entry list  */
-	/* new form to be created */
+	// resulting variable entry list
+	// new form to be created
 
 	FORM *variab = listvar->var;
 	if (variab->kind != CONS1)
@@ -929,7 +929,7 @@ static VARENTRY *addbrackets(
 // two terms, by adding suitable FANS.
 static VARENTRY *share(
 	int index,
-	/* pointers to the lists of variables to be shared */
+	// pointers to the lists of variables to be shared
 	VARENTRY *l1,
 	VARENTRY *l2)
 
@@ -962,11 +962,11 @@ static VARENTRY *share(
 	return res;
 }
 
-/* The following function searches for a variable inside a list. */
+// The following function searches for a variable inside a list.
 static VARENTRY *lookfor(
-	/* pointer to the identifier to be found  */
+	// pointer to the identifier to be found
 	STBUCKET *id,
-	/* pointer to the variable list to be scanned */
+	// pointer to the variable list to be scanned
 	VARENTRY *listvar)
 {
 
@@ -983,13 +983,13 @@ static VARENTRY *lookfor(
 	return lookfor(id, listvar->next);
 }
 
-/* the following function remove an identifier form a list */
-/* of variables */
+// the following function remove an identifier form a list
+// of variables
 static VARENTRY *remv(
 	STBUCKET *id,
-	/* pointer to the identifier to be removed  */
+	// pointer to the identifier to be removed
 	VARENTRY *listvar)
-/* pointer to the variable list to be scanned */
+// pointer to the variable list to be scanned
 {
 	if (listvar == NULL)
 	{
@@ -1007,11 +1007,11 @@ static VARENTRY *remv(
 	return listvar;
 }
 
-/* the following functions does the set substraction of two variable lists */
-/* it runs in quadratic time, but who cares? */
+// the following functions does the set substraction of two variable lists
+// it runs in quadratic time, but who cares?
 static VARENTRY *remvp(
 	VARLIST *vl,
-	VARENTRY *listvar) /* pointer to the variable list to be scanned */
+	VARENTRY *listvar) // pointer to the variable list to be scanned
 {
 	for (VARLIST *v = vl; v; v = v->next)
 	{
@@ -1020,11 +1020,11 @@ static VARENTRY *remvp(
 	return listvar;
 }
 
-/* The following function copies all the graph of the global */
-/* definition.	*/
+// The following function copies all the graph of the global
+// definition.
 static void closeglobalvars(
 	VARENTRY *listvar)
-/* pointer to the variable list to be scanned */
+// pointer to the variable list to be scanned
 {
 	if (listvar == NULL)
 	{
@@ -1050,8 +1050,8 @@ static void closeglobalvars(
 	closeglobalvars(listvar->next);
 }
 
-/* The following function tries to merge two forms into a single one. */
-/* If failing doing so, connects them normally        		      */
+// The following function tries to merge two forms into a single one.
+// If failing doing so, connects them normally
 
 void FORM::intelligent_connect(
 	int port,
@@ -1241,8 +1241,8 @@ void FORM::intelligent_connect(
 	}
 }
 
-/* The following function checks whether it's possible to apply      */
-/* function intelligent_connect. Otherwise applies a normal connect. */
+// The following function checks whether it's possible to apply
+// function intelligent_connect. Otherwise applies a normal connect.
 void FORM::inspect_connect(
 	int p1,
 	PORT p)

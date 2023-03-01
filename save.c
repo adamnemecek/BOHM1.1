@@ -1,39 +1,39 @@
-/****************************************************************/
-/* This modules carries out the storing of a graph on a textual */
-/* file, to permit consultation.                                */
-/* In particular, a list is stored of all the links existing    */
-/* among the forms (specifying form types and ports), also      */
-/* provided with an index of the forms and their associated     */
-/* information. 					        */
-/* The following function is external:                          */
-/*  - save(): Saves a graph on a file.  			*/
-/* The followinq functions are internal:                        */
-/*  - present(): Checks whether a form has already been copied  */
-/*               once.                                          */
-/*  - stampa(): Saves on file a link				*/
-/*  - save_aux(): Saves any graph part.				*/
-/*  - put_form(): Prints form name.				*/
-/*  - put_int(): Prints NIL, INT and BOOL forms names.		*/
-/*  - num_port(): Returns a form's ports number.		*/
-/*  - eindex(): Saves a file index row				*/
-/****************************************************************/
+//**************************************************************
+// This modules carries out the storing of a graph on a textual
+// file, to permit consultation.
+// In particular, a list is stored of all the links existing
+// among the forms (specifying form types and ports), also
+// provided with an index of the forms and their associated
+// information.
+// The following function is external:
+//  - save(): Saves a graph on a file.
+// The followinq functions are internal:
+//  - present(): Checks whether a form has already been copied
+//               once.
+//  - stampa(): Saves on file a link
+//  - save_aux(): Saves any graph part.
+//  - put_form(): Prints form name.
+//  - put_int(): Prints NIL, INT and BOOL forms names.
+//  - num_port(): Returns a form's ports number.
+//  - eindex(): Saves a file index row
+//**************************************************************
 
-/****************************************************************/
-/* 1. Inclusion of header files.				*/
-/****************************************************************/
+//**************************************************************
+// 1. Inclusion of header files.
+//**************************************************************
 
 #define ENTRY 17
 #define NUM 13
 
 #include "bohm.h"
 
-/****************************************************************/
-/* 2. Inclusion of declarations that are being imported.        */
-/****************************************************************/
+//**************************************************************
+// 2. Inclusion of declarations that are being imported.
+//**************************************************************
 
-/****************************************************************/
-/* 3. Declaration of names strictly local to the module.	*/
-/****************************************************************/
+//**************************************************************
+// 3. Declaration of names strictly local to the module.
+//**************************************************************
 
 FILE *save_file;
 ELEM *head, *tail;
@@ -44,11 +44,11 @@ int max;
 // 	int p);
 static int num_port(int name);
 
-/****************************************************************/
-/* 4. Definitions of functions to be exported.			*/
-/****************************************************************/
+//**************************************************************
+// 4. Definitions of functions to be exported.
+//**************************************************************
 
-/* The following function saves a graph on a file.		*/
+// The following function saves a graph on a file.
 void FORM::save(
 	char *name,
 	char *id)
@@ -92,12 +92,12 @@ void FORM::save(
 	}
 }
 
-/****************************************************************/
-/* 5. Definitions of functions strictly local to the module.	*/
-/****************************************************************/
+//**************************************************************
+// 5. Definitions of functions strictly local to the module.
+//**************************************************************
 
-/* The following function checks whether a form has already 	*/
-/* been copied once.						*/
+// The following function checks whether a form has already
+// been copied once.
 int FORM::present()
 {
 	int risp = true;
@@ -137,7 +137,7 @@ int FORM::present()
 	return risp;
 }
 
-/* The following function saves on file a link			*/
+// The following function saves on file a link
 void FORM::stampa(
 	int p,
 	int card)
@@ -158,7 +158,7 @@ void FORM::stampa(
 	fprintf(save_file, "\n");
 }
 
-/* The following function saves any graph part.			*/
+// The following function saves any graph part.
 void FORM::save_aux(
 	int p)
 {
@@ -183,13 +183,13 @@ void FORM::save_aux(
 	}
 }
 
-/* The following function prints form name.			*/
+// The following function prints form name.
 void FORM::put_form()
 {
 	fprintf(save_file, kind_desc(this->kind));
 }
 
-/* The following function prints NIL, INT and BOOL forms names.	*/
+// The following function prints NIL, INT and BOOL forms names.
 void FORM::put_int(const int p)
 {
 	switch (p)
@@ -209,7 +209,7 @@ void FORM::put_int(const int p)
 	}
 }
 
-/* The following function returns a form's ports number.	*/
+// The following function returns a form's ports number.
 static int num_port(int name)
 {
 	int risp;
@@ -267,7 +267,7 @@ static int num_port(int name)
 	return risp;
 }
 
-/* The following function saves a file index row		*/
+// The following function saves a file index row
 void ELEM::eindex()
 {
 	fprintf(save_file, "%3d ", this->num);

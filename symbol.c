@@ -1,121 +1,121 @@
-/****************************************************************/
-/* This module supplies routines for symbol table handling.	*/
-/* The symbol table consists of two parts: a dictionary and a	*/
-/* scope stack.							*/
-/* The dictionary is organized in the following way:		*/
-/* - there is a bucket for each distinct identifier; the bucket */
-/*   contains:							*/
-/*   - a field containing a pointer to the sequence of		*/
-/*     characters that spell out the identifier;		*/
-/*   - a field indicating the token associated with the		*/
-/*     identifier (remember that keywords are treated as	*/
-/*     identifiers);						*/
-/*   - a field containing a pointer to the entry for the	*/
-/*     current binding in which the identifier is involved;	*/
-/*   - a field containing a pointer to the next bucket;		*/
-/* - buckets are collected into linked lists; each list is	*/
-/*   self-organizing, i.e. the first bucket of the list is	*/
-/*   associated with the last identifier inserted into or	*/
-/*   looked for.                                            	*/
-/* - the first bucket of each list is pointed to by a pointer   */
-/*   stored in a hash table that contains 211 pointers; the	*/
-/*   hash function that has been used was studied by P. J.	*/
-/*   Weinberger (see A. V. Aho-R. Sethi-J. D. Ullman/		*/
-/*   "Compilers"/pages 433-438).		                */
-/* The scope stack has been meant to be easily extendible to    */
-/*   the case of multibinding, and is organized in the          */
-/*   following way:		                                */
-/* - there is an entry for each distinct local environment; the	*/
-/*   entry contains:						*/
-/*   - a field containing the nesting depth associated with the	*/
-/*     local environment of the function (not used);		*/
-/*   - a field containing a pointer to the entry for the last	*/
-/*     binding created in this local environment (in the case   */
-/*     of pure lambda calculus this entry is unique);		*/
-/*   - a field containing a pointer to the entry for the	*/
-/*     previous local environment;				*/
-/* - local environment entries are collected into a linked list */
-/*   implementing a stack; the first two entries pushed onto	*/
-/*   the scope stack concern the external environment (set of	*/
-/*   bindings involving library procedures: it is empty,        */
-/*   for the moment) and the global environment.                */
-/* The two parts of the symbol table interact as follows:	*/
-/* - there is an entry for each distinct binding; the entry	*/
-/*   contains:							*/
-/*   - a field containing a pointer to the bucket for the	*/
-/*     identifier involved in the binding;			*/
-/*   - a field containing a pointer to the previous binding	*/
-/*     for the identifier involved in this binding;		*/
-/*   - a field containing a pointer to the previous binding	*/
-/*     created in the local environment containing this		*/
-/*     binding;							*/
-/* - binding entries are collected into linked lists; each	*/
-/*   binding entry lies in:					*/
-/*   - the binding entry list for the identifier involved in	*/
-/*     the binding (this list is not doubly linked thanks to	*/
-/*     the presence, in each binding entry, of the field	*/
-/*     containing a pointer to the bucket for the identifier	*/
-/*     involved in the binding);				*/
-/*   - the binding entry list for the local environment in	*/
-/*     which the binding has been created.			*/
-/* - init_symbol_table(): it initializes the symbol table by	*/
-/*			  inserting keywords into the		*/
-/*			  dictionary and the external and	*/
-/*			  global environments into the scope	*/
-/*			  stack;				*/
-/* - search_bucket(): it searches the symbol table for the	*/
-/*		      bucket containing a given identifier, and	*/
-/*		      inserts it if it is not present;		*/
-/* - push_local_env(): it pushes a new local environment entry	*/
-/*		       onto the scope stack;			*/
-/* - pop_local_env(): it pops a local environment entry off the	*/
-/*		      scope stack;				*/
-/* - create_variable_binding(): it creates an entry for 	*/
-/*				a variable declaration          */
-/* - allocate_bucket(): it allocates a bucket for an		*/
-/*			identifier;				*/
-/* - move_bucket(): it moves a bucket to the head of the list	*/
-/*		    in which it lies;				*/
-/* - hash_pjw(): it computes the hash function;			*/
-/* - allocate_local_env_entry(): it allocates a local		*/
-/*				 environment entry.		*/
-/****************************************************************/
+//**************************************************************
+// This module supplies routines for symbol table handling.
+// The symbol table consists of two parts: a dictionary and a
+// scope stack.
+// The dictionary is organized in the following way:
+// - there is a bucket for each distinct identifier; the bucket
+//   contains:
+//   - a field containing a pointer to the sequence of
+//     characters that spell out the identifier;
+//   - a field indicating the token associated with the
+//     identifier (remember that keywords are treated as
+//     identifiers);
+//   - a field containing a pointer to the entry for the
+//     current binding in which the identifier is involved;
+//   - a field containing a pointer to the next bucket;
+// - buckets are collected into linked lists; each list is
+//   self-organizing, i.e. the first bucket of the list is
+//   associated with the last identifier inserted into or
+//   looked for.
+// - the first bucket of each list is pointed to by a pointer
+//   stored in a hash table that contains 211 pointers; the
+//   hash function that has been used was studied by P. J.
+//   Weinberger (see A. V. Aho-R. Sethi-J. D. Ullman/
+//   "Compilers"/pages 433-438).
+// The scope stack has been meant to be easily extendible to
+//   the case of multibinding, and is organized in the
+//   following way:
+// - there is an entry for each distinct local environment; the
+//   entry contains:
+//   - a field containing the nesting depth associated with the
+//     local environment of the function (not used);
+//   - a field containing a pointer to the entry for the last
+//     binding created in this local environment (in the case
+//     of pure lambda calculus this entry is unique);
+//   - a field containing a pointer to the entry for the
+//     previous local environment;
+// - local environment entries are collected into a linked list
+//   implementing a stack; the first two entries pushed onto
+//   the scope stack concern the external environment (set of
+//   bindings involving library procedures: it is empty,
+//   for the moment) and the global environment.
+// The two parts of the symbol table interact as follows:
+// - there is an entry for each distinct binding; the entry
+//   contains:
+//   - a field containing a pointer to the bucket for the
+//     identifier involved in the binding;
+//   - a field containing a pointer to the previous binding
+//     for the identifier involved in this binding;
+//   - a field containing a pointer to the previous binding
+//     created in the local environment containing this
+//     binding;
+// - binding entries are collected into linked lists; each
+//   binding entry lies in:
+//   - the binding entry list for the identifier involved in
+//     the binding (this list is not doubly linked thanks to
+//     the presence, in each binding entry, of the field
+//     containing a pointer to the bucket for the identifier
+//     involved in the binding);
+//   - the binding entry list for the local environment in
+//     which the binding has been created.
+// - init_symbol_table(): it initializes the symbol table by
+//			  inserting keywords into the
+//			  dictionary and the external and
+//			  global environments into the scope
+//			  stack;
+// - search_bucket(): it searches the symbol table for the
+//		      bucket containing a given identifier, and
+//		      inserts it if it is not present;
+// - push_local_env(): it pushes a new local environment entry
+//		       onto the scope stack;
+// - pop_local_env(): it pops a local environment entry off the
+//		      scope stack;
+// - create_variable_binding(): it creates an entry for
+//				a variable declaration
+// - allocate_bucket(): it allocates a bucket for an
+//			identifier;
+// - move_bucket(): it moves a bucket to the head of the list
+//		    in which it lies;
+// - hash_pjw(): it computes the hash function;
+// - allocate_local_env_entry(): it allocates a local
+//				 environment entry.
+//**************************************************************
 
-/****************************************************************/
-/* 1. Inclusion of header files.				*/
-/****************************************************************/
+//**************************************************************
+// 1. Inclusion of header files.
+//**************************************************************
 
 #include "bohm.h"
 #include "y.tab.h"
 
-/****************************************************************/
-/* 2. Inclusion of declarations that are being imported.        */
-/****************************************************************/
+//**************************************************************
+// 2. Inclusion of declarations that are being imported.
+//**************************************************************
 
-/****************************************************************/
-/* 3. Definitions of variables to be exported.			*/
-/****************************************************************/
+//**************************************************************
+// 3. Definitions of variables to be exported.
+//**************************************************************
 
-/****************************************************************/
-/* 4. Definitions strictly local to the module.                 */
-/****************************************************************/
+//**************************************************************
+// 4. Definitions strictly local to the module.
+//**************************************************************
 
-/* constants concerning keywords */
+// constants concerning keywords
 #define KEYWORDNUM 28
 #define FIRSTKEYWORD 400
 
-/* constants concerning the symbol table */
+// constants concerning the symbol table
 #define DICTSIZE 211
 #define HASH1 4
 #define HASH2 0xf0000000
 #define HASH3 24
 
-/* constants concerning scope analysis */
+// constants concerning scope analysis
 #define NONESTING -2
 
 static LOCALENVENTRY *curr_local_env;
-/* pointer to the entry for the */
-/* current local environment */
+// pointer to the entry for the
+// current local environment
 
 static STBUCKET *dictionary[DICTSIZE] = {0};
 
@@ -133,10 +133,10 @@ struct SymbolTable
 	STBUCKET *find(const char *id);
 };
 
-/* pointers to bucket lists */
+// pointers to bucket lists
 
 static int curr_nesting_depth;
-/* current nesting depth */
+// current nesting depth
 
 static int hash_pjw(const char *id);
 static void allocate_local_env_entry(void);
@@ -147,7 +147,7 @@ static void move_bucket(
 
 // static STBUCKET *allocate_bucket(const char *id);
 
-/* keywords */
+// keywords
 const char *keywords[] =
 	{
 		"let",
@@ -180,7 +180,7 @@ const char *keywords[] =
 		"travel",
 };
 
-/* The following function turns a given string into a lower case one. */
+// The following function turns a given string into a lower case one.
 static void to_lower_s(char *s)
 {
 	for (; *s != '\0'; s++)
@@ -192,29 +192,29 @@ static void to_lower_s(char *s)
 	}
 }
 
-/****************************************************************/
-/* 5. Definitions of functions to be exported.			*/
-/****************************************************************/
+//**************************************************************
+// 5. Definitions of functions to be exported.
+//**************************************************************
 
-/* The following function initializes the symbol table by inserting */
-/* P keywords into the dictionary and the external and global */
-/* environments into the scope stack. */
+// The following function initializes the symbol table by inserting
+// P keywords into the dictionary and the external and global
+// environments into the scope stack.
 void init_symbol_table(void)
 {
-	/* initialize the dictionary */
+	// initialize the dictionary
 	for (int i = 0; i < DICTSIZE; i++)
 	{
 		dictionary[i] = NULL;
 	}
 
-	/* insert P keywords into the appropriate bucket lists */
+	// insert P keywords into the appropriate bucket lists
 	for (int i = 0; i < KEYWORDNUM; i++)
 	{
 		STBUCKET *st = search_bucket(keywords[i]);
 		st->token = FIRSTKEYWORD + i;
 	}
 
-	/* initialize the scope stack */
+	// initialize the scope stack
 	curr_local_env = NULL;
 	curr_nesting_depth = NONESTING;
 
@@ -222,26 +222,26 @@ void init_symbol_table(void)
 	push_local_env();
 }
 
-/* The following function searches the symbol table for an identifier */
-/* and inserts it if it is not present; the function returns the */
-/* pointer to the bucket containing information associated with the */
-/* given identifier. The bucket associated with the given identifier */
-/* becomes the first one in its list. */
+// The following function searches the symbol table for an identifier
+// and inserts it if it is not present; the function returns the
+// pointer to the bucket containing information associated with the
+// given identifier. The bucket associated with the given identifier
+// becomes the first one in its list.
 
 STBUCKET *search_bucket(
-	/* identifier */
+	// identifier
 	const char *id)
 {
 	STBUCKET *curr;
 	STBUCKET *st;
 
-	/* turn the identifier into lower case */
+	// turn the identifier into lower case
 	// to_lower_s(id);
 
-	/* apply the hash function */
+	// apply the hash function
 	int dict_index = hash_pjw(id);
 
-	/* scan the bucket list indicated by the hash function */
+	// scan the bucket list indicated by the hash function
 	STBUCKET *prev = curr = dictionary[dict_index];
 	while (curr != NULL && strcmp(id, curr->id) != 0)
 	{
@@ -249,17 +249,17 @@ STBUCKET *search_bucket(
 		curr = curr->next_st_bucket;
 	}
 
-	/* the identifier is not in the list */
+	// the identifier is not in the list
 	if (curr == NULL)
 	{
 		st = new STBUCKET(id, ID);
 		move_bucket(st, dict_index);
 		return st;
 	}
-	/* the identifier is already in the list */
+	// the identifier is already in the list
 	st = curr;
 	if (prev != curr)
-	/* the identifier is not in the first position */
+	// the identifier is not in the first position
 	{
 		prev->next_st_bucket = curr->next_st_bucket;
 		move_bucket(curr, dict_index);
@@ -272,22 +272,22 @@ STBUCKET *SymbolTable::find(const char *id)
 	return nullptr;
 }
 
-/* The following function pushes a new local environment entry onto */
-/* the scope stack. */
+// The following function pushes a new local environment entry onto
+// the scope stack.
 void push_local_env()
 {
 	curr_nesting_depth++;
 	allocate_local_env_entry();
 }
 
-/* The following function pops a local environment entry off */
-/* the scope stack. */
+// The following function pops a local environment entry off
+// the scope stack.
 void pop_local_env()
 {
 	LOCALENVENTRY *le = curr_local_env;
 
-	/* remove all the entries for bindings created in the */
-	/* local environment */
+	// remove all the entries for bindings created in the
+	// local environment
 	while (le->last_local_binding != NULL)
 	{
 		BINDINGENTRY *b = le->last_local_binding;
@@ -301,16 +301,16 @@ void pop_local_env()
 	curr_nesting_depth--;
 }
 
-/* The following function creates entries for a variable binding */
-/* pointer to the bucket for the */
-/* identifier which is to be bound */
-/* to a procedure */
+// The following function creates entries for a variable binding
+// pointer to the bucket for the
+// identifier which is to be bound
+// to a procedure
 
 void STBUCKET::create_variable_binding(
 
-	/* pointer to the rootform of the */
-	/* term associated with the identifier */
-	/* (for global declarations only) */
+	// pointer to the rootform of the
+	// term associated with the identifier
+	// (for global declarations only)
 
 	FORM *rootform)
 {
@@ -323,11 +323,11 @@ void STBUCKET::create_variable_binding(
 	curr_local_env->last_local_binding = b;
 }
 
-/****************************************************************/
-/* 6. Definitions of functions strictly local to the module.	*/
-/****************************************************************/
+//**************************************************************
+// 6. Definitions of functions strictly local to the module.
+//**************************************************************
 
-/* The following function allocates a bucket for an identifier. */
+// The following function allocates a bucket for an identifier.
 static STBUCKET *allocate_bucket(const char *id)
 {
 	STBUCKET *st = (STBUCKET *)malloc_da(sizeof(STBUCKET));
@@ -338,22 +338,22 @@ static STBUCKET *allocate_bucket(const char *id)
 	return st;
 }
 
-/* The following function moves a bucket to the head of the */
-/* list in which it lies. */
+// The following function moves a bucket to the head of the
+// list in which it lies.
 static void move_bucket(
-	/* pointer to the bucket to */
-	/* be moved */
+	// pointer to the bucket to
+	// be moved
 	STBUCKET *st,
-	/* index corresponding to */
-	/* the list in which the */
-	/* bucket lies */
+	// index corresponding to
+	// the list in which the
+	// bucket lies
 	int dict_index)
 {
 	st->next_st_bucket = dictionary[dict_index];
 	dictionary[dict_index] = st;
 }
 
-/* The following function implements Weinberger's hash function. */
+// The following function implements Weinberger's hash function.
 static int hash_pjw(const char *id)
 {
 	unsigned h;
@@ -370,11 +370,11 @@ static int hash_pjw(const char *id)
 	return h % DICTSIZE;
 }
 
-/* The following function allocates a local environment entry. */
+// The following function allocates a local environment entry.
 static void allocate_local_env_entry(void)
 {
-	/* pointer to the entry to */
-	/* be allocated */
+	// pointer to the entry to
+	// be allocated
 	LOCALENVENTRY *le = (LOCALENVENTRY *)malloc_da(sizeof(LOCALENVENTRY));
 	le->nesting_depth = curr_nesting_depth;
 	le->last_local_binding = NULL;

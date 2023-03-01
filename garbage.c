@@ -1,71 +1,71 @@
-/*************************************************************************/
-/* This module implements the garbage collector.                         */
-/* It works by local interactions, propagating all the erase-operators   */
-/* in the graph. Each erase-operator terminates its travelling either by */
-/* annihilating against another one, or being "absorbed" by a different  */
-/* operator, such as "lambdaunb", "uns_fan1", "uns_fan2".                */
-/* When the garbage collector is activated, it finds all erase operators */
-/* looking into a list in which they are inserted when created.          */
-/* The following functions are external:                                 */
-/* - init_garbage: it initializes the erase-list inserting the first     */
-/*		   node. 						 */
-/* - ins_del(): insert a new erase operator at the head of a list        */
-/*              to be scanned when the G.C. is activated.                */
-/* - clean(): it activates the G.C. by scanning the erase-list and by    */
-/*            propagating them in the graph. It uses the local function  */
-/*            "garbage()" which propagates a single node and             */
-/*            inserts in the erases list new operators originated by     */
-/*            duplication rules during travelling.                       */
-/* - user():  it only calls the previous function and prints some data   */
-/*            when the user digits the directive"#garbage".              */
-/* The following functions are internal:                                 */
-/* - garbage(): It performs the propagation of a single erase node by    */
-/*              applicating garbage rules.                               */
-/*************************************************************************/
+//***********************************************************************
+// This module implements the garbage collector.
+// It works by local interactions, propagating all the erase-operators
+// in the graph. Each erase-operator terminates its travelling either by
+// annihilating against another one, or being "absorbed" by a different
+// operator, such as "lambdaunb", "uns_fan1", "uns_fan2".
+// When the garbage collector is activated, it finds all erase operators
+// looking into a list in which they are inserted when created.
+// The following functions are external:
+// - init_garbage: it initializes the erase-list inserting the first
+//		   node.
+// - ins_del(): insert a new erase operator at the head of a list
+//              to be scanned when the G.C. is activated.
+// - clean(): it activates the G.C. by scanning the erase-list and by
+//            propagating them in the graph. It uses the local function
+//            "garbage()" which propagates a single node and
+//            inserts in the erases list new operators originated by
+//            duplication rules during travelling.
+// - user():  it only calls the previous function and prints some data
+//            when the user digits the directive"#garbage".
+// The following functions are internal:
+// - garbage(): It performs the propagation of a single erase node by
+//              applicating garbage rules.
+//***********************************************************************
 
-/*************************************************************************/
-/* 1. Inclusion of header files.                                         */
-/*************************************************************************/
+//***********************************************************************
+// 1. Inclusion of header files.
+//***********************************************************************
 
 #include "bohm.h"
 
-/*************************************************************************/
-/* 2. Inclusion of declarations that are being imported.                 */
-/*************************************************************************/
+//***********************************************************************
+// 2. Inclusion of declarations that are being imported.
+//***********************************************************************
 
-/*************************************************************************/
-/* 3. Declaration of names strictly local to the module.                 */
-/*************************************************************************/
+//***********************************************************************
+// 3. Declaration of names strictly local to the module.
+//***********************************************************************
 
-/* constants concerning garbage */
+// constants concerning garbage
 #define EXISTENT 3
 #define NOTEXISTENT 4
 
-static long unsigned er_count; /* counter for erasing operations */
-static long unsigned cl_count; /* counter for clean() calls */
+static long unsigned er_count; // counter for erasing operations
+static long unsigned cl_count; // counter for clean() calls
 static clock_t usr_garb_time;
 static clock_t sys_garb_time;
 
-/*************************************************************************/
-/* 4. Definitions of variables to be exported.                           */
-/*************************************************************************/
+//***********************************************************************
+// 4. Definitions of variables to be exported.
+//***********************************************************************
 
-FORM *del_head = NULL; /* head of erases list */
+FORM *del_head = NULL; // head of erases list
 
-/*************************************************************************/
-/* 5. Definitions of functions to be exported.                           */
-/*************************************************************************/
+//***********************************************************************
+// 5. Definitions of functions to be exported.
+//***********************************************************************
 
-/* The following function initializes the erase-list inserting */
-/* the first node. */
+// The following function initializes the erase-list inserting
+// the first node.
 void init_garbage(void)
 {
 	del_head = (FORM *)malloc_da(sizeof(FORM));
 	del_head->nform[1] = NULL;
 }
 
-/* The following function insert a new erase operator at the 	*/
-/* head of a list to be scanned when the G.C. is activated.  	*/
+// The following function insert a new erase operator at the
+// head of a list to be scanned when the G.C. is activated.
 void FORM::del()
 {
 	this->index = EXISTENT;
@@ -73,11 +73,11 @@ void FORM::del()
 	del_head->nform[1] = this;
 }
 
-/* The following function activates the G.C. by scanning the   */
-/* erase-list and by propagating them in the graph. It uses    */
-/* the local function "garbage()" which propagates a single    */
-/* node and inserts in the erases list new operators 		*/
-/* originated by duplication rules during travelling.          */
+// The following function activates the G.C. by scanning the
+// erase-list and by propagating them in the graph. It uses
+// the local function "garbage()" which propagates a single
+// node and inserts in the erases list new operators
+// originated by duplication rules during travelling.
 void clean(void)
 {
 	FORM *q;
@@ -107,9 +107,9 @@ void clean(void)
 	}
 }
 
-/* The following function it only calls the previous function  */
-/* and prints some data when the user digits the directive     */
-/* "#garbage".              					*/
+// The following function it only calls the previous function
+// and prints some data when the user digits the directive
+// "#garbage".
 void user(void)
 {
 	printf("*****************************************************\n");
@@ -120,12 +120,12 @@ void user(void)
 	printf("*****************************************************\n");
 }
 
-/************************************************ ************************/
-/* 6. Definitions of functions strictly local to the module.             */
-/*************************************************************************/
+//*********************************************** ***********************
+// 6. Definitions of functions strictly local to the module.
+//***********************************************************************
 
-/* The following function performs the propagation of a single	*/
-/* erase node by applicating garbage rules. 			*/
+// The following function performs the propagation of a single
+// erase node by applicating garbage rules.
 void FORM::garbage()
 {
 

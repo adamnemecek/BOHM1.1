@@ -1,45 +1,45 @@
-/****************************************************************/
-/* This module implements the interaction-net rewriting rules   */
-/* for reducing the graph representing a lambda term.           */
-/* Reduction is "weak". It looks for the leftmost outermost     */
-/* redex, following the main spine of the term. In no redex is  */
-/* found, termination stops there. This is essentially          */
-/* equivalent to never reduce inside a lambda: the only         */
-/* difference is that, since the implementation is optimal,     */
-/* family reduction is always performed (so, "some" redexes     */
-/* inside a lambda can be reduced).                             */
-/* During the search for the leftmost outermost redex, the main */
-/* spine is saved on an auxiliary stack (this is similar to the */
-/* G-machine).                                                  */
-/* The two variables "redexes" and "counter" are respectively   */
-/* used to hold the number of app-lambda interactions and the   */
-/* total number of interactions during the reduction.           */
-/* The following function are external.                         */
-/*  - reduce_term: reduces a term to its weak head (family)     */
-/*                 normal form.                                 */
-/* The following functions are strictly local to the module:    */
-/*  - reduce_term(): it reduces the input term                  */
-/*  - reduce_redex(): it reduces the redex whose interacting    */
-/*                    forms are passed as a parameter and the   */
-/*		      second form is a INT, NIL, True or False; */
-/*  - lo_redex(): it looks for the leftmost outemost redex,     */
-/*                saving on the m_stack pointers to the form    */
-/*                along the main spine of the term.             */
-/****************************************************************/
+//**************************************************************
+// This module implements the interaction-net rewriting rules
+// for reducing the graph representing a lambda term.
+// Reduction is "weak". It looks for the leftmost outermost
+// redex, following the main spine of the term. In no redex is
+// found, termination stops there. This is essentially
+// equivalent to never reduce inside a lambda: the only
+// difference is that, since the implementation is optimal,
+// family reduction is always performed (so, "some" redexes
+// inside a lambda can be reduced).
+// During the search for the leftmost outermost redex, the main
+// spine is saved on an auxiliary stack (this is similar to the
+// G-machine).
+// The two variables "redexes" and "counter" are respectively
+// used to hold the number of app-lambda interactions and the
+// total number of interactions during the reduction.
+// The following function are external.
+//  - reduce_term: reduces a term to its weak head (family)
+//                 normal form.
+// The following functions are strictly local to the module:
+//  - reduce_term(): it reduces the input term
+//  - reduce_redex(): it reduces the redex whose interacting
+//                    forms are passed as a parameter and the
+//		      second form is a INT, NIL, True or False;
+//  - lo_redex(): it looks for the leftmost outemost redex,
+//                saving on the m_stack pointers to the form
+//                along the main spine of the term.
+//**************************************************************
 
-/****************************************************************/
-/* 1. Inclusion of header files.				*/
-/****************************************************************/
+//**************************************************************
+// 1. Inclusion of header files.
+//**************************************************************
 
 #include "bohm.h"
 
-/****************************************************************/
-/* 2. Inclusion of declarations that are being imported.        */
-/****************************************************************/
+//**************************************************************
+// 2. Inclusion of declarations that are being imported.
+//**************************************************************
 
-/****************************************************************/
-/* 3. Definitions strictly local to the module.                 */
-/****************************************************************/
+//**************************************************************
+// 3. Definitions strictly local to the module.
+//**************************************************************
 
 static int unsafe;
 static int optim;
@@ -90,15 +90,15 @@ static void init_stack()
 	auxnext = 0;
 }
 
-/****************************************************************/
-/* 4. Definitions of functions to be exported.			*/
-/****************************************************************/
+//**************************************************************
+// 4. Definitions of functions to be exported.
+//**************************************************************
 
 int fl = 0;
 int counter;
 
-/*  The following function reduces a term to its weak 	*/
-/*  head (family) normal form.                          */
+//  The following function reduces a term to its weak
+//  head (family) normal form.
 void FORM::reduce_term()
 {
 	struct tms time;
@@ -198,13 +198,13 @@ void FORM::reduce_term()
 	}
 }
 
-/****************************************************************/
-/* 5. Definitions of functions strictly local to the module.	*/
-/****************************************************************/
+//**************************************************************
+// 5. Definitions of functions strictly local to the module.
+//**************************************************************
 
-/*  The following function reduces the redex whose 	*/
-/*  interacting forms are passed as a parameter and the */
-/*  second form is not a INT, NIL, True or False;	*/
+//  The following function reduces the redex whose
+//  interacting forms are passed as a parameter and the
+//  second form is not a INT, NIL, True or False;
 static void reduce_redex(
 	FORM *f1,
 	FORM *f2)
@@ -618,7 +618,7 @@ static void reduce_redex(
 		}
 	}
 	else
-	{ /* f1.index < f2.index */
+	{ // f1.index < f2.index
 		switch (f1->kind)
 		{
 		case FAN:
@@ -813,9 +813,9 @@ static void reduce_redex(
 	}
 }
 
-/*  The following function reduces the redex whose 	*/
-/*  interacting forms are passed as a parameter and the */
-/*  second form is a INT, NIL, True or False; */
+//  The following function reduces the redex whose
+//  interacting forms are passed as a parameter and the
+//  second form is a INT, NIL, True or False;
 void FORM::reduce_form()
 {
 	FORM *tmp;
@@ -1409,12 +1409,12 @@ void FORM::reduce_form()
 		printf("--->   type error: constant in wrong position\n");
 		type_error = true;
 	}
-	} /* end switch */
+	} // end switch
 }
 
-/*  The following function looks for the leftmost outemost  	*/
-/*  redex, saving on the m_stack pointers to the form along	*/
-/*  the main spine of the term.             			*/
+//  The following function looks for the leftmost outemost
+//  redex, saving on the m_stack pointers to the form along
+//  the main spine of the term.
 FORM *FORM::lo_redex()
 {
 	FORM *temp = this;

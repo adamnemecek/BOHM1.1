@@ -1,25 +1,25 @@
-/****************************************************************/
-/* This module implements the readback procedure as defined     */
-/* is Asperti Laneve: Interaction Systems II.                   */
-/* The only external function is                                */
-/* - rdbk():     it provides the readback in standard syntax    */
-/*               of the graphical term whose root is passed     */
-/*               as input parameter.                            */
-/****************************************************************/
+//**************************************************************
+// This module implements the readback procedure as defined
+// is Asperti Laneve: Interaction Systems II.
+// The only external function is
+// - rdbk():     it provides the readback in standard syntax
+//               of the graphical term whose root is passed
+//               as input parameter.
+//**************************************************************
 
-/****************************************************************/
-/* Inclusion of header files.	  			        */
-/****************************************************************/
+//**************************************************************
+// Inclusion of header files.
+//**************************************************************
 
 #include "bohm.h"
 
 #define PRINT_MAX 100
-/* maximum number of characters yet to print */
+// maximum number of characters yet to print
 static int left_to_print;
 
-/* the following function prints on the standard output the */
-/* standard syntactical representation of the graphical term */
-/* whose root is passed in input */
+// the following function prints on the standard output the
+// standard syntactical representation of the graphical term
+// whose root is passed in input
 void FORM::rdbk()
 {
   left_to_print = PRINT_MAX;
