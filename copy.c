@@ -55,19 +55,19 @@ Form *copy_connect(
 }
 
 Form *copy_connect1(
-	Form *temp,
+	Form *this_,
 	Form *newf1,
 	int offset)
 {
 	Form *ret;
-	if (is_int(temp->nport[0]))
+	if (is_int(this_->nport[0]))
 	{
-		ret = temp->nform[0]->copy_aux(temp->nport[0], offset);
-		connect1(newf1, 0, ret, temp->nport[0]);
+		ret = this_->nform[0]->copy_aux(this_->nport[0], offset);
+		connect1(newf1, 0, ret, this_->nport[0]);
 	}
 	else
 	{
-		int_connect(newf1, 0, temp->nform[0], temp->nport[0]);
+		int_connect(newf1, 0, this_->nform[0], this_->nport[0]);
 	}
 
 	return ret;
