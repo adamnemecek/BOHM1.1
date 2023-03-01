@@ -59,36 +59,74 @@ static int auxnext;
 #define STACK_SIZE 10000000
 #endif
 
-static Form *auxstack[STACK_SIZE];
-
-static Form *pop()
+struct Stack
 {
-	Form *res;
+private:
+	Form *data[STACK_SIZE];
+	int count;
 
-	assert(auxnext > 0);
-	--auxnext;
-	res = auxstack[auxnext];
-	auxstack[auxnext] = NULL;
-	return res;
-}
-
-static void push(Form *f)
-{
-	auxstack[auxnext] = f;
-
-	++auxnext;
-	if (auxnext >= STACK_SIZE)
+public:
+	Stack()
 	{
-		printf("Stack Overflow . . .\n");
-		getchar();
-		getchar();
+		count = 0;
+		*data = {0};
 	}
-}
 
-static void init_stack()
-{
-	auxnext = 0;
-}
+	void push(Form *f)
+	{
+		data[count] = f;
+
+		++count;
+		if (count >= STACK_SIZE)
+		{
+			printf("Stack Overflow . . .\n");
+			getchar();
+			getchar();
+		}
+	}
+
+	Form *pop()
+	{
+		assert(count > 0);
+		--count;
+		Form *res = data[count];
+		data[count] = NULL;
+		return res;
+	}
+};
+
+Stack stack = Stack();
+
+// static Form *auxstack[STACK_SIZE];
+
+// static Form *pop()
+// {
+// 	Form *res;
+
+// 	assert(auxnext > 0);
+// 	--auxnext;
+// 	res = auxstack[auxnext];
+// 	auxstack[auxnext] = NULL;
+// 	return res;
+// }
+
+// static void push(Form *f)
+// {
+// 	auxstack[auxnext] = f;
+
+// 	++auxnext;
+// 	if (auxnext >= STACK_SIZE)
+// 	{
+// 		printf("Stack Overflow . . .\n");
+// 		getchar();
+// 		getchar();
+// 	}
+// }
+
+// static void init_stack()
+// {
+// 	auxnext = 0;
+// }
 
 //**************************************************************
 // 4. Definitions of functions to be exported.
@@ -120,7 +158,6 @@ void Form::reduce_term()
 	times(&time);
 	clock_t usr_time = time.tms_utime;
 	clock_t sys_time = time.tms_stime;
-	init_stack();
 	Form *f1 = this->lo_redex();
 	// reset_garbage();
 	gc.reset();
@@ -151,7 +188,7 @@ void Form::reduce_term()
 			f1->reduce_form();
 		}
 		counter = counter + 1;
-		f1 = pop()->lo_redex();
+		f1 = stack.pop()->lo_redex();
 	}
 	if (type_error)
 	{
@@ -1435,7 +1472,7 @@ Form *Form::lo_redex()
 			::connect1(temp->nform[1], temp->nport[1],
 					   temp->nform[0], temp->nport[0]);
 			temp->release();
-			temp = pop();
+			temp = stack.pop();
 		}
 		if ((temp->kind == TRIANGLE || temp->kind == FAN ||
 			 temp->kind == UNS_FAN1 || temp->kind == UNS_FAN2) &&
@@ -1466,7 +1503,7 @@ Form *Form::lo_redex()
 								   next->nport[0]);
 						temp->release();
 						next->release();
-						temp = pop();
+						temp = stack.pop();
 					}
 					else
 					{
@@ -1474,7 +1511,7 @@ Form *Form::lo_redex()
 								  temp->nport[1],
 								  next, 1);
 						temp->release();
-						temp = pop();
+						temp = stack.pop();
 					}
 					break;
 
@@ -1484,7 +1521,7 @@ Form *Form::lo_redex()
 							  temp->nport[1],
 							  next, p);
 					temp->release();
-					temp = pop();
+					temp = stack.pop();
 					break;
 				}
 				break;
@@ -1500,13 +1537,13 @@ Form *Form::lo_redex()
 
 					temp->connect1(0, next->port(0));
 					next->release();
-					temp = pop();
+					temp = stack.pop();
 					counter++;
 					optim++;
 					break;
 
 				case FAN:
-					push(temp);
+					stack.push(temp);
 					temp = next;
 					break;
 				}
@@ -1515,7 +1552,7 @@ Form *Form::lo_redex()
 		}
 		else
 		{
-			push(temp);
+			stack.push(temp);
 			temp = next;
 		}
 		next = temp->nform[0];
