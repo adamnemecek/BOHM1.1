@@ -1,4 +1,20 @@
 #pragma once
+// #define NOTEQ1 11
+// #define ADD1 12
+// #define SUB1 13
+// #define PROD1 14
+// #define DIV1 15
+// #define MOD1 16
+// #define LESS1 17
+// #define EQ1 18
+// #define MORE1 19
+// #define LEQ1 20
+// #define MEQ1 21
+// #define UNS_FAN1 27
+// #define TESTNIL1 47
+// #define CDR1 48
+// #define CAR1 49
+// #define CONS1 50
 
 #define ROOT 0
 #define T -1

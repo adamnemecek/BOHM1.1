@@ -25,36 +25,37 @@ BINOP(mult, *);
 BINOP(div, /);
 BINOP(rem, %);
 
-/* graphical form descriptor type */
+// graphical form descriptor type
 struct FORM final
 {
-	/* name of the form */
-	/* (FAN, ROOT, CROISSANT */
-	/* BRACKET)  */
+	// name of the form
+	// (FAN, ROOT, CROISSANT
+	// BRACKET)
 	char kind;
-	/* Integer value for numeric */
-	/* forms or indicator of safeness */
-	/* for other forms  */
+	// Integer value for numeric
+	// forms or indicator of safeness
+	// for other forms
 	int num_safe;
-	/* index of the form */
+	// index of the form
 	int index;
-	/* numbers of the ports */
-	/* where the three ports */
-	/* of the form are connected to */
-	/* (for CROISSANT and */
-	/* BRACKET only the first two */
-	/* fields are meaningful; for */
-	/* ROOT only the first one is) */
+	// numbers of the ports
+	// where the three ports
+	// of the form are connected to
+	// (for CROISSANT and
+	// BRACKET only the first two
+	// fields are meaningful; for
+	// ROOT only the first one is)
 	char nport[3];
-	/* pointer to the forms */
-	/* where the three ports */
-	/* of the form are connected to */
-	/* (for CROISSANT and */
-	/* BRACKET only the first two */
-	/* fields are meaningful; for */
-	/* ROOT only the first one is) */
+	//  pointer to the forms
+	//  where the three ports
+	//  of the form are connected to
+	//  (for CROISSANT and
+	//  BRACKET only the first two
+	//  fields are meaningful; for
+	//  ROOT only the first one is)
 	FORM *nform[3];
 
+	// these are some sort of offset
 	int nlevel[3];
 
 	FORM *next;

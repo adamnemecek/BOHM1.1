@@ -539,6 +539,7 @@ TERM *TERM::relop(
 
 	/* pointer to the new form to be created */
 	FORM *newf = new FORM(relop, level);
+
 	if (arg1->root_ports == INT)
 	{
 		newf->nform[2] = arg1->root_form;
@@ -924,8 +925,8 @@ static VARENTRY *addbrackets(
 						addbrackets(index, listvar->next));
 }
 
-/* The following function shares the free variables of	*/
-/* two terms, by adding suitable FANS.  		*/
+// The following function shares the free variables of
+// two terms, by adding suitable FANS.
 static VARENTRY *share(
 	int index,
 	/* pointers to the lists of variables to be shared */

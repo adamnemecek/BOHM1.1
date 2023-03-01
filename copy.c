@@ -101,9 +101,10 @@ struct Relations final
 	/* The following function eliminates hash table.		*/
 	void end()
 	{
-		COPY_FORM *dep;
+
 		for (int i = 0; i < DIM_REL; i++)
 		{
+			COPY_FORM *dep;
 			while ((dep = copy_relation[i]) != NULL)
 			{
 				copy_relation[i] = dep->next;
@@ -156,7 +157,6 @@ FORM *FORM::copy(
 	int offset)
 {
 	FORM *risul;
-	// start_copy();
 	rel.start();
 	if (p < 0)
 	{
