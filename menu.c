@@ -56,8 +56,12 @@ void menu(int choice)
 		limit = choice;
 	}
 	else if (do_menu1())
+	{
 		if (do_menu2())
+		{
 			do_menu3();
+		}
+	}
 
 	printf("***********************************************************\n");
 	printf("* O.K. Your choice has been recorded . . .                *\n");

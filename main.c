@@ -16,7 +16,9 @@ static void compile(char *file)
 	yypush_buffer_state(yy_create_buffer(yyin, 16384));
 	yyin = fopen(file, "r");
 	if (yyin == NULL)
+	{
 		printf("Fatal Error: cannot open file %s.\n", file);
+	}
 	else
 	{
 		loading_mode = 1;
@@ -25,7 +27,9 @@ static void compile(char *file)
 			yyparse();
 		}
 		if (!error_detected)
+		{
 			printf("\n******** %s loaded ********\n", file);
+		}
 		else
 		{
 			printf("\n***** loading file %s aborted *****\n", file);
@@ -48,6 +52,7 @@ int main(
 	if (argc > 1)
 	{
 		if (argc == 2)
+		{
 			if (strcmp(argv[1], "-s") == 0)
 			{
 				menu(atoi(argv[2]));
@@ -61,7 +66,9 @@ int main(
 				printf("Execution failed:Illegal option . . .\n");
 				exit(1);
 			}
+		}
 		else if (argc == 3)
+		{
 			if ((strcmp(argv[1], "-s") == 0 &&
 				 strcmp(argv[2], "-i") == 0) ||
 				(strcmp(argv[2], "-s") == 0 &&
@@ -77,6 +84,7 @@ int main(
 				printf("or duplicated option . . .\n");
 				exit(1);
 			}
+		}
 		else
 		{
 			printf("Execution failed:Too many parameters . . .\n");

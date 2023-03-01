@@ -960,9 +960,13 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] == f1->nform[0])
+			{
 				f1->bool_connect(1, T);
+			}
 			else
+			{
 				f1->bool_connect(1, F);
+			}
 			f1->release();
 			break;
 		}
