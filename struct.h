@@ -12,35 +12,18 @@ struct PORT
 	void connect1(PORT other);
 };
 
-template <typename A>
-A add(A a, A b)
-{
-	return a + b;
-};
+#define BINOP(name, op)   \
+	template <typename A> \
+	A name(A a, A b)      \
+	{                     \
+		return a op b;    \
+	};
 
-template <typename A>
-A sub(A a, A b)
-{
-	return a - b;
-};
-
-template <typename A>
-A mult(A a, A b)
-{
-	return a * b;
-};
-
-template <typename A>
-A div(A a, A b)
-{
-	return a / b;
-};
-
-template <typename A>
-A rem(A a, A b)
-{
-	return a % b;
-};
+BINOP(add, +);
+BINOP(sub, -);
+BINOP(mult, *);
+BINOP(div, /);
+BINOP(rem, %);
 
 /* graphical form descriptor type */
 struct FORM final
