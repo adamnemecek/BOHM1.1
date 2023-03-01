@@ -1246,13 +1246,13 @@ void FORM::inspect_connect(
 	int p1,
 	PORT p)
 {
-	if (p2 == 0)
+	if (p.port == 0)
 	{
 		this->intelligent_connect(p1, p.form);
 	}
 	else
 	{
-		connect1(this, p1, p.form, p.port);
+		this->connect1(p1, p);
 	}
 }
 
