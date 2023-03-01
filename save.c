@@ -68,7 +68,7 @@ void Form::save(
 	head = tail = NULL;
 	max = 1;
 	this->stampa(0, this->present());
-	if (is_int(this->nport[0]))
+	if (is_connectable(this->nport[0]))
 	{
 		this->nform[0]->save_aux(this->nport[0]);
 	}
@@ -176,7 +176,7 @@ void Form::save_aux(
 
 	for (int p1 = 0; p1 < n; p1++)
 	{
-		if (is_int(this->nport[p1]))
+		if (is_connectable(this->nport[p1]))
 		{
 			this->nform[p1]->save_aux(this->nport[p1]);
 		}

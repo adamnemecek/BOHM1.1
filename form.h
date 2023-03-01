@@ -98,7 +98,7 @@ inline int unpropagate_kind(int kind)
     // return CAR1;
 }
 
-inline bool is_int(char kind)
+inline bool is_connectable(char kind)
 {
     return kind >= 0;
 }

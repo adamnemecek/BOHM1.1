@@ -35,20 +35,20 @@
 // static CopyForm *copy_relation[DIM_REL];
 
 Form *copy_connect(
-	Form *temp,
+	Form *this_,
 	int port,
 	Form *newf1,
 	int offset)
 {
 	Form *ret;
-	if (is_int(temp->nport[port]))
+	if (is_connectable(this_->nport[port]))
 	{
-		ret = temp->nform[port]->copy_aux(temp->nport[port], offset);
-		connect(newf1, port, ret, temp->nport[port]);
+		ret = this_->nform[port]->copy_aux(this_->nport[port], offset);
+		connect(newf1, port, ret, this_->nport[port]);
 	}
 	else
 	{
-		int_connect(newf1, port, temp->nform[port], temp->nport[port]);
+		int_connect(newf1, port, this_->nform[port], this_->nport[port]);
 	}
 
 	return ret;
@@ -60,7 +60,7 @@ Form *copy_connect1(
 	int offset)
 {
 	Form *ret;
-	if (is_int(this_->nport[0]))
+	if (is_connectable(this_->nport[0]))
 	{
 		ret = this_->nform[0]->copy_aux(this_->nport[0], offset);
 		connect1(newf1, 0, ret, this_->nport[0]);
