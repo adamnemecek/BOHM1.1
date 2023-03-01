@@ -844,7 +844,6 @@ void int_connect(
 }
 
 void FORM::binop(int (&op)(int, int))
-
 {
 	int_connect(
 		this->nform[1],

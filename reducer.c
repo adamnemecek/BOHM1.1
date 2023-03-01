@@ -932,13 +932,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error6\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -955,13 +953,11 @@ void FORM::reduce_form()
 				f1->bool_connect(1, F);
 			}
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error7\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -973,13 +969,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error8\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -996,13 +990,11 @@ void FORM::reduce_form()
 				f1->bool_connect(1, F);
 			}
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error9\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1014,13 +1006,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error10\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1037,13 +1027,11 @@ void FORM::reduce_form()
 				f1->bool_connect(1, F);
 			}
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error11\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1055,13 +1043,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error12\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1078,13 +1064,11 @@ void FORM::reduce_form()
 				f1->bool_connect(1, F);
 			}
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error13\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1096,13 +1080,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error14\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1119,13 +1101,11 @@ void FORM::reduce_form()
 				f1->bool_connect(1, F);
 			}
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error15\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1137,13 +1117,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error16\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1160,13 +1138,11 @@ void FORM::reduce_form()
 				f1->bool_connect(1, F);
 			}
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error17\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1178,13 +1154,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error18\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1194,13 +1168,11 @@ void FORM::reduce_form()
 			eq++;
 			f1->binop(add);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error19\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1212,13 +1184,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error20\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1228,13 +1198,11 @@ void FORM::reduce_form()
 			eq++;
 			f1->binop(sub);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error21\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1246,13 +1214,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error22\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1262,13 +1228,11 @@ void FORM::reduce_form()
 			eq++;
 			f1->binop(mult);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error23\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1280,13 +1244,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error24\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1296,13 +1258,11 @@ void FORM::reduce_form()
 			eq++;
 			f1->binop(div);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error25\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1314,13 +1274,11 @@ void FORM::reduce_form()
 			tmp = f1->nform[0];
 			f1->connect1(0, f1->port(2));
 			f1->nform[2] = tmp;
-			break;
 		}
 		else
 		{
 			printf("--->   type error26\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1330,13 +1288,11 @@ void FORM::reduce_form()
 			eq++;
 			f1->binop(rem);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error27\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1346,13 +1302,11 @@ void FORM::reduce_form()
 			eq++;
 			f1->bool_connect(1, NIL);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1362,29 +1316,25 @@ void FORM::reduce_form()
 			eq++;
 			f1->bool_connect(1, T);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error\n");
 			type_error = true;
-			break;
 		}
 		break;
 	case CDR1:
 		if (f1->nport[0] == NIL)
 		{
 			eq++;
-			f1->bool_connect(2, NIL);
 			f1->bool_connect(1, NIL);
+			f1->bool_connect(2, NIL);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error\n");
 			type_error = true;
-			break;
 		}
 		break;
 
@@ -1392,16 +1342,14 @@ void FORM::reduce_form()
 		if (f1->nport[0] == NIL)
 		{
 			eq++;
-			f1->bool_connect(2, NIL);
 			f1->bool_connect(1, T);
+			f1->bool_connect(2, NIL);
 			f1->release();
-			break;
 		}
 		else
 		{
 			printf("--->   type error\n");
 			type_error = true;
-			break;
 		}
 		break;
 
