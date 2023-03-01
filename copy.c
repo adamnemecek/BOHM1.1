@@ -179,13 +179,12 @@ Form *Form::copy_aux(int p, int offset)
 	Form *newf3;
 	int q;
 
-	Form *temp = this;
-	switch (temp->kind)
+	switch (this->kind)
 	{
 	case TRIANGLE:
-		newf1 = new Form(temp->kind, temp->index + offset);
-		newf1->nlevel[1] = temp->nlevel[1];
-		newf2 = copy_connect1(temp, 0, newf1, offset);
+		newf1 = new Form(this->kind, this->index + offset);
+		newf1->nlevel[1] = this->nlevel[1];
+		newf2 = copy_connect1(this, 0, newf1, offset);
 		return newf1;
 
 	case NOTEQ1:
@@ -212,22 +211,22 @@ Form *Form::copy_aux(int p, int offset)
 		{
 			q = 0;
 		}
-		newf1 = new Form(temp->kind, temp->index + offset);
-		newf1->num_safe = temp->num_safe;
-		newf1->nform[2] = temp->nform[2];
-		newf2 = copy_connect(temp, q, newf1, offset);
+		newf1 = new Form(this->kind, this->index + offset);
+		newf1->num_safe = this->num_safe;
+		newf1->nform[2] = this->nform[2];
+		newf2 = copy_connect(this, q, newf1, offset);
 
 		return newf1;
 
 	case LAMBDA:
 		if (p != 0)
 		{
-			return rel.rel(temp);
+			return rel.rel(this);
 		}
-		newf1 = new Form(temp->kind, temp->index + offset);
-		rel.store(temp, newf1);
-		newf2 = temp->nform[1]->copy_aux(temp->nport[1], offset);
-		::connect1(newf1, 1, newf2, temp->nport[1]);
+		newf1 = new Form(this->kind, this->index + offset);
+		rel.store(this, newf1);
+		newf2 = this->nform[1]->copy_aux(this->nport[1], offset);
+		::connect1(newf1, 1, newf2, this->nport[1]);
 		return newf1;
 
 	case TESTNIL1:
@@ -235,16 +234,16 @@ Form *Form::copy_aux(int p, int offset)
 	case CAR1:
 	case CONS1:
 	case FAN:
-		if ((newf1 = rel.rel(temp)) != NULL)
+		if ((newf1 = rel.rel(this)) != NULL)
 		{
 			return newf1;
 		}
-		newf1 = new Form(temp->kind, temp->index + offset);
-		newf1->nlevel[1] = temp->nlevel[1];
-		newf1->nlevel[2] = temp->nlevel[2];
-		rel.store(temp, newf1);
+		newf1 = new Form(this->kind, this->index + offset);
+		newf1->nlevel[1] = this->nlevel[1];
+		newf1->nlevel[2] = this->nlevel[2];
+		rel.store(this, newf1);
 
-		newf2 = copy_connect1(temp, 0, newf1, offset);
+		newf2 = copy_connect1(this, 0, newf1, offset);
 		return newf1;
 
 	case APP:
@@ -262,15 +261,15 @@ Form *Form::copy_aux(int p, int offset)
 	case LEQ:
 	case MEQ:
 	case IFELSE:
-		newf1 = new Form(temp->kind, temp->index + offset);
-		newf2 = copy_connect(temp, 0, newf1, offset);
-		newf3 = copy_connect(temp, 2, newf1, offset);
+		newf1 = new Form(this->kind, this->index + offset);
+		newf2 = copy_connect(this, 0, newf1, offset);
+		newf3 = copy_connect(this, 2, newf1, offset);
 		return newf1;
 
 	case CONS:
-		newf1 = new Form(temp->kind, temp->index + offset);
-		newf2 = copy_connect(temp, 1, newf1, offset);
-		newf3 = copy_connect(temp, 2, newf1, offset);
+		newf1 = new Form(this->kind, this->index + offset);
+		newf2 = copy_connect(this, 1, newf1, offset);
+		newf3 = copy_connect(this, 2, newf1, offset);
 		return newf1;
 	default:
 		return NULL;
