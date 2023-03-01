@@ -341,13 +341,13 @@ static void reduce_redex(
 					f1->index -= 1;
 					f1->kind = FAN;
 					connect(f1->nform[2], f1->nport[2], f2, 0);
-					connect1(f1, 0, f2->nform[1], f2->nport[1]);
+					f1->connect1(0, f2->port(1));
 					connect(f1, 2, f2, 1);
 					if (f1->nlevel[2] != 0)
 					{
 						new1 = new Form(TRIANGLE, f1->index);
 						new1->nlevel[1] = f1->nlevel[2];
-						connect1(new1, 0, f2->nform[2], f2->nport[2]);
+						new1->connect1(0, f2->port(2));
 						connect(new1, 1, f2, 2);
 						f2->index += f1->nlevel[2];
 					}
@@ -369,7 +369,7 @@ static void reduce_redex(
 							 f2->nform[2],
 							 f2->nport[2]);
 					f1->kind = ERASE;
-					connect1(f1, 0, f2->nform[1], f2->nport[1]);
+					f1->connect1(0, f2->port(1));
 					f1->del();
 					if (option == 1)
 					{
@@ -390,7 +390,7 @@ static void reduce_redex(
 				case CONS:
 					eq++;
 					connect(f1->nform[2], f1->nport[2], f2, 0);
-					connect1(f1, 0, f2->nform[2], f2->nport[2]);
+					f1->connect1(0, f2->port(2));
 					connect(f1, 2, f2, 2);
 					f1->kind = FAN;
 					f1->index -= 1;
@@ -398,7 +398,8 @@ static void reduce_redex(
 					{
 						new1 = new Form(TRIANGLE, f1->index);
 						new1->nlevel[1] = f1->nlevel[2];
-						connect1(new1, 0, f2->nform[1], f2->nport[1]);
+						new1->connect1(0, f2->port(1));
+
 						connect(new1, 1, f2, 1);
 						f2->index += f1->nlevel[2];
 					}
@@ -442,12 +443,12 @@ static void reduce_redex(
 					{
 						new1 = new Form(TRIANGLE, f1->index - 1);
 						new1->nlevel[1] = f1->nlevel[2];
-						connect1(new1, 0, f2->nform[1], f2->nport[1]);
+						new1->connect1(0, f2->port(1));
 						connect(new1, 1, f2, 1);
 						f1->kind = TRIANGLE;
 						f1->index--;
 						f1->nlevel[1] = f1->nlevel[2];
-						connect1(f1, 0, f2->nform[2], f2->nport[2]);
+						f1->connect1(0, f2->port(2));
 						connect(f1, 1, f2, 2);
 						f2->index += f1->nlevel[2];
 					}
@@ -478,7 +479,7 @@ static void reduce_redex(
 					{
 						new1 = new Form(ERASE, 0);
 						f1->del();
-						connect1(new1, 0, f2->nform[1], f2->nport[1]);
+						new1->connect1(0, f2->port(1));
 					}
 					if (f1->nport[2] >= 0)
 					{
@@ -513,7 +514,7 @@ static void reduce_redex(
 					connect1(f1->nform[1], f1->nport[1],
 							 f2->nform[2], f2->nport[2]);
 					f1->kind = ERASE;
-					connect1(f1, 0, f2->nform[1], f2->nport[1]);
+					f1->connect1(0, f2->port(1));
 					f1->del();
 					if (option == 1)
 					{
@@ -525,8 +526,8 @@ static void reduce_redex(
 				case UNS_FAN2:
 					f1->kind = ERASE;
 					f2->kind = ERASE;
-					connect1(f1, 0, f1->nform[1], f1->nport[1]);
-					connect1(f2, 0, f2->nform[1], f2->nport[1]);
+					f1->connect1(0, f1->port(1));
+					f2->connect1(0, f2->port(1));
 					f1->del();
 					f2->del();
 					if (option == 1)
@@ -548,7 +549,7 @@ static void reduce_redex(
 					connect1(f1->nform[1], f1->nport[1],
 							 f2->nform[1], f2->nport[1]);
 					f1->kind = ERASE;
-					connect1(f1, 0, f2->nform[2], f2->nport[2]);
+					f1->connect1(0, f2->port(2));
 					f1->del();
 					if (option == 1)
 					{
@@ -560,8 +561,8 @@ static void reduce_redex(
 				case UNS_FAN1:
 					f1->kind = ERASE;
 					f2->kind = ERASE;
-					connect1(f1, 0, f1->nform[1], f1->nport[1]);
-					connect1(f2, 0, f2->nform[1], f2->nport[1]);
+					f1->connect1(0, f1->port(1));
+					f2->connect1(0, f2->port(1));
 					new1->del();
 					new2->del();
 					if (option == 1)
@@ -583,7 +584,7 @@ static void reduce_redex(
 					connect1(f1->nform[2], f1->nport[2],
 							 f2->nform[1], f2->nport[1]);
 					f1->kind = ERASE;
-					connect1(f1, 0, f1->nform[1], f1->nport[1]);
+					f1->connect1(0, f1->port(1));
 					f1->del();
 					if (option == 1)
 					{
@@ -597,7 +598,7 @@ static void reduce_redex(
 					connect1(f1->nform[1], f1->nport[1],
 							 f2->nform[1], f2->nport[1]);
 					f1->kind = ERASE;
-					connect1(f1, 0, f1->nform[2], f1->nport[2]);
+					f1->connect1(0, f1->port(2));
 					f1->del();
 					if (option == 1)
 					{
@@ -656,10 +657,11 @@ static void reduce_redex(
 				new2->num_safe = f1->num_safe;
 				new2->nlevel[1] = f1->nlevel[1];
 				new2->nlevel[2] = f1->nlevel[2];
-				connect1(f2, 0, f1->nform[1], f1->nport[1]);
-				connect1(new1, 0, f1->nform[2], f1->nport[2]);
-				connect1(new2, 0, f2->nform[1], f2->nport[1]);
-				connect1(f1, 0, f2->nform[2], f2->nport[2]);
+
+				f2->connect1(0, f1->port(1));
+				new1->connect1(0, f1->port(2));
+				new2->connect1(0, f2->port(1));
+				f1->connect1(0, f2->port(2));
 				connect(f1, 1, f2, 2);
 				connect(f1, 2, new1, 2);
 				connect(f2, 1, new2, 1);
@@ -680,10 +682,12 @@ static void reduce_redex(
 				new2->num_safe = f1->num_safe;
 				new2->nlevel[1] = f1->nlevel[1];
 				new2->nlevel[2] = f1->nlevel[2];
-				connect1(f2, 0, f1->nform[1], f1->nport[1]);
-				connect1(new1, 0, f1->nform[2], f1->nport[2]);
-				connect1(new2, 0, f2->nform[1], f2->nport[1]);
-				connect1(f1, 0, f2->nform[2], f2->nport[2]);
+
+				f2->connect1(0, f1->port(1));
+				new1->connect1(0, f1->port(2));
+				new2->connect1(0, f2->port(1));
+				f1->connect1(0, f2->port(2));
+
 				connect(f1, 1, f2, 2);
 				connect(f1, 2, new1, 2);
 				connect(f2, 1, new2, 1);
@@ -698,9 +702,11 @@ static void reduce_redex(
 				new1->num_safe = f2->num_safe;
 				new1->nlevel[1] = f2->nlevel[1];
 				f2->index += f1->nlevel[1];
-				connect1(f2, 0, f1->nform[1], f1->nport[1]);
-				connect1(new1, 0, f1->nform[2], f1->nport[2]);
-				connect1(f1, 0, f2->nform[1], f2->nport[1]);
+
+				f2->connect1(0, f1->port(1));
+				new1->connect1(0, f1->port(2));
+				f1->connect1(0, f2->port(1));
+
 				connect(f1, 1, f2, 1);
 				connect(f1, 2, new1, 1);
 				break;
@@ -776,9 +782,10 @@ static void reduce_redex(
 
 				f2->index += f1->nlevel[1];
 
-				connect1(f2, 0, f1->nform[1], f1->nport[1]);
-				connect1(new1, 0, f2->nform[1], f2->nport[1]);
-				connect1(f1, 0, f2->nform[2], f2->nport[2]);
+				f2->connect1(0, f1->port(1));
+				new1->connect1(0, f2->port(1));
+				f1->connect1(0, f2->port(2));
+
 				connect(f1, 1, f2, 2);
 				connect(new1, 1, f2, 1);
 				break;
@@ -803,9 +810,8 @@ static void reduce_redex(
 			case UNS_FAN1:
 			case UNS_FAN2:
 				f2->index += f1->nlevel[1];
-
-				connect1(f2, 0, f1->nform[1], f1->nport[1]);
-				connect1(f1, 0, f2->nform[1], f2->nport[1]);
+				f2->connect1(0, f1->port(1));
+				f1->connect1(0, f2->port(1));
 				connect(f1, 1, f2, 1);
 				break;
 			}
