@@ -407,7 +407,7 @@ static void reduce_redex(
 				{
 				case CONS:
 					eq++;
-					::bool_connect(f1->nform[1], f1->nport[1], F);
+					f1->bool_connect(1, F);
 					f1->kind = ERASE;
 					f1->del();
 					connect(f1, 0, f2, 0);
@@ -427,7 +427,7 @@ static void reduce_redex(
 				case CONS:
 					eq++;
 					connect(f1->nform[2], f1->nport[2], f2, 0);
-					::bool_connect(f1->nform[1], f1->nport[1], F);
+					f1->bool_connect(1, F);
 					if (f1->nlevel[2] != 0)
 					{
 						new1 = new FORM(TRIANGLE, f1->index - 1);
@@ -821,7 +821,7 @@ void FORM::reduce_form()
 		{
 		case F:
 			eq++;
-			::bool_connect(f1->nform[1], f1->nport[1], F);
+			f1->bool_connect(1, F);
 			f1->kind = ERASE;
 			f1->connect1(0, f1->port(2));
 			f1->del();
@@ -849,7 +849,7 @@ void FORM::reduce_form()
 		{
 		case T:
 			eq++;
-			::bool_connect(f1->nform[1], f1->nport[1], T);
+			f1->bool_connect(1, T);
 			f1->kind = ERASE;
 			f1->connect1(0, f1->port(2));
 			f1->del();
@@ -877,12 +877,12 @@ void FORM::reduce_form()
 		{
 		case T:
 			eq++;
-			::bool_connect(f1->nform[1], f1->nport[1], F);
+			f1->bool_connect(1, F);
 			f1->release();
 			break;
 		case F:
 			eq++;
-			::bool_connect(f1->nform[1], f1->nport[1], T);
+			f1->bool_connect(1, T);
 			f1->release();
 			break;
 		default:
@@ -915,9 +915,9 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] < f1->nform[0])
-				::bool_connect(f1->nform[1], f1->nport[1], T);
+				f1->bool_connect(1, T);
 			else
-				::bool_connect(f1->nform[1], f1->nport[1], F);
+				f1->bool_connect(1, F);
 			f1->release();
 			break;
 		}
@@ -952,9 +952,9 @@ void FORM::reduce_form()
 		{
 			eq++;
 			if (f1->nform[2] == f1->nform[0])
-				::bool_connect(f1->nform[1], f1->nport[1], T);
+				f1->bool_connect(1, T);
 			else
-				::bool_connect(f1->nform[1], f1->nport[1], F);
+				f1->bool_connect(1, F);
 			f1->release();
 			break;
 		}
@@ -990,11 +990,11 @@ void FORM::reduce_form()
 			eq++;
 			if (f1->nform[2] != f1->nform[0])
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], T);
+				f1->bool_connect(1, T);
 			}
 			else
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], F);
+				f1->bool_connect(1, F);
 			}
 			f1->release();
 			break;
@@ -1031,11 +1031,11 @@ void FORM::reduce_form()
 			eq++;
 			if (f1->nform[2] <= f1->nform[0])
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], T);
+				f1->bool_connect(1, T);
 			}
 			else
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], F);
+				f1->bool_connect(1, F);
 			}
 			f1->release();
 			break;
@@ -1072,11 +1072,11 @@ void FORM::reduce_form()
 			eq++;
 			if (f1->nform[2] >= f1->nform[0])
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], T);
+				f1->bool_connect(1, T);
 			}
 			else
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], F);
+				f1->bool_connect(1, F);
 			}
 			f1->release();
 			break;
@@ -1113,11 +1113,11 @@ void FORM::reduce_form()
 			eq++;
 			if (f1->nform[2] > f1->nform[0])
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], T);
+				f1->bool_connect(1, T);
 			}
 			else
 			{
-				::bool_connect(f1->nform[1], f1->nport[1], F);
+				f1->bool_connect(1, F);
 			}
 			f1->release();
 			break;
@@ -1320,7 +1320,7 @@ void FORM::reduce_form()
 		if (f1->nport[0] == NIL)
 		{
 			eq++;
-			::bool_connect(f1->nform[1], f1->nport[1], NIL);
+			f1->bool_connect(1, NIL);
 			f1->release();
 			break;
 		}
@@ -1336,7 +1336,7 @@ void FORM::reduce_form()
 		if (f1->nport[0] == NIL)
 		{
 			eq++;
-			::bool_connect(f1->nform[1], f1->nport[1], T);
+			f1->bool_connect(1, T);
 			f1->release();
 			break;
 		}
@@ -1351,8 +1351,8 @@ void FORM::reduce_form()
 		if (f1->nport[0] == NIL)
 		{
 			eq++;
-			::bool_connect(f1->nform[2], f1->nport[2], NIL);
-			::bool_connect(f1->nform[1], f1->nport[1], NIL);
+			f1->bool_connect(2, NIL);
+			f1->bool_connect(1, NIL);
 			f1->release();
 			break;
 		}
@@ -1368,8 +1368,8 @@ void FORM::reduce_form()
 		if (f1->nport[0] == NIL)
 		{
 			eq++;
-			::bool_connect(f1->nform[2], f1->nport[2], NIL);
-			::bool_connect(f1->nform[1], f1->nport[1], T);
+			f1->bool_connect(2, NIL);
+			f1->bool_connect(1, T);
 			f1->release();
 			break;
 		}
@@ -1388,8 +1388,8 @@ void FORM::reduce_form()
 		case NIL:
 		case T:
 		case F:
-			::bool_connect(f1->nform[1], f1->nport[1], f1->nport[0]);
-			::bool_connect(f1->nform[2], f1->nport[2], f1->nport[0]);
+			f1->bool_connect(1, f1->nport[0]);
+			f1->bool_connect(2, f1->nport[0]);
 			f1->release();
 			break;
 
@@ -1417,7 +1417,7 @@ void FORM::reduce_form()
 		case NIL:
 		case T:
 		case F:
-			::bool_connect(f1->nform[1], f1->nport[1], f1->nport[0]);
+			f1->bool_connect(1, f1->nport[0]);
 			f1->release();
 			break;
 
