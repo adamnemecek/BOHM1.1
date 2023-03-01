@@ -73,8 +73,6 @@ struct FORM final
 		return PORT{nform[i], nport[i]};
 	}
 
-	// void selfconnect1(int from, int to);
-
 	FORM *copy(
 		int p,
 		int offset);
@@ -107,6 +105,10 @@ struct FORM final
 
 	void connect(int port, TERM *term);
 	void connect1(int port, TERM *term);
+
+	// val is T, F, NIL
+	void bool_connect(int port, int val);
+	// void selfconnect1(int from, int to);
 
 	void connect(int port, PORT p);
 	void connect1(int port, PORT p);

@@ -138,12 +138,14 @@ void FORM::garbage()
 	{
 		FORM *form = nextform;
 		int port = nextport;
+		// we have found a variable
 		if (port < 0)
 		{
 			er_count++;
 			end = true;
 			continue;
 		}
+
 		switch (form->kind)
 		{
 
@@ -183,12 +185,12 @@ void FORM::garbage()
 				{
 					if (form->nlevel[1] == 0)
 					{
-						form->kind = incr_kind(form->kind);
+						form->kind = propagate_kind(form->kind);
 					}
 					else
 					{
 						form->kind = TRIANGLE;
-						newform = new FORM(incr_kind(form->kind), form->index);
+						newform = new FORM(propagate_kind(form->kind), form->index);
 						newform->connect1(0, form->port(0));
 						::connect(newform, 1, form, 0);
 						form->index -= 1;
@@ -236,6 +238,7 @@ void FORM::garbage()
 			else
 			{
 				if (form->num_safe)
+				{
 					if (port == 1)
 					{
 						form->kind = TRIANGLE;
@@ -246,6 +249,7 @@ void FORM::garbage()
 					{
 						form->kind = TRIANGLE;
 					}
+				}
 				else if (port == 1)
 				{
 					form->kind = UNS_FAN1;

@@ -48,7 +48,7 @@
 #define CAR1 49
 #define CONS1 50
 
-inline int incr_kind(int kind)
+inline int propagate_kind(int kind)
 {
     switch (kind)
     {

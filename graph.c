@@ -812,6 +812,14 @@ void FORM::connect1(
 		term->root_form, term->root_ports);
 }
 
+void FORM::bool_connect(int port, int val)
+{
+	::bool_connect(
+		this->nform[port],
+		this->nport[port],
+		val);
+}
+
 void FORM::connect(int port, TERM *term)
 {
 	::connect(this, port, term->root_form, term->root_ports);
