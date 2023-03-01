@@ -843,6 +843,15 @@ void int_connect(
 	form1->nform[portf1] = form2;
 }
 
+void FORM::binop(int (&op)(int, int))
+
+{
+	int_connect(
+		this->nform[1],
+		this->nport[1],
+		(FORM *)op((long int)this->nform[2], (long int)this->nform[0]),
+		INT);
+}
 /****************************************************************/
 /* 6. Definitions of functions strictly local to the module.	*/
 /****************************************************************/

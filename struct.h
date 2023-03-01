@@ -12,6 +12,36 @@ struct PORT
 	void connect1(PORT other);
 };
 
+template <typename A>
+A add(A a, A b)
+{
+	return a + b;
+};
+
+template <typename A>
+A sub(A a, A b)
+{
+	return a - b;
+};
+
+template <typename A>
+A mult(A a, A b)
+{
+	return a * b;
+};
+
+template <typename A>
+A div(A a, A b)
+{
+	return a / b;
+};
+
+template <typename A>
+A rem(A a, A b)
+{
+	return a % b;
+};
+
 /* graphical form descriptor type */
 struct FORM final
 {
@@ -113,6 +143,9 @@ struct FORM final
 	{
 		this->nport[port] = val;
 	}
+
+	void binop(int (&op)(int, int));
+
 	// void selfconnect1(int from, int to);
 
 	void connect(int port, PORT p);

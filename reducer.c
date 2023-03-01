@@ -1192,10 +1192,7 @@ void FORM::reduce_form()
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			int_connect(f1->nform[1],
-						f1->nport[1],
-						(FORM *)((long int)f1->nform[2] + (long int)f1->nform[0]),
-						INT);
+			f1->binop(add);
 			f1->release();
 			break;
 		}
@@ -1229,11 +1226,7 @@ void FORM::reduce_form()
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			int_connect(f1->nform[1],
-						f1->nport[1],
-						(FORM *)((long int)f1->nform[2] - (long int)f1->nform[0]),
-						INT);
-
+			f1->binop(sub);
 			f1->release();
 			break;
 		}
@@ -1267,10 +1260,7 @@ void FORM::reduce_form()
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			int_connect(f1->nform[1],
-						f1->nport[1],
-						(FORM *)((long int)f1->nform[2] * (long int)f1->nform[0]),
-						INT);
+			f1->binop(mult);
 			f1->release();
 			break;
 		}
@@ -1304,10 +1294,7 @@ void FORM::reduce_form()
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			int_connect(f1->nform[1],
-						f1->nport[1],
-						(FORM *)((long int)f1->nform[2] / (long int)f1->nform[0]),
-						INT);
+			f1->binop(div);
 			f1->release();
 			break;
 		}
@@ -1341,10 +1328,7 @@ void FORM::reduce_form()
 		if (f1->nport[0] == INT)
 		{
 			eq++;
-			int_connect(f1->nform[1],
-						f1->nport[1],
-						(FORM *)((long int)f1->nform[2] % (long int)f1->nform[0]),
-						INT);
+			f1->binop(rem);
 			f1->release();
 			break;
 		}
