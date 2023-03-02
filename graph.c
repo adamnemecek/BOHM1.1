@@ -405,9 +405,7 @@ Term *Term::not_(
 	Term *arg)
 {
 	// pointer to the new form to be created
-	Form *newf = new Form(NOT, level);
-
-	newf->connect1(0, arg);
+	Form *newf = Form::not_(level, arg);
 
 	// pointer to the term to be created
 	Term *t = new Term(newf, 1, arg->vars);
@@ -662,8 +660,7 @@ Term *Term::car(
 	Term *arg)
 {
 	// pointer to the new form to be created
-	Form *newf = new Form(CAR, level);
-	newf->connect1(0, arg);
+	Form *newf = Form::car(level, arg);
 	Term *t = new Term(newf, 1, arg->vars);
 	free(arg);
 	return t;

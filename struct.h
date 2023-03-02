@@ -190,6 +190,26 @@ struct Form final
 
 		return newf;
 	}
+
+	static Form *not_(
+		int level,
+		Term *arg)
+	{
+		Form *newf = new Form(NOT, level);
+
+		newf->connect1(0, arg);
+		return newf;
+	}
+
+	static Form *car(
+		int level,
+		Term *arg)
+	{
+		Form *newf = new Form(CAR, level);
+
+		newf->connect1(0, arg);
+		return newf;
+	}
 };
 
 struct BindingEntry;
