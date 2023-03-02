@@ -142,6 +142,18 @@ struct Form final
 	void inspect_connect(
 		int p1,
 		Port p);
+
+	static Form *or_(
+		int level,
+		Term *arg1,
+		Term *arg2)
+	{
+		Form *newf = new Form(OR, level);
+
+		newf->connect1(0, arg1);
+		newf->connect1(2, arg2);
+		return newf;
+	}
 };
 
 struct BindingEntry;
@@ -267,7 +279,16 @@ struct Term final
 	static Term *true_(int level);
 	static Term *false_(int level);
 
+	static Term *int_(
+		int level,
+		long int value);
+
 	static Term *and_(
+		int level,
+		Term *arg1,
+		Term *arg2);
+
+	static Term *or_(
 		int level,
 		Term *arg1,
 		Term *arg2);
@@ -304,11 +325,6 @@ struct Term final
 		int level,
 		Term *arg);
 
-	static Term *or_(
-		int level,
-		Term *arg1,
-		Term *arg2);
-
 	static Term *app(
 		int level,
 		Term *fun,
@@ -319,10 +335,6 @@ struct Term final
 		Term *arg1,
 		Term *arg2,
 		Term *arg3);
-
-	static Term *int_(
-		int level,
-		long int value);
 
 	static Term *lambda(
 		int level,

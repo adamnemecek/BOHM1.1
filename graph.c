@@ -368,8 +368,6 @@ Term *Term::let_in(
 	return Term::app(level, temp, arg1);
 }
 
-// The following function creates the graph representation of
-// a boolean and-expression
 Term *Term::and_(
 	int level,
 	Term *arg1,
@@ -399,10 +397,7 @@ Term *Term::or_(
 	Term *arg2)
 {
 	// pointer to the new form to be created
-	Form *newf = new Form(OR, level);
-
-	newf->connect1(0, arg1);
-	newf->connect1(2, arg2);
+	Form *newf = Form::or_(level, arg1, arg2);
 
 	// free variables of the application
 	VarEntry *newvars = share(level, arg1->vars, arg2->vars);
