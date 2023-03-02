@@ -335,15 +335,7 @@ Term *Term::ifelse(
 	Term *arg3)
 {
 	// free variables of the application
-	Form *newf = new Form(IFELSE, level);
-	Form *newf1 = new Form(CONS, level);
-	// pointers to the new forms
-
-	newf->connect1(0, arg1);
-	connect(newf, 2, newf1, 0);
-
-	newf1->connect1(1, arg2);
-	newf1->connect1(2, arg3);
+	Form *newf = Form::ifelse(level, arg1, arg2, arg3);
 
 	VarEntry *tempvars = share(level, arg2->vars, arg3->vars);
 	VarEntry *newvars = share(level, tempvars, arg1->vars);
@@ -374,10 +366,7 @@ Term *Term::and_(
 	Term *arg2)
 {
 	// pointer to the new form to be created
-	Form *newf = new Form(AND, level);
-
-	newf->connect1(0, arg1);
-	newf->connect1(2, arg2);
+	Form *newf = Form::and_(level, arg1, arg2);
 
 	// free variables of the application
 	VarEntry *newvars = share(level, arg1->vars, arg2->vars);

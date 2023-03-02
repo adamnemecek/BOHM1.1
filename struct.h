@@ -25,6 +25,12 @@ BINOP(mult, *);
 BINOP(div, /);
 BINOP(rem, %);
 
+void connect(
+	Form *form1,
+	int portf1,
+	Form *form2,
+	int portf2);
+
 // graphical form descriptor type
 struct Form final
 {
@@ -135,6 +141,7 @@ struct Form final
 
 	void connect(int port, Port p);
 	void connect1(int port, Port p);
+
 	void garbage();
 
 	void int_connect(int port, Port p);
@@ -143,15 +150,44 @@ struct Form final
 		int p1,
 		Port p);
 
+	static Form *and_(
+		int level,
+		Term *arg1,
+		Term *arg2)
+	{
+		Form *newf = new Form(AND, level);
+		newf->connect1(0, arg1);
+		newf->connect1(2, arg2);
+		return newf;
+	}
+
 	static Form *or_(
 		int level,
 		Term *arg1,
 		Term *arg2)
 	{
 		Form *newf = new Form(OR, level);
-
 		newf->connect1(0, arg1);
 		newf->connect1(2, arg2);
+		return newf;
+	}
+
+	static Form *ifelse(
+		int level,
+		Term *arg1,
+		Term *arg2,
+		Term *arg3)
+	{
+		Form *newf = new Form(IFELSE, level);
+		Form *newf1 = new Form(CONS, level);
+		// pointers to the new forms
+
+		newf->connect1(0, arg1);
+		::connect(newf, 2, newf1, 0);
+
+		newf1->connect1(1, arg2);
+		newf1->connect1(2, arg3);
+
 		return newf;
 	}
 };
