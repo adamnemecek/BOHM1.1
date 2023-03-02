@@ -1873,7 +1873,7 @@ yyreduce:
   case 26:
 #line 411 "parser.y"
     {
-		 		  (yyval.term) = Term::minus(app_nesting_depth, (yyvsp[(2) - (2)].term));
+		 		  (yyval.term) = Term::neg(app_nesting_depth, (yyvsp[(2) - (2)].term));
 				}
     break;
 

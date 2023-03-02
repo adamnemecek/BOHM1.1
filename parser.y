@@ -409,7 +409,7 @@ expr            :       expr0
                                 }
 		|	'-' expr %prec NEG
 				{
-		 		  $$ = Term::minus(app_nesting_depth, $2);
+		 		  $$ = Term::neg(app_nesting_depth, $2);
 				}
 		 |	expr ANDKW expr
 				{

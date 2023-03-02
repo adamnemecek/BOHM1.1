@@ -489,7 +489,7 @@ Term *Term::matterm(
 
 // The following function creates the graph representation of
 // a unary minus-expression
-Term *Term::minus(
+Term *Term::neg(
 	int level,
 	Term *arg1)
 {

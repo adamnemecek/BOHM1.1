@@ -375,7 +375,7 @@ struct Term final
 		int level,
 		Term *arg);
 
-	static Term *minus(
+	static Term *neg(
 		int level,
 		Term *arg1);
 
