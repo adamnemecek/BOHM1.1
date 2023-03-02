@@ -78,8 +78,8 @@ unsigned num_nodes, max_nodes;
 unsigned length_list = 0;
 
 static VarEntry *addbrackets(
-	int index,
-	VarEntry *listvar);
+	VarEntry *listvar,
+	int index);
 
 static VarEntry *share(
 	int index,
@@ -698,7 +698,7 @@ Form *Term::close(
 
 	if (level == 1)
 	{
-		this->vars = addbrackets(0, this->vars);
+		this->vars = addbrackets(this->vars, 0);
 	}
 	closeglobalvars(this->vars);
 	return newroot;
@@ -862,15 +862,16 @@ Term::Term(
 // the following function build a box around a term
 Term *Term::makebox(int level)
 {
-	this->vars = addbrackets(level, this->vars);
+	this->vars = addbrackets(this->vars, level);
 	return this;
 }
 
 // the following function add a sequence of square brackets of
 // given index at the free variables in listvar
 static VarEntry *addbrackets(
-	int index,
-	VarEntry *listvar)
+
+	VarEntry *listvar,
+	int index)
 {
 	if (listvar == NULL)
 	{
@@ -897,7 +898,7 @@ static VarEntry *addbrackets(
 			variab->nlevel[2]++;
 			break;
 		};
-		listvar->next = addbrackets(index, listvar->next);
+		listvar->next = addbrackets(listvar->next, index);
 		return listvar;
 	}
 
@@ -906,7 +907,7 @@ static VarEntry *addbrackets(
 	connect(bracket, 1, variab, 0);
 	return new VarEntry(listvar->name,
 						bracket,
-						addbrackets(index, listvar->next));
+						addbrackets(listvar->next, index));
 }
 
 // The following function shares the free variables of

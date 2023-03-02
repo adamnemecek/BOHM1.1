@@ -206,7 +206,6 @@ struct Form final
 		Term *arg)
 	{
 		Form *newf = new Form(CAR, level);
-
 		newf->connect1(0, arg);
 		return newf;
 	}
@@ -228,6 +227,16 @@ struct Form final
 		newf->connect1(0, arg);
 		return newf;
 	}
+
+	// static FORM *list(
+	// 	int level,
+	// 	Term *arg)
+	// {
+	// 	Form *newf1 = new Form(CONS, level);
+
+	// 	newf1->connect1(1, arg1);
+	// 	return newf1;
+	// }
 };
 
 struct BindingEntry;
