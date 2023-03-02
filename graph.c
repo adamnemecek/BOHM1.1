@@ -671,8 +671,7 @@ Term *Term::cdr(
 	Term *arg)
 {
 	// pointer to the new form to be created
-	Form *newf = new Form(CDR, level);
-	newf->connect1(0, arg);
+	Form *newf = Form::cdr(level, arg);
 	Term *t = new Term(newf, 1, arg->vars);
 	free(arg);
 	return t;
@@ -683,8 +682,7 @@ Term *Term::testnil(
 	Term *arg)
 {
 	// pointer to the new form to be created
-	Form *newf = new Form(TESTNIL, level);
-	newf->connect1(0, arg);
+	Form *newf = Form::testnil(level, arg);
 	Term *t = new Term(newf, 1, arg->vars);
 	free(arg);
 	return t;
